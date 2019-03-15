@@ -1,3 +1,40 @@
+let pantry = [];
+let userData;
+
+$(document).ready(function() {
+    if (!userData) { //not logged in yet
+        //Redirect to login screen
+    } else { //already logged in
+        generatePantry();
+        generateShoppingList();
+        generateCalendar();
+    }
+});
+
+
+//Generate the pantry html object and display it
+function generatePantry() {
+    console.log(pantry);
+}
+
+
+//Generate the shopping list html object and display it
+function generateShoppingList() {
+
+}
+
+
+function loginButtonClicked() {
+
+    //TODO: Go through the firebase login flow
+    //TODO:  Pull down the userData
+}
+
+
+//Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
+function generateCalendar() {
+
+}
 
 //      EDAMAM RECIPE DATABASE
 // Edamam application Id -- e09fb63c
@@ -29,14 +66,14 @@ function callEdaRec() {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
 
         console.log(response);
 
         var hits = response.hits;
 
         for (var i = 0; i < hits.length; i++) {
-        
+
             recipeLabel = hits[i].recipe.label;
             console.log(recipeLabel);
         }
@@ -51,14 +88,14 @@ function callEdaFood() {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
         var hints = response.hints;
 
         foodLabel = hints[0].food.label;
         console.log(foodLabel);
     })
 
-    
+
 
 }
 
