@@ -7,6 +7,7 @@ $(document).ready(function() {
     } else { //already logged in
         generatePantry();
         generateShoppingList();
+        generateCalendar();
     }
 });
 
@@ -27,4 +28,10 @@ function loginButtonClicked() {
 
     //TODO: Go through the firebase login flow
     //TODO:  Pull down the userData
+}
+
+
+//Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
+function generateCalendar() {
+
 }
