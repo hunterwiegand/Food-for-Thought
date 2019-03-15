@@ -1,0 +1,40 @@
+{ "sampleURL": "https://api.edamam.com/api/food-database/parser?upc=023700043825&app_id=cd666e09&app_key=13cb0a3f237838bbc1414d50596d2015" }
+
+{
+    "text": "upc:023700043825",
+    "parsed": [],
+    "hints": [{
+        "food": {
+            "foodId": "food_a8kxwmeb22dg2hbghcrb1an5kqyp",
+            "uri": "http://www.edamam.com/ontologies/edamam.owl#Food_USDABR_45263216",
+            "label": "ITALIAN STYLE LIGHTLY BREADED CHICKEN BREAST STRIPS",
+            "nutrients": {
+                "ENERC_KCAL": 179,
+                "PROCNT": 19.049999237060547,
+                "FAT": 8.329999923706055,
+                "CHOCDF": 8.329999923706055
+            },
+            "brand": "TYSON FOODS, INC.",
+            "category": "Packaged foods",
+            "categoryLabel": "food",
+            "foodContentsLabel": " BONELESS; SKINLESS CHICKEN BREAST WITH RIB MEAT; WHEAT FLOUR; WATER; CONTAINS 2% OR LESS OF THE FOLLOWING: BAKING SODA; CORN STARCH; CREAM OF TARTAR; EXPELLER PRESSED CANOLA OIL; EXTRACTIVES OF PAPRIKA AND TURMERIC; GARLIC POWDER; NATURAL FLAVORS; ONION POWDER; PARMESAN CHEESE (PASTEURIZED PART-SKIM MILK; CHEESE CULTURE; SALT; ENZYMES); RICE FLOUR; RICE STARCH; SALT; SEA SALT; SPICES; SUGAR; TAPIOCA STARCH; YEAST; YEAST EXTRACT; YELLOW CORN FLOUR. BREADING SET IN VEGETABLE OIL. "
+        },
+        "measures": [{
+                "uri": "http://www.edamam.com/ontologies/edamam.owl#Measure_gram",
+                "label": "Gram"
+            },
+            {
+                "uri": "http://www.edamam.com/ontologies/edamam.owl#Measure_ounce",
+                "label": "Ounce"
+            },
+            {
+                "uri": "http://www.edamam.com/ontologies/edamam.owl#Measure_pound",
+                "label": "Pound"
+            },
+            {
+                "uri": "http://www.edamam.com/ontologies/edamam.owl#Measure_kilogram",
+                "label": "Kilogram"
+            }
+        ]
+    }]
+}

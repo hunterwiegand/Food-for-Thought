@@ -1,18 +1,19 @@
 class recipe {
-    constructor(name, url) {
+    constructor(name, url, imageURL, servings, cals) {
         this.name = name;
         this.url = url;
+        this.imageURL = imageURL;
         this.ingredients = []; //An array of foodItem objects
-        this.servings;
-        this.dietaryInfo = {} //An object of dietary info
+        this.servings = servings;
+        this.dietaryInfo = {} //An object of dietary info (use the total nutirents object from edamam call)
         this.mealPlanSlot;
     }
 
 }
 
 class foodItem {
-    constructor(name) {
+    constructor(name, upc) {
         this.name = name;
-        this.barcode;
+        this.barcode = upc;
     }
 }
