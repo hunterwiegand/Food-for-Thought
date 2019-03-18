@@ -114,24 +114,25 @@ function getAccountInfo() {
         console.log("password: ", password);
 
         const promise = auth.signInWithEmailAndPassword(email, password);
-        promise.catch(function(event) {
+        promise.catch(function (event) {
             console.log(event.message);
         })
 
         $("#user-email").val("");
         $("#user-password").val("");
     })
-   //Listener for sign-up button
+    //Listener for sign-up button
     $("#signup-button").on("click", function () {
 
         //Get user sign-up info
         const email = $("#signup-email").val();
         const password = $("#signup-password").val();
         const auth = firebase.auth();
+        const database = firebase.database();
 
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function(event) {
+        promise.catch(function (event) {
             console.log("created account");
         })
 
@@ -139,9 +140,15 @@ function getAccountInfo() {
         $("#signup-password").val("");
     })
 
-    firebase.auth().onAuthStateChanged(firebaseUser => {
-        if(firebaseUser) {
-            console.log("Logged in");
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            // console.log("Logged in");
+            // console.log(user.uid);
+            // updateFirebase();
+            firebase.database().ref("/users/" + user.uid ).set({
+                string: "hello"
+            })
+
         } else {
             console.log("Not logged in");
         }
@@ -172,12 +179,15 @@ $("#barcode-search-button").click(function () {
 //---------------------------------------------------
 //                  set user firebase vars
 
-function updateFirebase(str) {
-    const auth = firebase.auth();
-    
-    user = database.getInstance().getCurrentUser();
-    console.log(user);
-}
+// function updateFirebase() {
+
+//     console.log("userid: ", user.uid);
+//     console.log("stuff", database.ref(user.uid));
+
+//     firebase.database().ref("/users/" + user.uid ).set({
+//         string: "hello"
+//     })
+// }
 
 //--------------------------------------------------
 //                    API Calls
@@ -231,6 +241,20 @@ function callEdaFood(barcodeNum) {
         addItemToPantry(newFoodItem);
     })
 }
+function callEdaFoodByName(foodName) {
+    var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
+    console.log(queryURL);
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        let newFoodItem = createFoodItemObject(response.hints[0].food);
+
+        addItemToPantry(newFoodItem);
+    })
+}
+
 
 getAccountInfo();
-updateFirebase();
+// updateFirebase();
