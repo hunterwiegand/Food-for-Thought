@@ -25,14 +25,17 @@ class recipe {
 }
 
 class foodItem {
-    constructor(foodItemJSON) {
+    constructor(foodItemJSON, quantity = 0, measurement = "tonnes") {
         this.name = foodItemJSON.label;
         this.nutrition = new nutritionInfo(foodItemJSON.nutrients);
+        this.quantity = quantity;
+        this.measurement = measurement;
     }
 
     HTML() {
         let containerDiv = $("<div>");
         containerDiv.append($("<span>").text(this.name));
+        containerDiv.append($("<span>").text("Quantity: " + this.quantity + this.measurement));
         containerDiv.append($("<span>").html(this.nutrition.HTML()))
         return containerDiv;
     }
@@ -40,9 +43,9 @@ class foodItem {
 
 class nutritionInfo {
     constructor(nutritionJSON) {
-        this.calories = nutritionJSON.ENERC_KCAL;
-        this.protien = nutritionJSON.PROCNT;
-        this.cholestorol = nutritionJSON.CHOCDF
+        this.calories = Math.floor(nutritionJSON.ENERC_KCAL);
+        this.protien = Math.floor(nutritionJSON.PROCNT);
+        this.cholestorol = Math.floor(nutritionJSON.CHOCDF);
     }
 
     HTML() {
