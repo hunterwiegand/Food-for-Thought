@@ -174,6 +174,7 @@ $("#barcode-search-button").click(function () {
 
 function updateFirebase(str) {
     const auth = firebase.auth();
+    
     user = database.getInstance().getCurrentUser();
     console.log(user);
 }
