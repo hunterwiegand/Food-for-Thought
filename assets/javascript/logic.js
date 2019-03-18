@@ -1,9 +1,9 @@
 let pantry = [];
 let shoppingList = [];
-let userData;
+let uuid;
 
-$(document).ready(function () {
-    if (!userData) { //not logged in yet
+$(document).ready(function() {
+    if (!uuid) { //not logged in yet
         //Redirect to login screen
     } else { //already logged in
         generatePantry();
@@ -30,10 +30,10 @@ firebase.initializeApp(config);
 
 //Generate the pantry html object and display it
 function generatePantry() {
-    $.each(pantry, function (index, value) {
+    $.each(pantry, function(index, value) {
         console.log("WARNING: need real location of pantry html element.")
 
-        $("#pantry-list-div").append(createPantryItemHTML(value));
+        $("#pantry-list-div").append(value.HTML());
     })
     console.log("WARNING: pantry page not implemented")
     console.log("pantry contents", pantry);
@@ -42,7 +42,7 @@ function generatePantry() {
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
-    $.each(shoppingList, function (index, value) {
+    $.each(shoppingList, function(index, value) {
         console.log("WARNING: need real location of shopping list html element.")
 
         $("#shopping-list-div").append(createPantryItemHTML(value));
@@ -65,11 +65,11 @@ function generateCalendar() {
 
 
 function createRecipeObject(recipeJSON) {
-    return new recipe(recipeJSON.label, recipeJSON.shareAs, recipeJSON.image, recipeJSON.yield, recipeJSON.totalNutrients, recipeJSON.ingredients);
+    return new recipe(recipeJSON);
 }
 
 function createFoodItemObject(foodItemJSON) {
-    return new foodItem(foodItemJSON.name, foodItemJSON.upc);
+    return new foodItem(foodItemJSON);
 }
 
 
@@ -81,6 +81,7 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
+    updateFirebase("pantry", foodObject);
 
     pantry.push(foodObject);
     generatePantry();
@@ -145,6 +146,7 @@ function getAccountInfo() {
             // console.log("Logged in");
             // console.log(user.uid);
             // updateFirebase();
+            uuid = user.uid;
             firebase.database().ref("/users/" + user.uid ).set({
                 string: "hello",
                 pantry: pantry,
@@ -156,7 +158,7 @@ function getAccountInfo() {
         }
     })
 
-    $("#logout-button").on("click", function () {
+    $("#logout-button").on("click", function() {
         const auth = firebase.auth();
         console.log("Logged out");
         auth.signOut();
@@ -168,32 +170,29 @@ function getAccountInfo() {
 }
 
 //TODO: Tie this to the actual search button for recipes
-$("#recipe-search-button").click(function () {
+$("#recipe-search-button").click(function() {
     let searchTerm = $("#recipe-search-text").val();
     callEdaRec(searchTerm);
 })
 
-$("#searchButton").click(function () {
+$("#searchButton").click(function() {
     let searchTerm = $("#input").val();
-    console.log(searchTerm)
     callEdaFood(searchTerm);
-    console.log(' ');
+})
+
+$("#add-item-btn").click(function(event) {
+    event.preventDefault();
+    let searchTerm = $("#item-input").val();
+    console.log(searchTerm);
+    callEdaFoodByName(searchTerm);
 })
 
 //---------------------------------------------------
 //                  set user firebase vars
 
-function updateFirebase(key, value) {
+function updateFirebase(location, value) {
 
-    console.log(key);
-    console.log(value);
-    
-    console.log("userid: ", user.uid);
-    console.log("stuff", database.ref(user.uid));
-
-    firebase.database().ref("/users/" + user.uid ).set({
-        string: "hello"
-    })
+    firebase.database().ref("/users/" + uuid + "/" + location ).push(value)
 }
 
 //--------------------------------------------------
@@ -219,9 +218,8 @@ function callEdaRec(userFoodItem) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
 
-        console.log(response);
 
         var hits = response.hits;
 
@@ -237,7 +235,22 @@ function callEdaRec(userFoodItem) {
 //Function to search EDAMAM FOOD DATABASE using a passed barcode
 function callEdaFood(barcodeNum) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?upc=" + barcodeNum + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
-    console.log(queryURL);
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
+        let newFoodItem = createFoodItemObject(response.hints[0].food);
+    
+
+        addItemToPantry(newFoodItem);
+
+        $("#pantryList").append(newFoodItem.HTML());
+    })
+
+}
+function callEdaFoodByName(foodName) {
+    var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
 
     $.ajax({
         url: queryURL,
@@ -248,20 +261,6 @@ function callEdaFood(barcodeNum) {
         addItemToPantry(newFoodItem);
 
         $("#pantryList").append(newFoodItem.HTML());
-    })
-    
-}
-function callEdaFoodByName(foodName) {
-    var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
-    console.log(queryURL);
-
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function (response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
-
-        addItemToPantry(newFoodItem);
     })
 }
 
