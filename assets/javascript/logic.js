@@ -93,27 +93,6 @@ function addItemToShoppingList(foodObject) {
     generateShoppingList();
 }
 
-function createPantryItemHTML(foodObject) {
-    let pantryItemDiv = $("<div>");
-    pantryItemDiv.append($("<span>").text(foodObject.name));
-    return pantryItemDiv;
-}
-
-function createShoppingListItemHTML(foodObject) {
-    let shoppingListItemDiv = $("<div>");
-    shoppingListItemDiv.append($("<span>").text(foodObject.name));
-    return shoppingListItemDiv;
-}
-
-function createRecipeHTML(recipeObject) {
-    let recipeDiv = $("<div>");
-    recipeDiv.append($("<img>").attr("src", recipeObject.imageURL));
-    recipeDiv.append($("<span>").text(recipeObject.name));
-    recipeDiv.append($("<span>").text("Servings: " + recipeObject.servings));
-
-    return recipeDiv;
-}
-
 
 
 //--------------------------------------------------
