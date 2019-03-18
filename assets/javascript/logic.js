@@ -2,7 +2,7 @@ let pantry = [];
 let shoppingList = [];
 let userData;
 
-$(document).ready(function() {
+$(document).ready(function () {
     if (!userData) { //not logged in yet
         //Redirect to login screen
     } else { //already logged in
@@ -12,6 +12,17 @@ $(document).ready(function() {
     }
 });
 
+// Firebase Config
+var config = {
+    apiKey: "AIzaSyBmxS4V7it_sK4jjGlZNxrPftrb6BCn0G8",
+    authDomain: "food-for-thought-bb3d4.firebaseapp.com",
+    databaseURL: "https://food-for-thought-bb3d4.firebaseio.com",
+    projectId: "food-for-thought-bb3d4",
+    storageBucket: "food-for-thought-bb3d4.appspot.com",
+    messagingSenderId: "504782992813"
+};
+firebase.initializeApp(config);
+
 //--------------------------------------------------
 //              Page Setup Functions
 //--------------------------------------------------
@@ -19,7 +30,7 @@ $(document).ready(function() {
 
 //Generate the pantry html object and display it
 function generatePantry() {
-    $.each(pantry, function(index, value) {
+    $.each(pantry, function (index, value) {
         console.log("WARNING: need real location of pantry html element.")
 
         $("#pantry-list-div").append(createPantryItemHTML(value));
@@ -31,7 +42,7 @@ function generatePantry() {
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
-    $.each(shoppingList, function(index, value) {
+    $.each(shoppingList, function (index, value) {
         console.log("WARNING: need real location of shopping list html element.")
 
         $("#shopping-list-div").append(createPantryItemHTML(value));
@@ -67,7 +78,7 @@ function createFoodItemObject(foodItemJSON) {
 //--------------------------------------------------
 //             Object to HTML
 //--------------------------------------------------
-x
+
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
 
@@ -111,19 +122,60 @@ function createRecipeHTML(recipeObject) {
 
 
 
-function loginButtonClicked() {
+function getAccountInfo() {
+
+    //Listener for login button
+    $("#login-button").on("click", function () {
+        //Get user login info
+        const email = $("#user-email").val();
+        const password = $("#user-password").val();
+        const auth = firebase.auth();
+
+        const promise = auth.signInWithEmailAndPassword(email, password);
+        promise.catch(function(event) {
+            console.log(event.message);
+        })
+    })
+   //Listener for sign-up button
+    $("#signup-button").on("click", function () {
+
+        //Get user sign-up info
+        const email = $("#user-email").val();
+        const password = $("#user-password").val();
+        const auth = firebase.auth();
+
+        const promise = auth.createUserWithEmailAndPassword(email, password);
+
+        promise.catch(function(event) {
+            console.log("created account");
+        })
+    })
+
+    firebase.auth().onAuthStateChanged(firebaseUser => {
+        if(firebaseUser) {
+            console.log("Logged in");
+        } else {
+            console.log("Not logged in");
+        }
+    })
+
+    $("#logout-button").on("click", function () {
+        const auth = firebase.auth();
+        console.log("Logged out");
+        auth.signOut();
+    })
 
     //TODO: Go through the firebase login flow
     //TODO:  Pull down the userData
 }
 
 //TODO: Tie this to the actual search button for recipes
-$("#recipe-search-button").click(function() {
+$("#recipe-search-button").click(function () {
     let searchTerm = $("#recipe-search-text").val();
     callEdaRec(searchTerm);
 })
 
-$("#barcode-search-button").click(function() {
+$("#barcode-search-button").click(function () {
     let searchterm = $("#barcode-seaerch-text").val();
     callEdaFood(searchTerm);
 })
@@ -154,7 +206,7 @@ function callEdaRec(userFoodItem) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function (response) {
 
         console.log(response);
 
@@ -177,9 +229,11 @@ function callEdaFood(barcodeNum) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function (response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food);
 
         addItemToPantry(newFoodItem);
     })
 }
+
+getAccountInfo();
