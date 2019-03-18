@@ -6,35 +6,53 @@ class recipe {
         this.imageURL = recipeJSON.image;
         this.servings = recipe.yield;
         this.ingredients = []; //An array of foodItem objects
-        this.dietaryInfo = []; //An object of dietary info (use the total nutirents object from edamam call)
+        this.nutrition = new nutritionInfo({
+            ENERC_KCAL: recipeJSON.totalNutrients.ENERC_KCAL.quantity,
+            PROCNT: recipeJSON.totalNutrients.PROCNT.quantity,
+            CHOCDF: recipeJSON.totalNutrients.CHOCDF.quantity
+        })
         this.mealPlanSlot;
     }
 
     HTML() {
-        let recipeDiv = $("<div>");
-        recipeDiv.append($("<img>").attr("src", this.imageURL));
-        recipeDiv.append($("<span>").text(this.name));
-        recipeDiv.append($("<span>").text("Servings: " + this.servings));
+        let containerDiv = $("<div>");
+        containerDiv.append($("<img>").attr("src", this.imageURL));
+        containerDiv.append($("<span>").text(this.name));
+        containerDiv.append($("<span>").text("Servings: " + this.servings));
 
         return recipeDiv;
     }
 }
 
 class foodItem {
-    constructor(name, upc) {
-        this.name = name;
-        this.barcode = upc;
+    constructor(foodItemJSON) {
+        this.name = foodItemJSON.label;
+        this.nutrition = new nutritionInfo(foodItemJSON.nutrients);
     }
 
-    pantryHTML() {
-        let pantryItemDiv = $("<div>");
-        pantryItemDiv.append($("<span>").text(this.name));
-        return pantryItemDiv;
+    HTML() {
+        let containerDiv = $("<div>");
+        containerDiv.append($("<span>").text(this.name));
+        containerDiv.append($("<span>").html(this.nutrition.HTML()))
+        return containerDiv;
+    }
+}
+
+class nutritionInfo {
+    constructor(nutritionJSON) {
+        this.calories = nutritionJSON.ENERC_KCAL;
+        this.protien = nutritionJSON.PROCNT;
+        this.cholestorol = nutritionJSON.CHOCDF
     }
 
-    shoppingListHTML() {
-        let shoppingListItemDiv = $("<div>");
-        shoppingListItemDiv.append($("<span>").text(this.name));
-        return shoppingListItemDiv;
+    HTML() {
+        let containerDiv = $("<div>");
+        containerDiv.attr("class", "nutrition-info")
+        containerDiv.append($("<span>").text("Nutritional Info:"));
+        containerDiv.append($("<span>").text("Calories: " + this.calories + "g"));
+        containerDiv.append($("<span>").text("Protien: " + this.protien + "g"));
+        containerDiv.append($("<span>").text("Cholestorol: " + this.cholestorol + "g"));
+
+        return containerDiv
     }
 }
