@@ -4,102 +4,116 @@
 <head>
     <meta charset="utf-8">
     <title>Food for Thought</title>
- 
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="" X-UA-Compatible content="ie=edge">
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
 
 </head>
 
 <body>
     <div id="test-div"></div>
 
-<body class="home">
+    <body class="home">
 
-    <h1> Food for Thought</h1>
-     
-<!-- Navigation Bar -->
-<div class="container" id="menu">
-<div class="container-fluid" id="menu">
-        <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
-                <ul class="navbar-nav">
-          <a class="navbar-brand" href="index.html">Home</a>
-          <a class="navbar-brand" href="ingredients.html">Ingredients</a>
-          <a class="navbar-brand" href="shopping.html">Shopping List</a>
-		  <a class="navbar-brand" href="recipes.html">Recipes</a>
-		  <a class="navbar-brand" href="pantry.html">Pantry</a>
-          <a class="navbar-brand" href="mealPlanner.html">Meal Plans</a>
-          </ul>
-        </nav>
-	  </div>
-	</div>
-            
-  <!-- <!-sign into account/create account  -->
-  <div class="container-fluid">
-		<div class="container">
+        <h1> Food for Thought</h1>
 
-			<div class="row">
-				<div class="col-md-5">
- 					<form role="form" method="post" action="register.php">
-						<fieldset>							
-							<p class="text-uppercase pull-center" style="color: black; font-weight: bold"> SIGN UP:</p>	
- 							<div class="form-group">
-								<input type="text" name="username" id="username" class="form-control input-lg" placeholder="username">
-							</div>
+        <!-- Navigation Bar -->
+        <div class="container" id="menu">
+            <div class="container-fluid" id="menu">
+                <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+                    <ul class="navbar-nav">
+                        <a class="navbar-brand" href="index.html">Home</a>
+                        <a class="navbar-brand" href="ingredients.html">Ingredients</a>
+                        <a class="navbar-brand" href="shopping.html">Shopping List</a>
+                        <a class="navbar-brand" href="recipes.html">Recipes</a>
+                        <a class="navbar-brand" href="pantry.html">Pantry</a>
+                        <a class="navbar-brand" href="mealPlanner.html">Meal Plans</a>
+                    </ul>
+                </nav>
+            </div>
+        </div>
 
-							<div class="form-group">
-								<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
-							</div>
-							<div class="form-group">
-								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-							</div>
-								<div class="form-group">
-								<input type="password" name="password2" id="password2" class="form-control input-lg" placeholder="Password2">
-							</div>
-							
- 							<div>
- 									  <input type="submit" class="btn btn-lg btn-primary"   value="Register">
- 							</div>
-						</fieldset>
-					</form>
-				</div>
-				
-				<div class="col-md-2">
-		
-				</div>
-				
-				<div class="col-md-5">
- 				 		<form role="form">
-						<fieldset>							
-							<p class="text-uppercase" style="color: black; font-weight: bold"> Login using your account: </p>	
- 								
-							<div class="form-group">
-								<input type="email" name="username" id="username" class="form-control input-lg" placeholder="username">
-							</div>
-							<div class="form-group">
-								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
-							</div>
-							<div>
-								<input type="submit" class="btn btn-lg btn-primary" value="Sign In">
-							</div>
-								 
- 						</fieldset>
-				</form>	
-				</div>
-			</div>
-		</div>
+        <!-- <!-sign into account/create account  -->
+        <div class="container-fluid">
+            <div class="container">
 
-	</div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <form role="form" method="post" action="register.php">
+                            <fieldset>
+                                <p class="text-uppercase pull-center" style="color: black; font-weight: bold"> SIGN UP:
+                                </p>
+                                <div class="form-group">
+                                    <input type="email" id="signup-email" class="form-control input-lg"
+                                        placeholder="Email Address">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="signup-password" class="form-control input-lg"
+                                        placeholder="Password">
+                                </div>
+                                <div>
+                                    <button type="button" id="signup-button"
+                                        class="btn btn-lg btn-primary">Register</button>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://code.jquery.com/jquery.js"></script>
-    <!-- Bootstrap JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-    <!-- Custom JavaScript-->
-    <script src="assets/javascript/classes.js"></script>
-    <script src="assets/javascript/logic.js"></script>
-</body>
+                    <div class="col-md-2">
+
+                    </div>
+
+                    <div class="col-md-5">
+                        <form role="form">
+                            <fieldset>
+                                <p class="text-uppercase" style="color: black; font-weight: bold"> Login using your
+                                    account: </p>
+
+                                <div class="form-group">
+                                    <input type="email" id="user-email" class="form-control input-lg"
+                                        placeholder="Email">
+                                </div>
+                                <div class="form-group">
+                                    <input type="password" id="user-password" class="form-control input-lg"
+                                        placeholder="Password">
+                                </div>
+                                <div>
+                                    <button type="button" id="login-button" class="btn btn-lg btn-primary">Sign
+                                        In</button>
+                                </div>
+                                <div>
+                                    <button type="button" id="logout-button" class="btn btn-lg btn-primary">Log
+                                        Out</button>
+                                </div>
+
+                            </fieldset>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Firebase Script-->
+        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+
+        <!-- Jquery Script-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+        <!-- Bootstrap JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+            crossorigin="anonymous"></script>
+        <!-- Custom JavaScript-->
+        <script src="assets/javascript/classes.js"></script>
+
+        <script src="assets/javascript/logic.js"></script>
+    </body>
+
 
 </html>
