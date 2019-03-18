@@ -186,27 +186,6 @@ function addItemToShoppingList(foodObject) {
     generateShoppingList();
 }
 
-function createPantryItemHTML(foodObject) {
-    let pantryItemDiv = $("<div>");
-    pantryItemDiv.append($("<span>").text(foodObject.name));
-    return pantryItemDiv;
-}
-
-function createShoppingListItemHTML(foodObject) {
-    let shoppingListItemDiv = $("<div>");
-    shoppingListItemDiv.append($("<span>").text(foodObject.name));
-    return shoppingListItemDiv;
-}
-
-function createRecipeHTML(recipeObject) {
-    let recipeDiv = $("<div>");
-    recipeDiv.append($("<img>").attr("src", recipeObject.imageURL));
-    recipeDiv.append($("<span>").text(recipeObject.name));
-    recipeDiv.append($("<span>").text("Servings: " + recipeObject.servings));
-
-    return recipeDiv;
-}
-
 
 
 //--------------------------------------------------
@@ -227,9 +206,10 @@ $("#recipe-search-button").click(function() {
     callEdaRec(searchTerm);
 })
 
-$("#barcode-search-button").click(function() {
-    let searchterm = $("#barcode-seaerch-text").val();
-    callEdaFood(searchTerm);
+$(".searchButton").click(function() {
+    let searchterm = $("#searchButton").val();
+	callEdaFood(searchTerm);
+	
 })
 
 

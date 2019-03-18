@@ -1,0 +1,121 @@
+
+h1 {font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    text-align: center;
+    font-weight: bold;
+    width: 100%;
+    padding-top: 2%;
+    padding-bottom: 4%;
+    background-color: rgb(153, 44, 82);
+    margin-bottom: 0%;
+}
+
+h2 {font-family: 'Roboto', sans-serif;
+    color:#ffffff;
+    text-align: center;
+    width: 100%;
+    background-color: rgb(153, 44, 82);
+    margin-top: 0%;
+    padding-bottom:2%;
+}
+
+h4 {font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    text-align: center;
+    width:100%;
+    background-color: rgb(153, 44, 82);  
+}
+
+#menu {
+    background-color: transparent;
+    width: 100%;
+}
+
+
+.navbar a {
+    color:#ffffff;
+    font-family: 'Roboto', sans-serif;
+    text-align: center;
+    padding-left: 30%;
+    margin-top: -10%;
+}
+
+.btn-primary {
+    background-color: brown;
+    color: white;
+    border-color: brown;
+}
+
+.btn-outline-primary {
+    border-color: brown;
+}
+
+/*  home page style */
+
+.home {
+    background-image: url("../images/vegetables.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-color: rgb(153, 44, 82);
+}
+  
+/* style for signin and create account form */
+
+
+.container-fluid  {
+    padding:50px;
+}
+
+.container {
+    box-align: center;
+    background-color: white;
+    padding: 20px;
+}
+
+
+/*  ingredients page style */
+.ingredients {
+        background-image: url("../images/pantry.jpg");
+        background-repeat: no-repeat;
+        background-size: 100%;
+    }
+
+    #ingredientsList {
+        background-color: transparent;
+    }
+
+.input-group{   
+    width: 75%;
+    margin-left: 8%;
+}
+
+/*  shopping page style */
+.shopping {
+    background-image: url("../images/30.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+#shoppingContainer {
+    background-color: transparent;
+    margin-top: 0px;
+}
+
+
+/*  recipes page style */
+.recipes {
+    background-image: url("../images/home5.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
+
+/*  meal planner style */
+.mealPlanner {
+    background-image: url("../images/home4.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+}
+
+ 
+
+

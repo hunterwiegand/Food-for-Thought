@@ -1,13 +1,16 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Title</title>
-  <!-- Required meta tags -->
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <meta charset="utf-8">
+    <title>Food for Thought</title>
+ 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="" X-UA-Compatible content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <script type="text/javascript" src="assets/javascript/logic.js"></script>
+
 </head>
 
 <!--Barcode Code
@@ -73,9 +76,84 @@
 <body>
     <div id="test-div"></div>
 
-    <!-- Jquery JavaScript-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<body class="home">
 
+    <h1> Food for Thought</h1>
+     
+<!-- Navigation Bar -->
+<div class="container" id="menu">
+<div class="container-fluid" id="menu">
+        <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+                <ul class="navbar-nav">
+          <a class="navbar-brand" href="index.html">Home</a>
+          <a class="navbar-brand" href="ingredients.html">Ingredients</a>
+          <a class="navbar-brand" href="shopping.html">Shopping List</a>
+          <a class="navbar-brand" href="recipes.html">Recipes</a>
+          <a class="navbar-brand" href="mealPlanner.html">Meal Plans</a>
+          </ul>
+        </nav>
+	  </div>
+	</div>
+            
+  <!-- <!-sign into account/create account  -->
+  <div class="container-fluid">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-5">
+ 					<form role="form" method="post" action="register.php">
+						<fieldset>							
+							<p class="text-uppercase pull-center" style="color: black; font-weight: bold"> SIGN UP:</p>	
+ 							<div class="form-group">
+								<input type="text" name="username" id="username" class="form-control input-lg" placeholder="username">
+							</div>
+
+							<div class="form-group">
+								<input type="email" name="email" id="email" class="form-control input-lg" placeholder="Email Address">
+							</div>
+							<div class="form-group">
+								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+							</div>
+								<div class="form-group">
+								<input type="password" name="password2" id="password2" class="form-control input-lg" placeholder="Password2">
+							</div>
+							
+ 							<div>
+ 									  <input type="submit" class="btn btn-lg btn-primary"   value="Register">
+ 							</div>
+						</fieldset>
+					</form>
+				</div>
+				
+				<div class="col-md-2">
+		
+				</div>
+				
+				<div class="col-md-5">
+ 				 		<form role="form">
+						<fieldset>							
+							<p class="text-uppercase" style="color: black; font-weight: bold"> Login using your account: </p>	
+ 								
+							<div class="form-group">
+								<input type="email" name="username" id="username" class="form-control input-lg" placeholder="username">
+							</div>
+							<div class="form-group">
+								<input type="password" name="password" id="password" class="form-control input-lg" placeholder="Password">
+							</div>
+							<div>
+								<input type="submit" class="btn btn-lg btn-primary" value="Sign In">
+							</div>
+								 
+ 						</fieldset>
+				</form>	
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery.js"></script>
     <!-- Bootstrap JavaScript -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <!-- Custom JavaScript-->
