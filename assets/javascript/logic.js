@@ -167,6 +167,7 @@ function getAccountInfo() {
 
     //TODO: Go through the firebase login flow
     //TODO:  Pull down the userData
+
 }
 
 //TODO: Tie this to the actual search button for recipes
