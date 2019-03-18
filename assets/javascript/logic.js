@@ -110,17 +110,23 @@ function getAccountInfo() {
         const password = $("#user-password").val();
         const auth = firebase.auth();
 
+        console.log("email: ", email);
+        console.log("password: ", password);
+
         const promise = auth.signInWithEmailAndPassword(email, password);
         promise.catch(function(event) {
             console.log(event.message);
         })
+
+        $("#user-email").val("");
+        $("#user-password").val("");
     })
    //Listener for sign-up button
     $("#signup-button").on("click", function () {
 
         //Get user sign-up info
-        const email = $("#user-email").val();
-        const password = $("#user-password").val();
+        const email = $("#signup-email").val();
+        const password = $("#signup-password").val();
         const auth = firebase.auth();
 
         const promise = auth.createUserWithEmailAndPassword(email, password);
@@ -128,6 +134,9 @@ function getAccountInfo() {
         promise.catch(function(event) {
             console.log("created account");
         })
+
+        $("#signup-email").val("");
+        $("#signup-password").val("");
     })
 
     firebase.auth().onAuthStateChanged(firebaseUser => {
