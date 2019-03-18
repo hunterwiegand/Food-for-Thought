@@ -1,8 +1,6 @@
 {
     "queryused": "https: //api.edamam.com/search?q=chicken+peas&app_id=e09fb63c&app_key=e3f22d5545ff1c55fcf99f5fb6d19266"
-}
-
-{
+}, {
     "q": "chicken peas",
     "from": 0,
     "to": 10,

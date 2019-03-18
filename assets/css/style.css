@@ -53,7 +53,7 @@ h4 {font-family: 'Roboto', sans-serif;
 /*  home page style */
 
 .home {
-    background-image: url("images/vegetables.jpg");
+    background-image: url("../images/vegetables.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
     background-color: rgb(153, 44, 82);
@@ -75,7 +75,7 @@ h4 {font-family: 'Roboto', sans-serif;
 
 /*  ingredients page style */
 .ingredients {
-        background-image: url("images/pantry.jpg");
+        background-image: url("../images/pantry.jpg");
         background-repeat: no-repeat;
         background-size: 100%;
     }
@@ -91,7 +91,7 @@ h4 {font-family: 'Roboto', sans-serif;
 
 /*  shopping page style */
 .shopping {
-    background-image: url("images/30.jpg");
+    background-image: url("../images/30.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
 }
@@ -103,14 +103,14 @@ h4 {font-family: 'Roboto', sans-serif;
 
 /*  recipes page style */
 .recipes {
-    background-image: url("images/home5.jpg");
+    background-image: url("../images/home5.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
 }
 
 /*  meal planner style */
 .mealPlanner {
-    background-image: url("images/home4.jpg");
+    background-image: url("../images/home4.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
 
