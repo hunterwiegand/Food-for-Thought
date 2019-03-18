@@ -116,14 +116,8 @@ h4 {font-family: 'Roboto', sans-serif;
 
 }
 
-/*  meal planner style */
-.mealPlanner {
+ /* meal planner style */
+   .mealPlanner {
     background-image: url("../images/home4.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
-
-}
-
- 
-
-
