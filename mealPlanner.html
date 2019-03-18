@@ -12,55 +12,44 @@
     <link rel="stylesheet" href="assets/css/style.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
 
+<body class="mealPlanner">
+<h1>Food for Thought</h1>
+<h2>Meal Planner</h2>
+<br>
 
-</head>
+<!-- Navigation Bar -->
+<div class="container" id="menu">
+<div class="container-fluid" id="menu">
+    <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+                <ul class="navbar-nav">
+          <a class="navbar-brand" href="index.html">Home</a>
+          <a class="navbar-brand" href="ingredients.html">Ingredients</a>
+          <a class="navbar-brand" href="shopping.html">Shopping List</a>
+          <a class="navbar-brand" href="recipes.html">Recipes</a>
+          <a class="navbar-brand" href="pantry.html">Pantry</a>
+          <a class="navbar-brand" href="mealPlanner.html">Meal Plans</a>
+          </ul>
+        </nav>
+      </div>
+    </div>
+      <!-- Bootstrap Calendar -->
 
-<body>
-    <div id="test-div"></div>
+<!--  possible hook-up to Google Calendar -->
+<!-- Firebase Script-->
+<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-    <body class="home">
+<!-- Jquery Script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-		<h1> Food for Thought</h1>
-		<h2>Meal Planner</h2>
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<!-- Custom JavaScript-->
+<script src="assets/javascript/classes.js"></script>
 
-        <!-- Navigation Bar -->
-        <div class="container" id="menu">
-            <div class="container-fluid" id="menu">
-                <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
-                    <ul class="navbar-nav">
-                        <a class="navbar-brand" href="index.html">Home</a>
-                        <a class="navbar-brand" href="ingredients.html">Ingredients</a>
-                        <a class="navbar-brand" href="shopping.html">Shopping List</a>
-                        <a class="navbar-brand" href="recipes.html">Recipes</a>
-                        <a class="navbar-brand" href="pantry.html">Pantry</a>
-                        <a class="navbar-brand" href="mealPlanner.html">Meal Plans</a>
-                    </ul>
-                </nav>
-            </div>
-        </div>
-
-		<div>
-			<button type="button" id="button" class="btn btn-lg btn-primary" style="text-align: center">Click to Open Calendar</button>
-		</div>
-        <!-- Jquery Script-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
-	
-$(document).ready(function(){
-    $('#button').keypress(function(e){
-		return false;
-      if(e.keyCode==13)
-      $(href="fullcalendar.html").click();
-    });
-});
-
-</script>
-
-        <!-- Bootstrap JavaScript -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-
-    </body>
+<script src="assets/javascript/logic.js"></script>
+</body>
 
 
 </html>
