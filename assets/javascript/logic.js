@@ -225,8 +225,10 @@ function callEdaFood(barcodeNum) {
         let newFoodItem = createFoodItemObject(response.hints[0].food);
 
         addItemToPantry(newFoodItem);
+
+        $("#pantryList").append(newFoodItem.HTML());
     })
-    newFood.append(newFoodItem.HTML())
+    
 }
 
 getAccountInfo();
