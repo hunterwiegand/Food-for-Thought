@@ -146,7 +146,9 @@ function getAccountInfo() {
             // console.log(user.uid);
             // updateFirebase();
             firebase.database().ref("/users/" + user.uid ).set({
-                string: "hello"
+                string: "hello",
+                pantry: pantry,
+                shoppingList: shoppingList
             })
 
         } else {
@@ -181,18 +183,18 @@ $("#searchButton").click(function () {
 //---------------------------------------------------
 //                  set user firebase vars
 
-<<<<<<< HEAD
-// function updateFirebase() {
+function updateFirebase(key, value) {
 
-//     console.log("userid: ", user.uid);
-//     console.log("stuff", database.ref(user.uid));
+    console.log(key);
+    console.log(value);
+    
+    console.log("userid: ", user.uid);
+    console.log("stuff", database.ref(user.uid));
 
-//     firebase.database().ref("/users/" + user.uid ).set({
-//         string: "hello"
-//     })
-// }
-=======
->>>>>>> 49f49e91cef05055af4a70eb685fa4e1a70df80f
+    firebase.database().ref("/users/" + user.uid ).set({
+        string: "hello"
+    })
+}
 
 //--------------------------------------------------
 //                    API Calls
