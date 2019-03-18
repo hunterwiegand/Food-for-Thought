@@ -1,11 +1,11 @@
 class recipe {
-    constructor(name, url, imageURL, servings, cals) {
-        this.name = name;
-        this.url = url;
-        this.imageURL = imageURL;
+    constructor(recipeJSON) {
+        this.name = recipeJSON.label;
+        this.url = recipeJSON.shareAs;
+        this.imageURL = recipeJSON.image;
+        this.servings = recipe.yield;
         this.ingredients = []; //An array of foodItem objects
-        this.servings = servings;
-        this.dietaryInfo = {} //An object of dietary info (use the total nutirents object from edamam call)
+        this.dietaryInfo = diataryInfo; //An object of dietary info (use the total nutirents object from edamam call)
         this.mealPlanSlot;
     }
 
