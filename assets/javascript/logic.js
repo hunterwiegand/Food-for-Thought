@@ -1,9 +1,9 @@
 let pantry = [];
 let shoppingList = [];
-let userData;
+let isLoggedIn = false;
 
 $(document).ready(function() {
-    if (!userData) { //not logged in yet
+    if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
     } else { //already logged in
         generatePantry();
@@ -33,7 +33,7 @@ function generatePantry() {
     $.each(pantry, function(index, value) {
         console.log("WARNING: need real location of pantry html element.")
 
-        $("#pantry-list-div").append(value.HTML());
+        $("#pantry-list-div").append(value.html());
     })
     console.log("WARNING: pantry page not implemented")
     console.log("pantry contents", pantry);
@@ -142,8 +142,10 @@ function getAccountInfo() {
     firebase.auth().onAuthStateChanged(firebaseUser => {
         if (firebaseUser) {
             console.log("Logged in");
+            isLoggedIn = true;
         } else {
             console.log("Not logged in");
+            isLoggedIn = false;
         }
     })
 
@@ -226,7 +228,7 @@ function callEdaFood(barcodeNum) {
 
         addItemToPantry(newFoodItem);
 
-        $("#pantryList").append(newFoodItem.HTML());
+        $("#pantryList").append(newFoodItem.html());
     })
 
 }
