@@ -67,7 +67,7 @@ function createFoodItemObject(foodItemJSON) {
 //--------------------------------------------------
 //             Object to HTML
 //--------------------------------------------------
-
+x
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
 
