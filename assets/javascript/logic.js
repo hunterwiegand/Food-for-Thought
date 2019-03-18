@@ -171,14 +171,17 @@ $("#recipe-search-button").click(function () {
     callEdaRec(searchTerm);
 })
 
-$("#barcode-search-button").click(function () {
-    let searchterm = $("#barcode-seaerch-text").val();
+$("#searchButton").click(function () {
+    let searchTerm = $("#input").val();
+    console.log(searchTerm)
     callEdaFood(searchTerm);
+    console.log(' ');
 })
 
 //---------------------------------------------------
 //                  set user firebase vars
 
+<<<<<<< HEAD
 // function updateFirebase() {
 
 //     console.log("userid: ", user.uid);
@@ -188,6 +191,8 @@ $("#barcode-search-button").click(function () {
 //         string: "hello"
 //     })
 // }
+=======
+>>>>>>> 49f49e91cef05055af4a70eb685fa4e1a70df80f
 
 //--------------------------------------------------
 //                    API Calls
@@ -239,7 +244,10 @@ function callEdaFood(barcodeNum) {
         let newFoodItem = createFoodItemObject(response.hints[0].food);
 
         addItemToPantry(newFoodItem);
+
+        $("#pantryList").append(newFoodItem.HTML());
     })
+    
 }
 function callEdaFoodByName(foodName) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
