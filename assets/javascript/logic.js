@@ -169,8 +169,15 @@ $("#barcode-search-button").click(function () {
     callEdaFood(searchTerm);
 })
 
+//---------------------------------------------------
+//                  set user firebase vars
 
-
+function updateFirebase(str) {
+    const auth = firebase.auth();
+    
+    user = database.getInstance().getCurrentUser();
+    console.log(user);
+}
 
 //--------------------------------------------------
 //                    API Calls
@@ -226,3 +233,4 @@ function callEdaFood(barcodeNum) {
 }
 
 getAccountInfo();
+updateFirebase();
