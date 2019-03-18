@@ -165,12 +165,14 @@ $("#recipe-search-button").click(function () {
 })
 
 $("#searchButton").click(function () {
-	let searchTerm = $("#searchButton").val();
+    let searchTerm = $("#input").val();
+    console.log(searchTerm)
     callEdaFood(searchTerm);
-	
+    console.log(' ');
 })
 
-
+//---------------------------------------------------
+//                  set user firebase vars
 
 
 //--------------------------------------------------
@@ -224,6 +226,8 @@ function callEdaFood(barcodeNum) {
 
         addItemToPantry(newFoodItem);
     })
+    newFood.append(newFoodItem.HTML())
 }
 
 getAccountInfo();
+// updateFirebase();
