@@ -4,8 +4,8 @@ class recipe {
         this.url = recipeJSON.url;
         this.source = recipeJSON.source;
         this.imageURL = recipeJSON.image;
-        this.servings = recipe.yield;
-        this.ingredients = []; //An array of foodItem objects
+        this.servings = recipeJSON.yield;
+        this.ingredients = recipeJSON.ingredientLines;
         this.nutrition = new nutritionInfo({
             ENERC_KCAL: recipeJSON.totalNutrients.ENERC_KCAL.quantity,
             PROCNT: recipeJSON.totalNutrients.PROCNT.quantity,
