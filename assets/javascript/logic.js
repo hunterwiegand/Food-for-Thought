@@ -119,6 +119,9 @@ function createRecipeHTML(recipeObject) {
     nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
     containerDiv.append(nameCol);
+    let ingredientCol = $("<div>");
+    ingredientCol.attr("class", "col-5");
+    ingredientCol.append()
     containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
 
     return recipeDiv;
@@ -144,7 +147,13 @@ function createNutritionHTML(nutritionObject) {
     return containerDiv
 }
 
-
+function createIngredientsHTML(ingredients) {
+    let ingredientsDiv = $("<div class='row'>");
+    ingredientsDiv.append($("<div class='ingredients-title col").text("Ingredients:"));
+    $.each(ingredients, function(key, value) {
+        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
+    })
+}
 //--------------------------------------------------
 //            UI interactions
 //--------------------------------------------------
@@ -204,15 +213,15 @@ function getAccountInfo() {
                     console.log(key.html);
                     pantry.push(key);
                 })
-               
+
                 generatePantry();
                 console.log("pantry", pantry);
             })
-            
+
             // console.log(user.uid);
             // updateFirebase();
             isLoggedIn = true;
-            
+
 
             // firebase.auth().onAuthStateChanged(firebaseUser => {
             //     if (firebaseUser) {
