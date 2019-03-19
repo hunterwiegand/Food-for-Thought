@@ -4,6 +4,7 @@ let isLoggedIn = false;
 let userData;
 
 $(document).ready(function() {
+    getAccountInfo();
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
         console.log("usernot found");
@@ -23,6 +24,7 @@ var config = {
     storageBucket: "food-for-thought-bb3d4.appspot.com",
     messagingSenderId: "504782992813"
 };
+
 firebase.initializeApp(config);
 database = firebase.database();
 
@@ -37,15 +39,12 @@ function generatePantry() {
     $("#pantry-list-div").html("");
 
     $.each(pantry, function(index, value) {
-            // console.log("WARNING: need real location of pantry html element.")
+        // console.log("WARNING: need real location of pantry html element.")
 
-            $("#pantry-list-div").append(createFoodItemHTML(value));
+        $("#pantry-list-div").append(createFoodItemHTML(value));
 
-            updateFirebase("pantry", value)
-        })
-        // console.log("WARNING: pantry page not implemented")
-        // console.log("pantry contents", pantry);
-
+        updateFirebase("pantry", value)
+    })
 }
 
 
@@ -91,10 +90,7 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
-    // updateFirebase("pantry", foodObject);
-
     pantry.push(foodObject);
-    
     updateFirebase("pantry", foodObject);
     generatePantry();
 }
@@ -108,11 +104,22 @@ function addItemToShoppingList(foodObject) {
 
 function createRecipeHTML(recipeObject) {
     let containerDiv = $("<div>");
-    containerDiv.attr("class", "recipe-container")
-    containerDiv.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
-    containerDiv.append($("<span class='recipe-title>").text(recipeObject.name));
-    containerDiv.append($("<span class='recipe-item>").text("Servings: " + recipeObject.servings));
+    containerDiv.attr("class", "recipe-container row")
+    let imageCol = $("<div>");
+    imageCol.attr("class", "col-3");
+    imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
+    containerDiv.append(imageCol);
+    let nameCol = $("<div>");
+    nameCol.attr("class", "col-4");
+    nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
+    nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    containerDiv.append(nameCol);
+    let ingredientCol = $("<div>");
+    ingredientCol.attr("class", "col-5");
+    ingredientCol.append()
     containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
+
     return recipeDiv;
 }
 
@@ -136,91 +143,68 @@ function createNutritionHTML(nutritionObject) {
     return containerDiv
 }
 
-
+function createIngredientsHTML(ingredients) {
+    let ingredientsDiv = $("<div class='row'>");
+    ingredientsDiv.append($("<div class='ingredients-title col").text("Ingredients:"));
+    $.each(ingredients, function(key, value) {
+        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
+    })
+}
 //--------------------------------------------------
 //            UI interactions
 //--------------------------------------------------
 
+$("#login-button").on("click", function() {
+    //Get user login info
+    const email = $("#user-email").val();
+    const password = $("#user-password").val();
+    const auth = firebase.auth();
+
+    console.log("email: ", email);
+    console.log("password: ", password);
+
+    const promise = auth.signInWithEmailAndPassword(email, password);
+    promise.catch(function(event) {
+        console.log(event.message);
+    })
+
+    $("#user-email").val("");
+    $("#user-password").val("");
+})
+
+//Listener for sign-up button
+$("#signup-button").on("click", function() {
+
+    //Get user sign-up info
+    const email = $("#signup-email").val();
+    const password = $("#signup-password").val();
+    const auth = firebase.auth();
+
+    const promise = auth.createUserWithEmailAndPassword(email, password);
+
+    promise.catch(function(event) {
+        console.log("created account");
+    })
+
+    $("#signup-email").val("");
+    $("#signup-password").val("");
+})
+
+$("#logout-button").on("click", function() {
+    const auth = firebase.auth();
+    console.log("Logged out");
+    auth.signOut();
+})
 
 
 function getAccountInfo() {
 
     //Listener for login button
-    $("#login-button").on("click", function() {
-            //Get user login info
-            const email = $("#user-email").val();
-            const password = $("#user-password").val();
-            const auth = firebase.auth();
 
-            console.log("email: ", email);
-            console.log("password: ", password);
 
-            const promise = auth.signInWithEmailAndPassword(email, password);
-            promise.catch(function(event) {
-                console.log(event.message);
-            })
 
-            $("#user-email").val("");
-            $("#user-password").val("");
-        })
-        //Listener for sign-up button
-    $("#signup-button").on("click", function() {
 
-        //Get user sign-up info
-        const email = $("#signup-email").val();
-        const password = $("#signup-password").val();
-        const auth = firebase.auth();
 
-        const promise = auth.createUserWithEmailAndPassword(email, password);
-
-        promise.catch(function(event) {
-            console.log("created account");
-        })
-
-        $("#signup-email").val("");
-        $("#signup-password").val("");
-    })
-
-    firebase.auth().onAuthStateChanged(user => {
-        if (user) {
-            uuid = user.uid;
-            console.log("Logged in");
-            database.ref("/users/" + uuid).once("value", function(snapshot) {
-                userData = snapshot;
-                console.log(userData.val());
-                pantry = [];
-                $.each(userData.val().pantry, function(index, key) {
-                    // key.bind(foodItem);
-                    // var temp = new foodItem();
-                    // key.html() = temp.html;
-                    console.log(key.html);
-                    pantry.push(key);
-                })
-               
-                generatePantry();
-                console.log("pantry", pantry);
-            })
-            
-            // console.log(user.uid);
-            // updateFirebase();
-            isLoggedIn = true;
-            
-
-            // firebase.auth().onAuthStateChanged(firebaseUser => {
-            //     if (firebaseUser) {
-            //         console.log("Logged in");
-            //         isLoggedIn = true;
-        } else {
-            console.log("Not logged in");
-            isLoggedIn = false;
-        }
-    })
-
-    $("#logout-button").on("click", function() {
-        const auth = firebase.auth();
-        console.log("Logged out");
-        auth.signOut();
-    })
 
     //TODO: Go through the firebase login flow
     //TODO:  Pull down the userData
@@ -250,10 +234,7 @@ $("#add-item-btn").click(function(event) {
 //---------------------------------------------------
 //                  set user firebase vars
 
-function updateFirebase(location, value) {
 
-    firebase.database().ref("/users/" + uuid + "/" + location).push(value)
-}
 
 //--------------------------------------------------
 //                    API Calls
@@ -326,5 +307,37 @@ function callEdaFoodByName(foodName) {
 }
 
 
-getAccountInfo();
-// updateFirebase();
+//--------------------------------------------------
+//                Firebase functions
+//--------------------------------------------------
+
+
+firebase.auth().onAuthStateChanged(user => {
+    if (user) {
+        uuid = user.uid;
+        console.log("Logged in");
+
+        database.ref("/users/" + uuid).once("value", function(snapshot) {
+            if (snapshot.val()) {
+                userData = snapshot;
+                console.log(userData.val());
+                pantry = [];
+                $.each(userData.val().pantry, function(index, key) {
+                    pantry.push(key);
+                })
+
+                generatePantry();
+                console.log("pantry", pantry);
+            }
+        })
+        isLoggedIn = true;
+    } else {
+        console.log("Not logged in");
+        isLoggedIn = false;
+    }
+})
+
+function updateFirebase(location, value) {
+
+    firebase.database().ref("/users/" + uuid + "/" + location).push(value)
+}

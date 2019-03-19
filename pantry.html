@@ -28,7 +28,6 @@
         <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                 <ul class="navbar-nav">
           <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-          <a class="navbar-brand" style="color: white" href="ingredients.html">Ingredients</a>
           <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
           <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
           <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
@@ -36,17 +35,49 @@
           </ul>
         </nav>
 	  </div>
-	</div>
-  <div class="searchBox">
+  </div>
+  
+
+  <!-- Barcode Search -->
+  <div class="searchBox"></div>
+    <div class="row">
+    <div class="col-md-3"></div>
+  <div class="col-md-6">
     <div class="input-group mb-3">
     <input type="text" id="input" class="form-control" placeholder="Enter Product Barcode Here" aria-label="Barcodebox" aria-describedby="basic-addon2">
     <div class="input-group-append"></div>
       <button id="searchButton" type="button">Submit</button>
     </div>
   </div>
-    <div class="container" id="pantryContainer">
+</div>
+</div>
+<!-- Drop down menu -->
 
-        <!-- Pantry Inventory-->
+<div class="navbar">
+    <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Category
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#">Bakery/Bread</a>
+        <a class="dropdown-item" href="#">Beverages</a>
+        <a class="dropdown-item" href="#">Breakfast Foods</a>
+        <a class="dropdown-item" href="#">Canned Goods</a>
+        <a class="dropdown-item" href="#">Condiments, Spices & Baking Supplies</a>
+        <a class="dropdown-item" href="#">Dairy, Cheese, & Eggs</a>
+        <a class="dropdown-item" href="#">Frozen Food</a>
+        <a class="dropdown-item" href="#">Grains & Pastas</a>
+        <a class="dropdown-item" href="#">International Foods</a>
+        <a class="dropdown-item" href="#">Meat & Seafood</a>
+        <a class="dropdown-item" href="#">Produce & Herbs</a>
+        <a class="dropdown-item" href="#">Snacks</a>
+        <a class="dropdown-item" href="#">Misc.</a>
+      </div>
+    </div>
+  </div>
+
+          <!-- Pantry Inventory-->
+    <div class="container" id="pantryContainer">
         <div class="row" index="pantry">
           <div class="col-md-3"></div>
           <div class="col-md-6">
@@ -59,6 +90,7 @@
                     <th scope="col">Item Name</th>
                     <th scope="col">Size</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Catergory</th>
 
                   </tr>
                 </thead>
