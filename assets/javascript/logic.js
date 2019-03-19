@@ -94,7 +94,7 @@ function addItemToPantry(foodObject) {
     // updateFirebase("pantry", foodObject);
 
     pantry.push(foodObject);
-    console.log(foodObject.html());
+    
     updateFirebase("pantry", foodObject);
     generatePantry();
 }
