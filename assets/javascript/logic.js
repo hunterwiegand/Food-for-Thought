@@ -1,11 +1,16 @@
 let pantry = [];
 let shoppingList = [];
+// let uuid;
+
+// $(document).ready(function() {
+//     if (!uuid) { //not logged in yet
 let isLoggedIn = false;
 
 $(document).ready(function() {
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
     } else { //already logged in
+        updateFirebase();
         generatePantry();
         generateShoppingList();
         generateCalendar();
@@ -30,16 +35,18 @@ firebase.initializeApp(config);
 
 //Generate the pantry html object and display it
 function generatePantry() {
+    
     $.each(pantry, function(index, value) {
-        console.log("WARNING: need real location of pantry html element.")
+        // console.log("WARNING: need real location of pantry html element.")
 
         $("#pantry-list-div").append(value.html());
+
+        updateFirebase("pantry", value)
     })
-    console.log("WARNING: pantry page not implemented")
-    console.log("pantry contents", pantry);
+    // console.log("WARNING: pantry page not implemented")
+    // console.log("pantry contents", pantry);
+
 }
-
-
 
 
 //Generate the shopping list html object and display it
@@ -60,49 +67,6 @@ function generateCalendar() {
     console.log("WARNING: generateCalendar Not currently implemented");
 }
 
-let database = firebase.database();
-//Button for adding ingredients
-$('#add-item-btn').on('click', function(event){
-    event.preventDefault();
-
-    //Grabs user Input
-    let ingName = $('#item-input').val().trim();
-    let sizeItem = $('#size-input').val().trim();
-    let quantItem = $('#quantity-input').val().trim();
-
-    // create local 'temporary' object for holding new item data
-    let newItem = {
-        name: ingName,
-        size: sizeItem,
-        quantity: quantItem
-    };
-
-    //upload item datat to the database
-    database.ref().push(newItem);
-
-    console.log(ingName);
-    console.log(sizeItem);
-    console.log(quantItem)
-
-    alert("Item added");
-
-    //Clears all of the text-boxes
-    $('#item-input').val(' ');
-    $('#size-input').val(' ');
-    $('#quantity-input').val(' ');
-
-    // Create a new row in table
-    let newRow = $('<tr>').append(
-        $('<td>').text(ingName),
-        $('<td>').text(sizeItem),
-        $('<td>').text(quantItem)
-    );
-
-    // pushes new items into their desingated list
-    $('#pantryList > tbody').append(newRow);
-    $('#shoppingList > tbody').append(newRow);
-
-})
 
 
 //--------------------------------------------------
@@ -127,7 +91,7 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
-    updateFirebase("pantry", foodObject);
+    // updateFirebase("pantry", foodObject);
 
     pantry.push(foodObject);
     generatePantry();
@@ -189,15 +153,13 @@ function getAccountInfo() {
 
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            // console.log("Logged in");
+            console.log("Logged in");
             // console.log(user.uid);
             // updateFirebase();
             isLoggedIn = true;
             uuid = user.uid;
             firebase.database().ref("/users/" + user.uid ).set({
                 string: "hello",
-                pantry: pantry,
-                shoppingList: shoppingList
             })
 
     // firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -221,6 +183,8 @@ function getAccountInfo() {
     //TODO:  Pull down the userData
 
 }
+
+firebase.database().ref()
 
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
@@ -314,20 +278,6 @@ function callEdaFoodByName(foodName) {
         addItemToPantry(newFoodItem);
 
         $("#pantryList").append(newFoodItem.html());
-    })
-}
-
-function callEdaFoodByName(foodName) {
-    var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
-    console.log(queryURL);
-
-    $.ajax({
-        url: queryURL,
-        method: "GET"
-    }).then(function (response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
-
-        addItemToPantry(newFoodItem);
     })
 }
 
