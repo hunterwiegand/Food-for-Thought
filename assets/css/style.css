@@ -10,13 +10,33 @@ h1 {font-family: 'Roboto', sans-serif;
     margin-bottom: 0%;
 }
 
+.homePageHeader {
+    margin-bottom: 2%;
+}
+
+.ingrdPageHeader {
+    margin-bottom: 5%;
+}
+
+.shoppingPageHeader {
+    margin-bottom: -5%;
+}
+
+#menu2 {
+    margin-top: -2%;
+}
+
+#menu3 {
+    margin-top: -2%;
+}
+
 h2 {font-family: 'Roboto', sans-serif;
     color:#ffffff;
     text-align: center;
     width: 100%;
     background-color: rgb(153, 44, 82);
-    margin-top: 0%;
-    padding-bottom:2%;
+    margin-top: -3%;
+    padding-bottom:5%;
 }
 
 h4 {font-family: 'Roboto', sans-serif;
@@ -37,7 +57,7 @@ h4 {font-family: 'Roboto', sans-serif;
     font-family: 'Roboto', sans-serif;
     text-align: center;
     padding-left: 20%;
-    margin-top: -10%;
+    margin-top: -15%;
 }
 
 .btn-primary {
@@ -117,10 +137,17 @@ h4 {font-family: 'Roboto', sans-serif;
 }
 
  /* meal planner style */
-   .mealPlanner {
+.mealPlanner {
     background-image: url("../images/home4.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
-   }
+}
 
+/* Dropdown page style */
+
+.dropDown {
+    background-image: url("../images/vegs3.jpg");
+    background-repeat: no-repeat;
+    background-size: 100%;
+}
 
