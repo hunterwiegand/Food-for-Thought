@@ -2,6 +2,7 @@ let pantry = [];
 let shoppingList = [];
 let userData;
 
+
 $(document).ready(function () {
     if (!userData) { //not logged in yet
         //Redirect to login screen
@@ -40,6 +41,8 @@ function generatePantry() {
 }
 
 
+
+
 //Generate the shopping list html object and display it
 function generateShoppingList() {
     $.each(shoppingList, function (index, value) {
@@ -58,6 +61,37 @@ function generateCalendar() {
     console.log("WARNING: generateCalendar Not currently implemented");
 }
 
+let database = firebase.database();
+//Button for adding ingredients
+$('#add-item-btn').on('click', function(event){
+    event.preventDefault();
+
+    //Grabs user Input
+    let ingName = $('#item-input').val().trim();
+    let sizeItem = $('#size-input').val().trim();
+    let quantItem = $('#quantity-input').val().trim();
+
+    // create local 'temporary' object for holding new item data
+    let newItem = {
+        name: ingName,
+        size: sizeItem,
+        quantity: quantItem
+    };
+
+    //upload item datat to the database
+    database.ref().push(newItem);
+
+    console.log(ingName);
+    console.log(sizeItem);
+    console.log(quantItem)
+
+    alert("Item added");
+
+    //Clears all of the text-boxes
+    $('#item-input').val(' ');
+    $('#size-input').val(' ');
+    $('#quantity-input').val(' ');
+})
 
 //--------------------------------------------------
 //             JSON to object
@@ -229,6 +263,20 @@ function callEdaFood(barcodeNum) {
         $("#pantryList").append(newFoodItem.HTML());
     })
     
+}
+
+function callEdaFoodByName(foodName) {
+    var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
+    console.log(queryURL);
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        let newFoodItem = createFoodItemObject(response.hints[0].food);
+
+        addItemToPantry(newFoodItem);
+    })
 }
 
 getAccountInfo();
