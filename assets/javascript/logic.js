@@ -33,16 +33,16 @@ database = firebase.database();
 
 //Generate the pantry html object and display it
 function generatePantry() {
-    
-    console.log("pantry", pantry);
-    $.each(pantry, function(index, value) {
 
-        console.log(typeof value);
-        // $("#pantry-list-div").append(value.html());
-        // $("#pantry-list-div").append($("<span>").text(value.html()));
-        $("#pantry-list-div").append($("<span>").text(value.name));
-        console.log(value.name)
-    })
+    $.each(pantry, function(index, value) {
+            // console.log("WARNING: need real location of pantry html element.")
+
+            $("#pantry-list-div").append(createFoodItemHTML(value));
+
+            updateFirebase("pantry", value)
+        })
+        // console.log("WARNING: pantry page not implemented")
+        // console.log("pantry contents", pantry);
 
 }
 
@@ -104,6 +104,35 @@ function addItemToShoppingList(foodObject) {
     generateShoppingList();
 }
 
+function createRecipeHTML(recipeObject) {
+    let containerDiv = $("<div>");
+    containerDiv.attr("class", "recipe-container")
+    containerDiv.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
+    containerDiv.append($("<span class='recipe-title>").text(recipeObject.name));
+    containerDiv.append($("<span class='recipe-item>").text("Servings: " + recipeObject.servings));
+    containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
+    return recipeDiv;
+}
+
+function createFoodItemHTML(foodItemObject) {
+    let containerDiv = $("<div>");
+    containerDiv.append($("<span class='food-item-title'>").text(foodItemObject.name));
+    containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
+    containerDiv.append($("<span>").html(createNutritionHTML(foodItemObject.nutrition)));
+    containerDiv.append($("<span>").html(foodItemObject.category));
+    return containerDiv;
+}
+
+function createNutritionHTML(nutritionObject) {
+    let containerDiv = $("<div>");
+    containerDiv.attr("class", "nutrition-container")
+    containerDiv.append($("<span class='nutrition-header'>").text("Nutritional Info:"));
+    containerDiv.append($("<span class='nutrition-statistic'>").text("Calories: " + nutritionObject.calories + "g"));
+    containerDiv.append($("<span class='nutrition-statistic'>").text("Protien: " + nutritionObject.protien + "g"));
+    containerDiv.append($("<span class='nutrition-statistic'>").text("Cholestorol: " + nutritionObject.cholestorol + "g"));
+
+    return containerDiv
+}
 
 
 //--------------------------------------------------
@@ -115,25 +144,25 @@ function addItemToShoppingList(foodObject) {
 function getAccountInfo() {
 
     //Listener for login button
-    $("#login-button").on("click", function () {
-        //Get user login info
-        const email = $("#user-email").val();
-        const password = $("#user-password").val();
-        const auth = firebase.auth();
+    $("#login-button").on("click", function() {
+            //Get user login info
+            const email = $("#user-email").val();
+            const password = $("#user-password").val();
+            const auth = firebase.auth();
 
-        console.log("email: ", email);
-        console.log("password: ", password);
+            console.log("email: ", email);
+            console.log("password: ", password);
 
-        const promise = auth.signInWithEmailAndPassword(email, password);
-        promise.catch(function (event) {
-            console.log(event.message);
+            const promise = auth.signInWithEmailAndPassword(email, password);
+            promise.catch(function(event) {
+                console.log(event.message);
+            })
+
+            $("#user-email").val("");
+            $("#user-password").val("");
         })
-
-        $("#user-email").val("");
-        $("#user-password").val("");
-    })
-    //Listener for sign-up button
-    $("#signup-button").on("click", function () {
+        //Listener for sign-up button
+    $("#signup-button").on("click", function() {
 
         //Get user sign-up info
         const email = $("#signup-email").val();
@@ -142,7 +171,7 @@ function getAccountInfo() {
 
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function (event) {
+        promise.catch(function(event) {
             console.log("created account");
         })
 
@@ -175,12 +204,11 @@ function getAccountInfo() {
             isLoggedIn = true;
             
 
-    // firebase.auth().onAuthStateChanged(firebaseUser => {
-    //     if (firebaseUser) {
-    //         console.log("Logged in");
-    //         isLoggedIn = true;
-        } 
-        else {
+            // firebase.auth().onAuthStateChanged(firebaseUser => {
+            //     if (firebaseUser) {
+            //         console.log("Logged in");
+            //         isLoggedIn = true;
+        } else {
             console.log("Not logged in");
             isLoggedIn = false;
         }
@@ -221,8 +249,8 @@ $("#add-item-btn").click(function(event) {
 //                  set user firebase vars
 
 function updateFirebase(location, value) {
-    console.log("value", value);
-    firebase.database().ref("/users/" + uuid + "/" + location ).push(value)
+
+    firebase.database().ref("/users/" + uuid + "/" + location).push(value)
 }
 
 //--------------------------------------------------
@@ -271,26 +299,27 @@ function callEdaFood(barcodeNum) {
         method: "GET"
     }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food);
-    
+
 
         addItemToPantry(newFoodItem);
 
-        $("#pantryList").append(newFoodItem.html());
+        $("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 
 }
+
 function callEdaFoodByName(foodName) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
 
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food);
 
         addItemToPantry(newFoodItem);
 
-        $("#pantryList").append(newFoodItem.html());
+        $("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 }
 
