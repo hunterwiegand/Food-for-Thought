@@ -24,7 +24,7 @@
      
 <!-- Navigation Bar -->
 <div class="container" id="menu">
-<div class="container-fluid" id="menu">
+<div class="container-fluid" id="menu4">
         <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                 <ul class="navbar-nav">
           <a class="navbar-brand" style="color: white" href="index.html">Home</a>
@@ -37,44 +37,10 @@
 	  </div>
   </div>
   
-
-  <!-- Barcode Search -->
-  <div class="searchBox"></div>
-    <div class="row">
-    <div class="col-md-3"></div>
-  <div class="col-md-6">
-    <div class="input-group mb-3">
-    <input type="text" id="input" class="form-control" placeholder="Enter Product Barcode Here" aria-label="Barcodebox" aria-describedby="basic-addon2">
-    <div class="input-group-append"></div>
-      <button id="searchButton" type="button">Submit</button>
-    </div>
-  </div>
-</div>
-</div>
 <!-- Drop down menu -->
 
-<div class="navbar">
-    <div class="dropdown">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Category
-      </button>
-      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-        <a class="dropdown-item" href="#">Bakery/Bread</a>
-        <a class="dropdown-item" href="#">Beverages</a>
-        <a class="dropdown-item" href="#">Breakfast Foods</a>
-        <a class="dropdown-item" href="#">Canned Goods</a>
-        <a class="dropdown-item" href="#">Condiments, Spices & Baking Supplies</a>
-        <a class="dropdown-item" href="#">Dairy, Cheese, & Eggs</a>
-        <a class="dropdown-item" href="#">Frozen Food</a>
-        <a class="dropdown-item" href="#">Grains & Pastas</a>
-        <a class="dropdown-item" href="#">International Foods</a>
-        <a class="dropdown-item" href="#">Meat & Seafood</a>
-        <a class="dropdown-item" href="#">Produce & Herbs</a>
-        <a class="dropdown-item" href="#">Snacks</a>
-        <a class="dropdown-item" href="#">Misc.</a>
-      </div>
-    </div>
-  </div>
+
+<br>
 
           <!-- Pantry Inventory-->
     <div class="container" id="pantryContainer">
@@ -110,11 +76,32 @@
           <div class="card mb-4">
             <div class="card-header">Add Item</div>
             <div class="card-body">
-  
+                <div class="navbar">
+                    <div class="dropdown">
+                      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Category
+                      </button>
+                      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        <a class="dropdown-item" href="#">Bakery/Bread</a>
+                        <a class="dropdown-item" href="#">Beverages</a>
+                        <a class="dropdown-item" href="#">Breakfast Foods</a>
+                        <a class="dropdown-item" href="#">Canned Goods</a>
+                        <a class="dropdown-item" href="#">Condiments, Spices & Baking Supplies</a>
+                        <a class="dropdown-item" href="#">Dairy, Cheese, & Eggs</a>
+                        <a class="dropdown-item" href="#">Frozen Food</a>
+                        <a class="dropdown-item" href="#">Grains & Pastas</a>
+                        <a class="dropdown-item" href="#">International Foods</a>
+                        <a class="dropdown-item" href="#">Meat & Seafood</a>
+                        <a class="dropdown-item" href="#">Produce & Herbs</a>
+                        <a class="dropdown-item" href="#">Snacks</a>
+                        <a class="dropdown-item" href="#">Misc.</a>
+                      </div>
+                    </div>
+                  </div>
               <!-- Entry Form -->
               <form>
                 <div class="form-group">
-                  <label for="item-input">Item Name</label>
+                  <label for="item-input">Item Name/Barcode Number</label>
                   <input class="form-control" id="item-input" placeholder="example: milk" type="text">
                 </div>
                 <div class="form-group">
@@ -127,16 +114,13 @@
                 </div>
                 <button class="btn btn-primary float-right" id="add-item-btn">Add Item</button>
               </form>
-  
             </div>
           </div>
         </div>
       </div>
-  x
+    </div>
     </div>
   </div>
-
-
 
 
     <!-- Firebase Script-->
