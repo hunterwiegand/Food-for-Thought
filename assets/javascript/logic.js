@@ -91,6 +91,15 @@ $('#add-item-btn').on('click', function(event){
     $('#item-input').val(' ');
     $('#size-input').val(' ');
     $('#quantity-input').val(' ');
+
+    // Create a new row in table
+    let newRow = $('<tr>').append(
+        $('<td>').text(ingName),
+        $('<td>').text(sizeItem),
+        $('<td>').text(quantItem)
+    );
+
+    $('#pantryList > tbody').append(newRow);
 })
 
 //--------------------------------------------------
