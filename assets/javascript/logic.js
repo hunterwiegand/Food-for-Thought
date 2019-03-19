@@ -34,6 +34,8 @@ database = firebase.database();
 //Generate the pantry html object and display it
 function generatePantry() {
 
+    $("#pantry-list-div").html("");
+
     $.each(pantry, function(index, value) {
             // console.log("WARNING: need real location of pantry html element.")
 
