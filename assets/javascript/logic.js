@@ -4,7 +4,6 @@ let isLoggedIn = false;
 let userData;
 
 $(document).ready(function() {
-    getAccountInfo();
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
         console.log("usernot found");
@@ -36,14 +35,12 @@ database = firebase.database();
 //Generate the pantry html object and display it
 function generatePantry() {
 
-    $("#pantry-list-div").html("");
+    $("#pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
         // console.log("WARNING: need real location of pantry html element.")
 
         $("#pantry-list-div").append(createFoodItemHTML(value));
-
-        updateFirebase("pantry", value)
     })
 }
 
@@ -154,6 +151,9 @@ function createIngredientsHTML(ingredients) {
 //            UI interactions
 //--------------------------------------------------
 
+//--------------------------------------------------
+//               Login Page
+//--------------------------------------------------
 $("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
@@ -197,22 +197,6 @@ $("#logout-button").on("click", function() {
 })
 
 
-function getAccountInfo() {
-
-    //Listener for login button
-
-
-
-
-
-
-    //TODO: Go through the firebase login flow
-    //TODO:  Pull down the userData
-
-}
-
-// firebase.database().ref()
-
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
     let searchTerm = $("#recipe-search-text").val();
@@ -230,10 +214,6 @@ $("#add-item-btn").click(function(event) {
     console.log(searchTerm);
     callEdaFoodByName(searchTerm);
 })
-
-//---------------------------------------------------
-//                  set user firebase vars
-
 
 
 //--------------------------------------------------
@@ -338,6 +318,5 @@ firebase.auth().onAuthStateChanged(user => {
 })
 
 function updateFirebase(location, value) {
-
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
 }
