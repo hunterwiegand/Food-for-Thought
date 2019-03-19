@@ -1,17 +1,14 @@
 let pantry = [];
 let shoppingList = [];
-// let uuid;
-
-// $(document).ready(function() {
-//     if (!uuid) { //not logged in yet
 let isLoggedIn = false;
+let userData;
 
 $(document).ready(function() {
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
+        console.log("usernot found");
     } else { //already logged in
-        updateFirebase();
-        generatePantry();
+        // generatePantry();
         generateShoppingList();
         generateCalendar();
     }
@@ -27,6 +24,7 @@ var config = {
     messagingSenderId: "504782992813"
 };
 firebase.initializeApp(config);
+database = firebase.database();
 
 //--------------------------------------------------
 //              Page Setup Functions
@@ -35,6 +33,8 @@ firebase.initializeApp(config);
 
 //Generate the pantry html object and display it
 function generatePantry() {
+
+    $("#pantry-list-div").html("");
 
     $.each(pantry, function(index, value) {
             // console.log("WARNING: need real location of pantry html element.")
@@ -94,6 +94,8 @@ function addItemToPantry(foodObject) {
     // updateFirebase("pantry", foodObject);
 
     pantry.push(foodObject);
+    console.log(foodObject.html());
+    updateFirebase("pantry", foodObject);
     generatePantry();
 }
 
@@ -176,7 +178,6 @@ function getAccountInfo() {
         const email = $("#signup-email").val();
         const password = $("#signup-password").val();
         const auth = firebase.auth();
-        const database = firebase.database();
 
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
@@ -190,14 +191,28 @@ function getAccountInfo() {
 
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
+            uuid = user.uid;
             console.log("Logged in");
+            database.ref("/users/" + uuid).once("value", function(snapshot) {
+                userData = snapshot;
+                console.log(userData.val());
+                pantry = [];
+                $.each(userData.val().pantry, function(index, key) {
+                    // key.bind(foodItem);
+                    // var temp = new foodItem();
+                    // key.html() = temp.html;
+                    console.log(key.html);
+                    pantry.push(key);
+                })
+               
+                generatePantry();
+                console.log("pantry", pantry);
+            })
+            
             // console.log(user.uid);
             // updateFirebase();
             isLoggedIn = true;
-            uuid = user.uid;
-            firebase.database().ref("/users/" + user.uid).set({
-                string: "hello",
-            })
+            
 
             // firebase.auth().onAuthStateChanged(firebaseUser => {
             //     if (firebaseUser) {
@@ -220,7 +235,7 @@ function getAccountInfo() {
 
 }
 
-firebase.database().ref()
+// firebase.database().ref()
 
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
