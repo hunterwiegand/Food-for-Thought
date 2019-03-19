@@ -106,11 +106,19 @@ function addItemToShoppingList(foodObject) {
 
 function createRecipeHTML(recipeObject) {
     let containerDiv = $("<div>");
-    containerDiv.attr("class", "recipe-container")
-    containerDiv.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
-    containerDiv.append($("<span class='recipe-title>").text(recipeObject.name));
-    containerDiv.append($("<span class='recipe-item>").text("Servings: " + recipeObject.servings));
+    containerDiv.attr("class", "recipe-container row")
+    let imageCol = $("<div>");
+    imageCol.attr("class", "col-3");
+    imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
+    containerDiv.append(imageCol);
+    let nameCol = $("<div>");
+    nameCol.attr("class", "col-4");
+    nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
+    nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    containerDiv.append(nameCol);
     containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
+
     return recipeDiv;
 }
 
