@@ -37,7 +37,7 @@ class foodItem {
         let containerDiv = $("<div>");
         containerDiv.append($("<span class='food-item-title'>").text(this.name));
         containerDiv.append($("<span class='food-item-item>").text("Quantity: " + this.quantity + this.measurement));
-        containerDiv.append($("<span>").html(this.nutrition.HTML()))
+        containerDiv.append($("<span>").html(this.nutrition.html()))
         return containerDiv;
     }
 }

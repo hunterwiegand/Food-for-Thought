@@ -1,5 +1,9 @@
 let pantry = [];
 let shoppingList = [];
+// let uuid;
+
+// $(document).ready(function() {
+//     if (!uuid) { //not logged in yet
 let isLoggedIn = false;
 
 $(document).ready(function() {
@@ -81,6 +85,7 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
+    updateFirebase("pantry", foodObject);
 
     pantry.push(foodObject);
     generatePantry();
@@ -104,34 +109,35 @@ function addItemToShoppingList(foodObject) {
 function getAccountInfo() {
 
     //Listener for login button
-    $("#login-button").on("click", function() {
-            //Get user login info
-            const email = $("#user-email").val();
-            const password = $("#user-password").val();
-            const auth = firebase.auth();
+    $("#login-button").on("click", function () {
+        //Get user login info
+        const email = $("#user-email").val();
+        const password = $("#user-password").val();
+        const auth = firebase.auth();
 
-            console.log("email: ", email);
-            console.log("password: ", password);
+        console.log("email: ", email);
+        console.log("password: ", password);
 
-            const promise = auth.signInWithEmailAndPassword(email, password);
-            promise.catch(function(event) {
-                console.log(event.message);
-            })
-
-            $("#user-email").val("");
-            $("#user-password").val("");
+        const promise = auth.signInWithEmailAndPassword(email, password);
+        promise.catch(function (event) {
+            console.log(event.message);
         })
-        //Listener for sign-up button
-    $("#signup-button").on("click", function() {
+
+        $("#user-email").val("");
+        $("#user-password").val("");
+    })
+    //Listener for sign-up button
+    $("#signup-button").on("click", function () {
 
         //Get user sign-up info
         const email = $("#signup-email").val();
         const password = $("#signup-password").val();
         const auth = firebase.auth();
+        const database = firebase.database();
 
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function(event) {
+        promise.catch(function (event) {
             console.log("created account");
         })
 
@@ -139,11 +145,25 @@ function getAccountInfo() {
         $("#signup-password").val("");
     })
 
-    firebase.auth().onAuthStateChanged(firebaseUser => {
-        if (firebaseUser) {
-            console.log("Logged in");
+    firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+            // console.log("Logged in");
+            // console.log(user.uid);
+            // updateFirebase();
             isLoggedIn = true;
-        } else {
+            uuid = user.uid;
+            firebase.database().ref("/users/" + user.uid ).set({
+                string: "hello",
+                pantry: pantry,
+                shoppingList: shoppingList
+            })
+
+    // firebase.auth().onAuthStateChanged(firebaseUser => {
+    //     if (firebaseUser) {
+    //         console.log("Logged in");
+    //         isLoggedIn = true;
+        } 
+        else {
             console.log("Not logged in");
             isLoggedIn = false;
         }
@@ -171,9 +191,20 @@ $("#searchButton").click(function() {
     callEdaFood(searchTerm);
 })
 
+$("#add-item-btn").click(function(event) {
+    event.preventDefault();
+    let searchTerm = $("#item-input").val();
+    console.log(searchTerm);
+    callEdaFoodByName(searchTerm);
+})
+
 //---------------------------------------------------
 //                  set user firebase vars
 
+function updateFirebase(location, value) {
+
+    firebase.database().ref("/users/" + uuid + "/" + location ).push(value)
+}
 
 //--------------------------------------------------
 //                    API Calls
@@ -200,7 +231,6 @@ function callEdaRec(userFoodItem) {
         method: "GET"
     }).then(function(response) {
 
-        console.log(response);
 
         var hits = response.hits;
 
@@ -216,15 +246,13 @@ function callEdaRec(userFoodItem) {
 //Function to search EDAMAM FOOD DATABASE using a passed barcode
 function callEdaFood(barcodeNum) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?upc=" + barcodeNum + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
-    console.log(queryURL);
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response.hints[0].food);
         let newFoodItem = createFoodItemObject(response.hints[0].food);
-        console.log("Name", newFoodItem.name);
+    
 
         addItemToPantry(newFoodItem);
 
@@ -232,6 +260,21 @@ function callEdaFood(barcodeNum) {
     })
 
 }
+function callEdaFoodByName(foodName) {
+    var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function (response) {
+        let newFoodItem = createFoodItemObject(response.hints[0].food);
+
+        addItemToPantry(newFoodItem);
+
+        $("#pantryList").append(newFoodItem.html());
+    })
+}
+
 
 getAccountInfo();
 // updateFirebase();
