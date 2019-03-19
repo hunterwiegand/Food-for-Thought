@@ -14,29 +14,30 @@ class recipe {
         this.mealPlanSlot;
     }
 
-    HTML() {
+    html() {
         let containerDiv = $("<div>");
-        containerDiv.append($("<img>").attr("src", this.imageURL));
-        containerDiv.append($("<span>").text(this.name));
-        containerDiv.append($("<span>").text("Servings: " + this.servings));
-
+        containerDiv.attr("class", "recipe-container")
+        containerDiv.append($("<img class='recipe-image'>").attr("src", this.imageURL));
+        containerDiv.append($("<span class='recipe-title>").text(this.name));
+        containerDiv.append($("<span class='recipe-item>").text("Servings: " + this.servings));
+        containerDiv.append("<span>").html(this.nutrition.html());
         return recipeDiv;
     }
 }
 
 class foodItem {
-    constructor(foodItemJSON, quantity = 0, measurement = "tonnes") {
+    constructor(foodItemJSON, quantity = 1, measurement = "unit") {
         this.name = foodItemJSON.label;
         this.nutrition = new nutritionInfo(foodItemJSON.nutrients);
         this.quantity = quantity;
         this.measurement = measurement;
     }
 
-    HTML() {
+    html() {
         let containerDiv = $("<div>");
-        containerDiv.append($("<span>").text(this.name));
-        containerDiv.append($("<span>").text("Quantity: " + this.quantity + this.measurement));
-        containerDiv.append($("<span>").html(this.nutrition.HTML()))
+        containerDiv.append($("<span class='food-item-title'>").text(this.name));
+        containerDiv.append($("<span class='food-item-item>").text("Quantity: " + this.quantity + this.measurement));
+        containerDiv.append($("<span>").html(this.nutrition.html()))
         return containerDiv;
     }
 }
@@ -48,13 +49,13 @@ class nutritionInfo {
         this.cholestorol = Math.floor(nutritionJSON.CHOCDF);
     }
 
-    HTML() {
+    html() {
         let containerDiv = $("<div>");
-        containerDiv.attr("class", "nutrition-info")
-        containerDiv.append($("<span>").text("Nutritional Info:"));
-        containerDiv.append($("<span>").text("Calories: " + this.calories + "g"));
-        containerDiv.append($("<span>").text("Protien: " + this.protien + "g"));
-        containerDiv.append($("<span>").text("Cholestorol: " + this.cholestorol + "g"));
+        containerDiv.attr("class", "nutrition-container")
+        containerDiv.append($("<span class='nutrition-header'>").text("Nutritional Info:"));
+        containerDiv.append($("<span class='nutrition-statistic'>").text("Calories: " + this.calories + "g"));
+        containerDiv.append($("<span class='nutrition-statistic'>").text("Protien: " + this.protien + "g"));
+        containerDiv.append($("<span class='nutrition-statistic'>").text("Cholestorol: " + this.cholestorol + "g"));
 
         return containerDiv
     }
