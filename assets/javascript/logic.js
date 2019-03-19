@@ -108,11 +108,22 @@ function addItemToShoppingList(foodObject) {
 
 function createRecipeHTML(recipeObject) {
     let containerDiv = $("<div>");
-    containerDiv.attr("class", "recipe-container")
-    containerDiv.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
-    containerDiv.append($("<span class='recipe-title>").text(recipeObject.name));
-    containerDiv.append($("<span class='recipe-item>").text("Servings: " + recipeObject.servings));
+    containerDiv.attr("class", "recipe-container row")
+    let imageCol = $("<div>");
+    imageCol.attr("class", "col-3");
+    imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
+    containerDiv.append(imageCol);
+    let nameCol = $("<div>");
+    nameCol.attr("class", "col-4");
+    nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
+    nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    containerDiv.append(nameCol);
+    let ingredientCol = $("<div>");
+    ingredientCol.attr("class", "col-5");
+    ingredientCol.append()
     containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
+
     return recipeDiv;
 }
 
@@ -136,7 +147,13 @@ function createNutritionHTML(nutritionObject) {
     return containerDiv
 }
 
-
+function createIngredientsHTML(ingredients) {
+    let ingredientsDiv = $("<div class='row'>");
+    ingredientsDiv.append($("<div class='ingredients-title col").text("Ingredients:"));
+    $.each(ingredients, function(key, value) {
+        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
+    })
+}
 //--------------------------------------------------
 //            UI interactions
 //--------------------------------------------------
@@ -196,15 +213,15 @@ function getAccountInfo() {
                     console.log(key.html);
                     pantry.push(key);
                 })
-               
+
                 generatePantry();
                 console.log("pantry", pantry);
             })
-            
+
             // console.log(user.uid);
             // updateFirebase();
             isLoggedIn = true;
-            
+
 
             // firebase.auth().onAuthStateChanged(firebaseUser => {
             //     if (firebaseUser) {
