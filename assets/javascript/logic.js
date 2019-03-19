@@ -38,8 +38,6 @@ function generatePantry() {
     $("#pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
-        // console.log("WARNING: need real location of pantry html element.")
-
         $("#pantry-list-div").append(createFoodItemHTML(value));
 
     })
@@ -132,10 +130,10 @@ function createRecipeHTML(recipeObject) {
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
-    ingredientCol.append()
-    containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
+    incredientCol.append(createIngredientsHTML(recipeObject.ingredients));
+    containerDiv.append(ingredientCol);
 
-    return recipeDiv;
+    return containerDiv;
 }
 
 function createFoodItemHTML(foodItemObject) {
@@ -145,6 +143,7 @@ function createFoodItemHTML(foodItemObject) {
     containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
     containerDiv.append($("<span>").html(createNutritionHTML(foodItemObject.nutrition)));
     containerDiv.append($("<span>").html(foodItemObject.category));
+
     return containerDiv;
 }
 
@@ -165,6 +164,8 @@ function createIngredientsHTML(ingredients) {
     $.each(ingredients, function(key, value) {
         ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
     })
+
+    return ingredientsDiv;
 }
 //--------------------------------------------------
 //            UI interactions
@@ -215,14 +216,26 @@ $("#logout-button").on("click", function() {
     auth.signOut();
 })
 
+<<<<<<< HEAD
 //-------------------------------------------------
 //              Pantry OnClicks
 //-------------------------------------------------
+=======
+//---------------------------------------------
+//         Recipe Page UI Interactions
+//---------------------------------------------
+
+
+>>>>>>> 43cb3e9f61ecf7d376b757ff24cef35804b20822
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
     let searchTerm = $("#recipe-search-text").val();
     callEdaRec(searchTerm);
 })
+
+//---------------------------------------------
+//        Pantry Page UI Interactions
+//---------------------------------------------
 
 $("#searchButton").click(function() {
     let searchTerm = $("#input").val();
@@ -295,6 +308,7 @@ function callEdaFood(barcodeNum) {
 
 }
 
+//Function to search EDAMAM FOOD DATABASE using a passed string
 function callEdaFoodByName(foodName) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
 
@@ -306,7 +320,7 @@ function callEdaFoodByName(foodName) {
 
         addItemToPantry(newFoodItem);
 
-        $("#pantryList").append(createFoodItemHTML(newFoodItem));
+        //$("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 }
 
@@ -317,22 +331,25 @@ function callEdaFoodByName(foodName) {
 
 
 firebase.auth().onAuthStateChanged(user => {
+    //Checks to see if this user has information in the database. If so, grab it 
     if (user) {
         uuid = user.uid;
         console.log("Logged in");
-
+        //Grab user data
         database.ref("/users/" + uuid).once("value", function(snapshot) {
             if (snapshot.val()) {
                 userData = snapshot;
-                console.log(userData.val());
                 pantry = [];
                 $.each(userData.val().pantry, function(index, key) {
                     pantry.push(key);
                 })
 
                 generatePantry();
+<<<<<<< HEAD
                 generateRecipePantry();
                 console.log("pantry", pantry);
+=======
+>>>>>>> 43cb3e9f61ecf7d376b757ff24cef35804b20822
             }
         })
         isLoggedIn = true;
