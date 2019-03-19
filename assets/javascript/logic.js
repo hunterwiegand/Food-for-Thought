@@ -10,6 +10,7 @@ $(document).ready(function() {
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
     } else { //already logged in
+        updateFirebase();
         generatePantry();
         generateShoppingList();
         generateCalendar();
@@ -34,13 +35,17 @@ firebase.initializeApp(config);
 
 //Generate the pantry html object and display it
 function generatePantry() {
+    
     $.each(pantry, function(index, value) {
-        console.log("WARNING: need real location of pantry html element.")
+        // console.log("WARNING: need real location of pantry html element.")
 
         $("#pantry-list-div").append(value.html());
+
+        updateFirebase("pantry", value)
     })
-    console.log("WARNING: pantry page not implemented")
-    console.log("pantry contents", pantry);
+    // console.log("WARNING: pantry page not implemented")
+    // console.log("pantry contents", pantry);
+
 }
 
 
@@ -85,7 +90,7 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
-    updateFirebase("pantry", foodObject);
+    // updateFirebase("pantry", foodObject);
 
     pantry.push(foodObject);
     generatePantry();
@@ -147,15 +152,13 @@ function getAccountInfo() {
 
     firebase.auth().onAuthStateChanged(user => {
         if (user) {
-            // console.log("Logged in");
+            console.log("Logged in");
             // console.log(user.uid);
             // updateFirebase();
             isLoggedIn = true;
             uuid = user.uid;
             firebase.database().ref("/users/" + user.uid ).set({
                 string: "hello",
-                pantry: pantry,
-                shoppingList: shoppingList
             })
 
     // firebase.auth().onAuthStateChanged(firebaseUser => {
@@ -179,6 +182,8 @@ function getAccountInfo() {
     //TODO:  Pull down the userData
 
 }
+
+firebase.database().ref()
 
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
