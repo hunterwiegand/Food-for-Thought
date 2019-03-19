@@ -18,7 +18,7 @@
 <body>
     <div id="test-div"></div>
 
-    <body class="home">
+    <body class="mealPlanner">
 
 		<h1> Food for Thought</h1>
 		<h2>Meal Planner</h2>
@@ -28,30 +28,34 @@
             <div class="container-fluid" id="menu">
                 <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                     <ul class="navbar-nav">
-                        <a class="navbar-brand" href="index.html">Home</a>
-                        <a class="navbar-brand" href="ingredients.html">Ingredients</a>
-                        <a class="navbar-brand" href="shopping.html">Shopping List</a>
-                        <a class="navbar-brand" href="recipes.html">Recipes</a>
-                        <a class="navbar-brand" href="pantry.html">Pantry</a>
-                        <a class="navbar-brand" href="mealPlanner.html">Meal Plans</a>
+                        <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                        <a class="navbar-brand" style="color: white" href="ingredients.html">Ingredients</a>
+                        <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
+                        <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                        <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                        <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
                     </ul>
                 </nav>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
 		<div>
 			<button type="button" id="button" class="btn btn-lg btn-primary" style="text-align: center">Click to Open Calendar</button>
-		</div>
+        </div>
+    </div>
+</div>
+
         <!-- Jquery Script-->
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
 	
-$(document).ready(function(){
-    $('#button').keypress(function(e){
-		return false;
-      if(e.keyCode==13)
-      $(href="fullcalendar.html").click();
-    });
-});
+    <script>
+  button.onclick = function(event) {
+        href="fullcalendar.html"
+  };
+</script>
 
 </script>
 
