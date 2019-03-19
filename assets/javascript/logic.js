@@ -99,8 +99,10 @@ $('#add-item-btn').on('click', function(event){
         $('<td>').text(quantItem)
     );
 
+    // pushes new items into their desingated list
     $('#pantryList > tbody').append(newRow);
     $('#shoppingList > tbody').append(newRow);
+
 })
 
 
