@@ -41,9 +41,27 @@ function generatePantry() {
         // console.log("WARNING: need real location of pantry html element.")
 
         $("#pantry-list-div").append(createFoodItemHTML(value));
+
     })
 }
 
+function generateRecipePantry() {
+
+    $("#pantry-list-div").empty();
+
+    $.each(pantry, function(index, value) {
+
+        let newDiv = $("<div>");
+        newDiv.attr("id", "food"+ index);
+
+        $(newDiv).append(createFoodItemHTML(value));
+
+        $("#pantry-list-div").append(newDiv);
+
+    })
+
+
+}
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
@@ -122,6 +140,7 @@ function createRecipeHTML(recipeObject) {
 
 function createFoodItemHTML(foodItemObject) {
     let containerDiv = $("<div>");
+    containerDiv.attr("food-name", foodItemObject.name);
     containerDiv.append($("<span class='food-item-title'>").text(foodItemObject.name));
     containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
     containerDiv.append($("<span>").html(createNutritionHTML(foodItemObject.nutrition)));
@@ -196,7 +215,9 @@ $("#logout-button").on("click", function() {
     auth.signOut();
 })
 
-
+//-------------------------------------------------
+//              Pantry OnClicks
+//-------------------------------------------------
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
     let searchTerm = $("#recipe-search-text").val();
@@ -214,6 +235,9 @@ $("#add-item-btn").click(function(event) {
     console.log(searchTerm);
     callEdaFoodByName(searchTerm);
 })
+//--------------------------------------------------
+//                    Reciepe OnClicks
+//--------------------------------------------------
 
 
 //--------------------------------------------------
@@ -307,6 +331,7 @@ firebase.auth().onAuthStateChanged(user => {
                 })
 
                 generatePantry();
+                generateRecipePantry();
                 console.log("pantry", pantry);
             }
         })
