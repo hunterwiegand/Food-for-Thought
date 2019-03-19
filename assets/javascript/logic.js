@@ -100,7 +100,9 @@ $('#add-item-btn').on('click', function(event){
     );
 
     $('#pantryList > tbody').append(newRow);
+    $('#shoppingList > tbody').append(newRow);
 })
+
 
 //--------------------------------------------------
 //             JSON to object
