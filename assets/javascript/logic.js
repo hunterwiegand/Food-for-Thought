@@ -182,22 +182,6 @@ function addRecipeToCalender(recipeObject) {
 }
 
 function createRecipeHTML(recipeObject) {
-    // let containerDiv = $("<div>");
-    // containerDiv.attr("class", "recipe-container row")
-    // let imageCol = $("<div>");
-    // imageCol.attr("class", "col-3");
-    // imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
-    // containerDiv.append(imageCol);
-    // let nameCol = $("<div>");
-    // nameCol.attr("class", "col-4");
-    // nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
-    // nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
-    // nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
-    // containerDiv.append(nameCol);
-    // let ingredientCol = $("<div>");
-    // ingredientCol.attr("class", "col-5");
-    // ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
-    // containerDiv.append(ingredientCol);
 
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
@@ -243,9 +227,9 @@ function createNutritionHTML(nutritionObject) {
 
 function createIngredientsHTML(ingredients) {
     let ingredientsDiv = $("<div class='row'>");
-    ingredientsDiv.append($("<div class='ingredients-title col").text("Ingredients:"));
+    ingredientsDiv.append($("<div class='ingredients-title col'>").text("Ingredients:"));
     $.each(ingredients, function(key, value) {
-        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
+        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
     })
 
     return ingredientsDiv;
@@ -353,10 +337,6 @@ $("#logout-button").on("click", function() {
 })
 
 //---------------------------------------------
-//         Recipe Page UI Interactions
-//---------------------------------------------
-
-//---------------------------------------------
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
@@ -372,6 +352,10 @@ $("#add-item-btn").click(function(event) {
 
 })
 
+//---------------------------------------------
+//        Recipe Page UI Interactions
+//---------------------------------------------
+
 $("#recipe-search-button").click(function() {
 
     let searchTerm = ($(".recipe-food-item").text());
@@ -386,10 +370,6 @@ $("#recipe-search-button").click(function() {
 
     callEdaRec(searchTerm);
 })
-
-//---------------------------------------------
-//        Recipe Page UI Interactions
-//---------------------------------------------
 
 $(document).on("click", ".food", function() {
     console.log("food item was clicked");
@@ -435,16 +415,11 @@ function callEdaRec(userFoodItem) {
 
         for (var i = 0; i < hits.length; i++) {
             
-            console.log("test");
-
             let newRecipe = createRecipeObject(hits[i].recipe);
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
 
             let newHTML = createRecipeHTML(newRecipe);
-
-            console.log("newHTML", newHTML);
-            console.log(typeof newHTML);
 
             $("#recipe-search-text").append(newHTML);
             //TODO: Display this recipeHTML object in results
