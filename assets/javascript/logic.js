@@ -109,7 +109,8 @@ function generateRecipePantry() {
     $.each(pantry, function(index, value) {
 
         let newDiv = $("<div>");
-        newDiv.attr("id", "food"+ index);
+        newDiv.addClass("food");
+        newDiv.attr("data-food-name", value.name);
 
         $(newDiv).append(createFoodItemHTML(value));
 
@@ -118,7 +119,7 @@ function generateRecipePantry() {
     })
 
 
-}
+} 
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
@@ -279,13 +280,6 @@ $("#logout-button").on("click", function() {
 //         Recipe Page UI Interactions
 //---------------------------------------------
 
-
-//TODO: Tie this to the actual search button for recipes
-$("#recipe-search-button").click(function() {
-    let searchTerm = $("#recipe-search-text").val();
-    callEdaRec(searchTerm);
-})
-
 //---------------------------------------------
 //        Pantry Page UI Interactions
 //---------------------------------------------
@@ -301,10 +295,39 @@ $("#add-item-btn").click(function(event) {
     }
 
 })
-//--------------------------------------------------
-//                    Reciepe OnClicks
-//--------------------------------------------------
 
+$("#recipe-search-button").click(function() {
+
+    let searchTerm = ($(".recipe-food-item").text());
+
+    console.log(searchTerm);
+    searchTerm = searchTerm.split(" ").join("+");
+    console.log(searchTerm);
+
+
+    //Need to formate searchTem by adding + and only taking in the first 2 itmes with commas
+    //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
+
+    callEdaRec(searchTerm);
+})
+
+//---------------------------------------------
+//        Recipe Page UI Interactions
+//---------------------------------------------
+
+$(document).on("click", ".food", function() {
+    console.log("food item was clicked");
+    console.log(this.dataset.foodName);
+    var foodName = this.dataset.foodName;
+
+    let newDiv = $("<div>");
+    newDiv.addClass("recipe-food-item");
+    newDiv.prepend(foodName + " ");
+    
+
+    $("#recipe-search-text").prepend(newDiv);
+
+})
 
 //--------------------------------------------------
 //                    API Calls
