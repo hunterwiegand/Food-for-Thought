@@ -27,12 +27,12 @@
 <div class="container-fluid" id="menu4">
         <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                 <ul class="navbar-nav">
-          <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-          <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
-          <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
-          <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
-          <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
-          </ul>
+                  <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                  <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                  <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                  <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
+                  <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+    </ul>
         </nav>
 	  </div>
   </div>
@@ -48,10 +48,10 @@
           <div class="col-md-3"></div>
           <div class="col-md-6">
         <div class="card mb-4">
-            <div class="card-header">Items in Pantry</div>
+            <div class="card-header" style="background-color:lightgray; font-weight: bold; font-size:18px">Items in Pantry</div>
             <div class="card-body">
               <table class="table table-sm table-hover" id="pantryList">
-                <thead>
+                <thead class="thead" style="background-color:lightgray">
                   <tr>
                     <th scope="col">Item Name</th>
                     <th scope="col">Size</th>
@@ -74,7 +74,7 @@
         <div class="col-md-4">
           <!-- User added Item  -->
           <div class="card mb-4">
-            <div class="card-header">Add Item</div>
+            <div class="card-header" style="background-color:lightgray; font-weight: bold; font-size:18px">Add Item</div>
             <div class="card-body">
                 <div class="navbar">
                     <div class="dropdown">
@@ -101,15 +101,15 @@
               <!-- Entry Form -->
               <form>
                 <div class="form-group">
-                  <label for="item-input">Item Name/Barcode Number</label>
+                  <label for="item-input" style="font-weight: bold">Item Name/Barcode Number</label>
                   <input class="form-control" id="item-input" placeholder="example: milk" type="text">
                 </div>
                 <div class="form-group">
-                  <label for="size-input">Size</label>
+                  <label for="size-input" style="font-weight: bold">Size</label>
                   <input class="form-control" id="size-input" placeholder="example: quart" type="text">
                 </div>
                 <div class="form-group">
-                  <label for="quantity-input">Quantity</label>
+                  <label for="quantity-input" style="font-weight: bold">Quantity</label>
                   <input class="form-control" id="quantity-input" placeholder="example: 2" type="text">
                 </div>
                 <button class="btn btn-primary float-right" id="add-item-btn">Add Item</button>

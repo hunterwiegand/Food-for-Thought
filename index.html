@@ -29,9 +29,9 @@
                 <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                     <ul class="navbar-nav">
                         <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-                        <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
-                        <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
                         <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                        <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                        <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
                         <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
                     </ul>
                 </nav>
@@ -64,6 +64,13 @@
                                     <button type="button" id="signup-button"
                                         class="btn btn-lg btn-primary">Register</button>
                                 </div>
+                                <!-- Add modal with passwords do not match warning -->
+                                <div id="simpleModal" class="modal">
+                                        <div class="modal-content">
+                                        <span class="closeBtn">&times;</span>
+                                        <p>Sorry, there is a password error, please try again.</p>
+                                    </div>
+                                </div>
                             </fieldset>
                         </form>
                     </div>
@@ -93,6 +100,14 @@
                                 <div>
                                     <button type="button" id="logout-button" class="btn btn-lg btn-primary">Log
                                         Out</button>
+ 
+                         <!-- Add modal with warning if password is incorrect -->
+                                <div id="simpleModal" class="modal">
+                                        <div class="modal-content">
+                                        <span class="closeBtn">&times;</span>
+                                        <p>Sorry, that is an incorrect password.  Please try again.</p>
+                                    </div>
+                                </div>
                                 </div>
 
                             </fieldset>

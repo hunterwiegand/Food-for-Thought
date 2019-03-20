@@ -151,6 +151,14 @@ function createIngredientsHTML(ingredients) {
 //            UI interactions
 //--------------------------------------------------
 
+// Get modal element
+var modal = document.getElementById("simpleModal");
+// var modal2 = document.getElementById("simpleModal2");
+// Get open modal button
+var modalBtn = document.getElementById("modalBtn");
+// Get close button
+var closeBtn = document.getElementsByClassName ("closeBtn") [0];
+
 //--------------------------------------------------
 //               Login Page
 //--------------------------------------------------
@@ -166,26 +174,73 @@ $("#login-button").on("click", function() {
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
         console.log(event.message);
+   
+        if(password !== promise){
+            (modal.style.display = "block");
+        }
+    
     })
+    // Listen for close click
+    closeBtn.addEventListener("click", closeModal);
+    //Listen for outside click
+    window.addEventListener("click", outsideClick);
+    // Function to close modal
+        function closeModal() {
+        modal.style.display = "none";
+        }
+
+// Funtion to close modal if click outside of modal
+    function outsideClick(e){
+    if(e.target === modal){
+    modal.style.display = "none";
+    }
 
     $("#user-email").val("");
     $("#user-password").val("");
+    }
 })
+
 
 //Listener for sign-up button
 $("#signup-button").on("click", function() {
 
     //Get user sign-up info
-    const email = $("#signup-email").val();
-    const password = $("#signup-password").val();
-    const auth = firebase.auth();
+    const email = $("#signup-email").val().trim();
+    const password = $("#signup-password").val().trim();
+    const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-    const promise = auth.createUserWithEmailAndPassword(email, password);
+     // Confirm 1st entered password = 2nd entered password or open modal 
+            if (password !== passwordConfirm){
+                (modal.style.display = "block");
+            }
+            else {
+                const auth = firebase.auth();
+                const promise = auth.createUserWithEmailAndPassword(email, password);
 
-    promise.catch(function(event) {
-        console.log("created account");
-    })
+                promise.catch(function(event) {
+                console.log("created account");
+                
+         })
+        }
 
+    // Listen for close click
+    closeBtn.addEventListener("click", closeModal);
+    //Listen for outside click
+    window.addEventListener("click", outsideClick);
+    // Function to close modal
+        function closeModal() {
+        modal.style.display = "none";
+        }
+
+// Funtion to close modal if click outside of modal
+function outsideClick(e){
+    if(e.target === modal){
+    modal.style.display = "none";
+    }
+ 
+}
+
+    
     $("#signup-email").val("");
     $("#signup-password").val("");
 })
