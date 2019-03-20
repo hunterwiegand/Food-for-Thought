@@ -3,8 +3,9 @@ let shoppingList = [];
 // let recipe = [];
 let isLoggedIn = false;
 let userData;
+let shownRecipe = [];
 
-$(document).ready(function() {
+$(document).ready(function () {
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
         console.log("usernot found");
@@ -97,7 +98,7 @@ function generatePantry() {
 
     $("#pantry-list-div").empty();
 
-    $.each(pantry, function(index, value) {
+    $.each(pantry, function (index, value) {
         $("#pantry-list-div").append(createFoodItemHTML(value));
 
     })
@@ -107,7 +108,7 @@ function generateRecipePantry() {
 
     $("#recipe-pantry-list-div").empty();
 
-    $.each(pantry, function(index, value) {
+    $.each(pantry, function (index, value) {
         let foodHTML = createFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
         foodHTML.addClass("food");
@@ -121,7 +122,7 @@ function generateRecipePantry() {
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
-    $.each(shoppingList, function(index, value) {
+    $.each(shoppingList, function (index, value) {
         console.log("WARNING: need real location of shopping list html element.")
 
         $("#shopping-list-div").append(createPantryItemHTML(value));
@@ -173,29 +174,30 @@ function addItemToShoppingList(foodObject) {
     generateShoppingList();
 }
 
-function addRecipeToCalender(recipeObject) {
-    console.log(recipeObject.name, "Added to Calender");
-    recipe.push(recipeObject);
-}
-
-function createRecipeHTML(recipeObject) {
+function createRecipeHTML(recipeObject, test) {
 
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
+    var temp  = JSON.stringify(test);
+    temp = JSON.parse(temp);
+    console.log("name: ", temp.name);
+    containerDiv.attr("data-recipe-obj", JSON.stringify(test));
+    // console.log(test);
     let imageCol = $("<div>");
     imageCol.attr("class", "col-3");
     imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
     containerDiv.append(imageCol);
     let nameCol = $("<div>");
     nameCol.attr("class", "col-4");
-    nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
-    nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    nameCol.append($("<div class='recipe-title row'>").text(recipeObject.name))
+    nameCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
+
     return containerDiv;
 }
 
@@ -224,7 +226,7 @@ function createNutritionHTML(nutritionObject) {
 function createIngredientsHTML(ingredients) {
     let ingredientsDiv = $("<div class='row'>");
     ingredientsDiv.append($("<div class='ingredients-title col'>").text("Ingredients:"));
-    $.each(ingredients, function(key, value) {
+    $.each(ingredients, function (key, value) {
         ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
     })
 
@@ -243,7 +245,7 @@ var closeBtn = document.getElementsByClassName("closeBtn")[0];
 //               Login Page UI Interactions
 //--------------------------------------------------
 
-$("#login-button").on("click", function() {
+$("#login-button").on("click", function () {
     //Get user login info
     const email = $("#user-email").val();
     const password = $("#user-password").val();
@@ -253,15 +255,15 @@ $("#login-button").on("click", function() {
     console.log("password: ", password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
-    promise.catch(function(event) {
-            console.log(event.message);
+    promise.catch(function (event) {
+        console.log(event.message);
 
-            if (password !== promise) {
-                (modal.style.display = "block");
-            }
+        if (password !== promise) {
+            (modal.style.display = "block");
+        }
 
-        })
-        // Listen for close click
+    })
+    // Listen for close click
     closeBtn.addEventListener("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
@@ -283,7 +285,7 @@ $("#login-button").on("click", function() {
 
 
 //Listener for sign-up button
-$("#signup-button").on("click", function() {
+$("#signup-button").on("click", function () {
 
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
@@ -297,7 +299,7 @@ $("#signup-button").on("click", function() {
         const auth = firebase.auth();
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function(event) {
+        promise.catch(function (event) {
             console.log("created account");
 
         })
@@ -325,7 +327,7 @@ $("#signup-button").on("click", function() {
     $("#signup-password").val("");
 })
 
-$("#logout-button").on("click", function() {
+$("#logout-button").on("click", function () {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
@@ -335,7 +337,7 @@ $("#logout-button").on("click", function() {
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
-$("#add-item-btn").click(function(event) {
+$("#add-item-btn").click(function (event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
     //Checks to see if the entry is only numbers (making it a barcode).
@@ -347,11 +349,14 @@ $("#add-item-btn").click(function(event) {
 
 })
 
+//Add on click for recipe to add to user recipeBook
+// $(document).on("click", ".")
+
 //---------------------------------------------
 //        Recipe Page UI Interactions
 //---------------------------------------------
 
-$("#recipe-search-button").click(function() {
+$("#recipe-search-button").click(function () {
 
     let searchTerm = ($(".recipe-food-item").text());
 
@@ -366,7 +371,7 @@ $("#recipe-search-button").click(function() {
     callEdaRec(searchTerm);
 })
 
-$(document).on("click", ".food", function() {
+$(document).on("click", ".food", function () {
     console.log("food item was clicked");
     console.log(this.dataset.foodName);
     var foodName = this.dataset.foodName;
@@ -375,9 +380,18 @@ $(document).on("click", ".food", function() {
     newDiv.addClass("recipe-food-item");
     newDiv.prepend(foodName + " ");
 
-
     $("#recipe-search-text").prepend(newDiv);
+})
 
+$(document).on("click", ".recipe-container", function () {
+    
+    console.log("type: ", $(this).attr("recipe-index"));
+    let temp = shownRecipe[$(this).attr("recipe-index")];
+    console.log(temp.name);
+
+    temp.mealPlanSlot = "tuesday";
+    
+    updateFirebase("recipeBook", temp);
 })
 
 //--------------------------------------------------
@@ -403,7 +417,7 @@ function callEdaRec(userFoodItem) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function (response) {
 
 
         var hits = response.hits;
@@ -412,11 +426,21 @@ function callEdaRec(userFoodItem) {
 
             let newRecipe = createRecipeObject(hits[i].recipe);
 
-            console.log("newHTML", createRecipeObject(hits[i].recipe));
+            shownRecipe.push(newRecipe);
 
-            let newHTML = createRecipeHTML(newRecipe);
+            // console.log("newHTML", createRecipeObject(hits[i].recipe));
+
+            // let newDiv = $("<div class='recipe-option'>");
+
+            let newHTML = createRecipeHTML(newRecipe, hits[i].recipe);
+            newHTML.attr("recipe-index", i);
+
+            // newDiv.append(newHTML);
 
             $("#recipe-search-text").append(newHTML);
+
+
+
             //TODO: Display this recipeHTML object in results
         }
     })
@@ -429,7 +453,7 @@ function callEdaFood(barcodeNum) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function (response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
 
         addItemToPantry(newFoodItem);
@@ -446,7 +470,7 @@ function callEdaFoodByName(foodName) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function(response) {
+    }).then(function (response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
 
@@ -466,11 +490,11 @@ firebase.auth().onAuthStateChanged(user => {
         uuid = user.uid;
         console.log("Logged in");
         //Grab user data
-        database.ref("/users/" + uuid).once("value", function(snapshot) {
+        database.ref("/users/" + uuid).once("value", function (snapshot) {
             if (snapshot.val()) {
                 userData = snapshot;
                 pantry = [];
-                $.each(userData.val().pantry, function(index, key) {
+                $.each(userData.val().pantry, function (index, key) {
                     pantry.push(key);
                 })
 
