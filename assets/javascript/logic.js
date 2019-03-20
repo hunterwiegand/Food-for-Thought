@@ -27,6 +27,65 @@ var config = {
 firebase.initializeApp(config);
 database = firebase.database();
 
+function unitConversion(originalAmount, originalType, changeType) {
+    let teaSpoonConversion = {
+        tablespoon: 1 / 3,
+        cup: teaSpoonConversion.tablespoon / 16,
+        pint: teaSpoonConversion.cup / 2,
+        quart: teaSpoonConversion.pint / 2,
+        gallon: teaSpoonConversion.quart / 4,
+    }
+
+    let tableSpoonConversion = {
+        teaspoon: 3,
+        cup: teaSpoonConversion.cup * 3,
+        pint: teaSpoonConversion.pint * 3,
+        quart: teaSpoonConversion.quart * 3,
+        gallon: teaSpoonConversion.gallon * 3
+    }
+
+    let pintConversion = {
+        teaspoon: tableSpoonConversion.teaspoon * 2,
+        tablespoon: 2,
+        cup: tableSpoonConversion.cup * 2,
+        quart: tableSpoonConversion.quart * 2,
+        gallon: tableSpoonConversion.gallon * 2
+    }
+
+    let quartConversion = {
+        teaspoon: pintConversion.teaspoon * 2,
+        tablespoon: pintConversion.tablespoon * 2,
+        cup: pintConversion.cup * 2,
+        pint: 2,
+        gallon: pintConversion.gallon * 2
+    }
+
+    let gallonConversion = {
+        teaspoon: quartConversion.teaspoon * 4,
+        tablespoon: quartConversion.tablespoon * 4,
+        cup: quartConversion.cup * 4,
+        pint: quartConversion.pint * 4,
+        quart: 4,
+    }
+
+    switch (originalType) {
+        case "teaspoon":
+            return teaSpoonConversion[changeType] * originalAmount;
+        case "tablespoon":
+            return tableSpoonConversion[changeType] * originalAmount;
+        case "pint":
+            return pintConversion[changeType] * originalAmount;
+        case "quart":
+            return quartConversion[changeType] * originalAmount;
+        case "gallon":
+            return gallonConversion[changeType] * originalAmount;
+        default:
+            console.log("conversion not supported");
+            return undefined;
+
+    }
+}
+
 //--------------------------------------------------
 //              Page Setup Functions
 //--------------------------------------------------
@@ -38,8 +97,6 @@ function generatePantry() {
     $("#pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
-        // console.log("WARNING: need real location of pantry html element.")
-
         $("#pantry-list-div").append(createFoodItemHTML(value));
     })
 }
@@ -74,8 +131,8 @@ function createRecipeObject(recipeJSON) {
     return new recipe(recipeJSON);
 }
 
-function createFoodItemObject(foodItemJSON) {
-    return new foodItem(foodItemJSON);
+function createFoodItemObject(foodItemJSON, measurement, quantity, category) {
+    return new foodItem(foodItemJSON, measurement, quantity, category);
 }
 
 
@@ -87,7 +144,9 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
+    console.log(pantry);
     pantry.push(foodObject);
+    console.log(pantry);
     updateFirebase("pantry", foodObject);
     generatePantry();
 }
@@ -114,19 +173,21 @@ function createRecipeHTML(recipeObject) {
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
-    ingredientCol.append()
-    containerDiv.append("<span>").html(createNutritionHTML(recipeObject.nutrition));
+    incredientCol.append(createIngredientsHTML(recipeObject.ingredients));
+    containerDiv.append(ingredientCol);
 
-    return recipeDiv;
+    return containerDiv;
 }
 
 function createFoodItemHTML(foodItemObject) {
-    let containerDiv = $("<div>");
-    containerDiv.append($("<span class='food-item-title'>").text(foodItemObject.name));
-    containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
-    containerDiv.append($("<span>").html(createNutritionHTML(foodItemObject.nutrition)));
-    containerDiv.append($("<span>").html(foodItemObject.category));
-    return containerDiv;
+    let tableRow = $("<tr>");
+    tableRow.attr("food-name", foodItemObject.name);
+    tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
+
+    return tableRow;
 }
 
 function createNutritionHTML(nutritionObject) {
@@ -146,10 +207,9 @@ function createIngredientsHTML(ingredients) {
     $.each(ingredients, function(key, value) {
         ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
     })
+
+    return ingredientsDiv;
 }
-//--------------------------------------------------
-//            UI interactions
-//--------------------------------------------------
 
 // Get modal element
 var modal = document.getElementById("simpleModal");
@@ -160,8 +220,9 @@ var modalBtn = document.getElementById("modalBtn");
 var closeBtn = document.getElementsByClassName ("closeBtn") [0];
 
 //--------------------------------------------------
-//               Login Page
+//               Login Page UI Interactions
 //--------------------------------------------------
+
 $("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
@@ -251,6 +312,10 @@ $("#logout-button").on("click", function() {
     auth.signOut();
 })
 
+//---------------------------------------------
+//         Recipe Page UI Interactions
+//---------------------------------------------
+
 
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
@@ -258,16 +323,20 @@ $("#recipe-search-button").click(function() {
     callEdaRec(searchTerm);
 })
 
-$("#searchButton").click(function() {
-    let searchTerm = $("#input").val();
-    callEdaFood(searchTerm);
-})
+//---------------------------------------------
+//        Pantry Page UI Interactions
+//---------------------------------------------
 
 $("#add-item-btn").click(function(event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
-    console.log(searchTerm);
-    callEdaFoodByName(searchTerm);
+    //Checks to see if the entry is only numbers (making it a barcode).
+    if (/^\d+$/.test(searchTerm)) {
+        callEdaFood(searchTerm); // is a barcode
+    } else {
+        callEdaFoodByName(searchTerm); // Is not a barcode
+    }
+
 })
 
 
@@ -316,7 +385,7 @@ function callEdaFood(barcodeNum) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
 
 
         addItemToPantry(newFoodItem);
@@ -326,6 +395,7 @@ function callEdaFood(barcodeNum) {
 
 }
 
+//Function to search EDAMAM FOOD DATABASE using a passed string
 function callEdaFoodByName(foodName) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
 
@@ -333,11 +403,8 @@ function callEdaFoodByName(foodName) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
-
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
-
-        $("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 }
 
@@ -348,21 +415,20 @@ function callEdaFoodByName(foodName) {
 
 
 firebase.auth().onAuthStateChanged(user => {
+    //Checks to see if this user has information in the database. If so, grab it 
     if (user) {
         uuid = user.uid;
         console.log("Logged in");
-
+        //Grab user data
         database.ref("/users/" + uuid).once("value", function(snapshot) {
             if (snapshot.val()) {
                 userData = snapshot;
-                console.log(userData.val());
                 pantry = [];
                 $.each(userData.val().pantry, function(index, key) {
                     pantry.push(key);
                 })
 
                 generatePantry();
-                console.log("pantry", pantry);
             }
         })
         isLoggedIn = true;
