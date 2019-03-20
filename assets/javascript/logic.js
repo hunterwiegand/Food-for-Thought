@@ -105,22 +105,19 @@ function generatePantry() {
 
 function generateRecipePantry() {
 
-    $("#pantry-list-div").empty();
+    $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
+        let foodHTML = createFoodItemHTML(value);
+        foodHTML.attr("data-food-name", value.name);
+        foodHTML.addClass("food");
+        $("#recipe-pantry-list-div").append(foodHTML);
 
-        let newDiv = $("<div>");
-        newDiv.addClass("food");
-        newDiv.attr("data-food-name", value.name);
-
-        $(newDiv).append(createFoodItemHTML(value));
-
-        $("#pantry-list-div").append(newDiv);
 
     })
 
 
-} 
+}
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
@@ -199,7 +196,6 @@ function createRecipeHTML(recipeObject) {
     ingredientCol.attr("class", "col-5");
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
-
     return containerDiv;
 }
 
@@ -241,7 +237,7 @@ var modal = document.getElementById("simpleModal");
 // Get open modal button
 var modalBtn = document.getElementById("modalBtn");
 // Get close button
-var closeBtn = document.getElementsByClassName ("closeBtn") [0];
+var closeBtn = document.getElementsByClassName("closeBtn")[0];
 
 //--------------------------------------------------
 //               Login Page UI Interactions
@@ -258,30 +254,30 @@ $("#login-button").on("click", function() {
 
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
-        console.log(event.message);
-   
-        if(password !== promise){
-            (modal.style.display = "block");
-        }
-    
-    })
-    // Listen for close click
+            console.log(event.message);
+
+            if (password !== promise) {
+                (modal.style.display = "block");
+            }
+
+        })
+        // Listen for close click
     closeBtn.addEventListener("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         modal.style.display = "none";
-        }
-
-// Funtion to close modal if click outside of modal
-    function outsideClick(e){
-    if(e.target === modal){
-    modal.style.display = "none";
     }
 
-    $("#user-email").val("");
-    $("#user-password").val("");
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+
+        $("#user-email").val("");
+        $("#user-password").val("");
     }
 })
 
@@ -294,38 +290,37 @@ $("#signup-button").on("click", function() {
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-     // Confirm 1st entered password = 2nd entered password or open modal 
-            if (password !== passwordConfirm){
-                (modal.style.display = "block");
-            }
-            else {
-                const auth = firebase.auth();
-                const promise = auth.createUserWithEmailAndPassword(email, password);
+    // Confirm 1st entered password = 2nd entered password or open modal 
+    if (password !== passwordConfirm) {
+        (modal.style.display = "block");
+    } else {
+        const auth = firebase.auth();
+        const promise = auth.createUserWithEmailAndPassword(email, password);
 
-                promise.catch(function(event) {
-                console.log("created account");
-                
-         })
-        }
+        promise.catch(function(event) {
+            console.log("created account");
+
+        })
+    }
 
     // Listen for close click
     closeBtn.addEventListener("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         modal.style.display = "none";
+    }
+
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
         }
 
-// Funtion to close modal if click outside of modal
-function outsideClick(e){
-    if(e.target === modal){
-    modal.style.display = "none";
     }
- 
-}
 
-    
+
     $("#signup-email").val("");
     $("#signup-password").val("");
 })
@@ -379,7 +374,7 @@ $(document).on("click", ".food", function() {
     let newDiv = $("<div>");
     newDiv.addClass("recipe-food-item");
     newDiv.prepend(foodName + " ");
-    
+
 
     $("#recipe-search-text").prepend(newDiv);
 
@@ -412,9 +407,9 @@ function callEdaRec(userFoodItem) {
 
 
         var hits = response.hits;
-
+        console.log(hits);
         for (var i = 0; i < hits.length; i++) {
-            
+
             let newRecipe = createRecipeObject(hits[i].recipe);
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
@@ -489,6 +484,7 @@ firebase.auth().onAuthStateChanged(user => {
         isLoggedIn = false;
     }
 })
+
 
 function updateFirebase(location, value) {
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
