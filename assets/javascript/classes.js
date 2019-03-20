@@ -17,7 +17,36 @@ class recipe {
 
 class foodItem {
     constructor(foodItemJSON, measurement, quantity, category) {
-        this.name = foodItemJSON.label;
+
+        let counter = "0";
+        let nameArr = [];
+        let nameStr = foodItemJSON.label;
+        let name = "";
+
+
+        console.log(typeof nameStr);
+        console.log(nameStr);
+        console.log(nameStr.length);
+
+        for (var i = 0; i < nameStr.length + 1; i++) {
+            if (nameStr.charAt(i) != ",") {
+                nameArr.push(nameStr.charAt(i));
+            } else if (nameStr.charAt(i) === "," && counter === "0") {
+                nameArr.push(nameStr.charAt(i));
+                counter++;
+            } else {
+                break;
+            }
+        }
+
+        console.log("nameArr: ", nameArr);
+
+        name = nameArr.join("");
+
+        console.log(name);
+        
+
+        this.name = name;
         this.quantity = quantity;
         this.measurement = measurement;
         this.category = category;
