@@ -105,22 +105,19 @@ function generatePantry() {
 
 function generateRecipePantry() {
 
-    $("#pantry-list-div").empty();
+    $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
+        let foodHTML = createFoodItemHTML(value);
+        foodHTML.attr("data-food-name", value.name);
+        foodHTML.addClass("food");
+        $("#recipe-pantry-list-div").append(foodHTML);
 
-        let newDiv = $("<div>");
-        newDiv.addClass("food");
-        newDiv.attr("data-food-name", value.name);
-
-        $(newDiv).append(createFoodItemHTML(value));
-
-        $("#pantry-list-div").append(newDiv);
 
     })
 
 
-} 
+}
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
@@ -191,15 +188,16 @@ function createRecipeHTML(recipeObject) {
     containerDiv.append(imageCol);
     let nameCol = $("<div>");
     nameCol.attr("class", "col-4");
-    nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
-    nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    nameCol.append($("<div class='recipe-title row'>").text(recipeObject.name))
+    nameCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    console.log(recipeObject.url);
+    nameCol.append($("<div class='row'>").append(createRecipeDirectionLink(recipeObject.url)));
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
-
     return containerDiv;
 }
 
@@ -226,13 +224,45 @@ function createNutritionHTML(nutritionObject) {
 }
 
 function createIngredientsHTML(ingredients) {
+<<<<<<< HEAD
+    let containerDiv = $("<div>");
+    let titleDiv = $("<div class='ingredients-title col'>");
+    titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
+    let ingredientsUL = $("<ul>");
+=======
     let ingredientsDiv = $("<div class='row'>");
     ingredientsDiv.append($("<div class='ingredients-title col'>").text("Ingredients:"));
+>>>>>>> 8f7fb51d682a52eb82406d9356040dae107587b3
     $.each(ingredients, function(key, value) {
-        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
+        ingredientsUL.append($("<ul class='ingredient'>").text(value));
     })
+    containerDiv.append(titleDiv);
+    containerDiv.append(ingredientsUL)
+    return containerDiv;
+}
 
-    return ingredientsDiv;
+function createRecipeDirectionLink(directionLink) {
+    let containerDiv = $("<div>");
+    let directionButton = $("<button>");
+    directionButton.addClass("button");
+    directionButton.text("Cook Me!");
+    let directionModal = $("<div>");
+    directionModal.addClass("modal");
+    let directionModalContent = $("<div>");
+    directionModalContent.addClass("modal-content");
+    let ModalCloseButton = $("<span>");
+    ModalCloseButton.addClass("closeBtn");
+
+
+    directionModalContent.append(ModalCloseButton);
+    directionModalContent.append($("<span>").text("THIS IS THE LINK! " + directionLink));
+    directionModal.append(directionModalContent);
+    directionButton.append(directionModal);
+    containerDiv.append(directionButton);
+
+    return containerDiv;
+
+    console.log("got here!")
 }
 
 // Get modal element
@@ -241,7 +271,7 @@ var modal = document.getElementById("simpleModal");
 // Get open modal button
 var modalBtn = document.getElementById("modalBtn");
 // Get close button
-var closeBtn = document.getElementsByClassName ("closeBtn") [0];
+var closeBtn = document.getElementsByClassName("closeBtn")[0];
 
 //--------------------------------------------------
 //               Login Page UI Interactions
@@ -258,30 +288,30 @@ $("#login-button").on("click", function() {
 
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
-        console.log(event.message);
-   
-        if(password !== promise){
-            (modal.style.display = "block");
-        }
-    
-    })
-    // Listen for close click
+            console.log(event.message);
+
+            if (password !== promise) {
+                (modal.style.display = "block");
+            }
+
+        })
+        // Listen for close click
     closeBtn.addEventListener("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         modal.style.display = "none";
-        }
-
-// Funtion to close modal if click outside of modal
-    function outsideClick(e){
-    if(e.target === modal){
-    modal.style.display = "none";
     }
 
-    $("#user-email").val("");
-    $("#user-password").val("");
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
+        }
+
+        $("#user-email").val("");
+        $("#user-password").val("");
     }
 })
 
@@ -294,38 +324,37 @@ $("#signup-button").on("click", function() {
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-     // Confirm 1st entered password = 2nd entered password or open modal 
-            if (password !== passwordConfirm){
-                (modal.style.display = "block");
-            }
-            else {
-                const auth = firebase.auth();
-                const promise = auth.createUserWithEmailAndPassword(email, password);
+    // Confirm 1st entered password = 2nd entered password or open modal 
+    if (password !== passwordConfirm) {
+        (modal.style.display = "block");
+    } else {
+        const auth = firebase.auth();
+        const promise = auth.createUserWithEmailAndPassword(email, password);
 
-                promise.catch(function(event) {
-                console.log("created account");
-                
-         })
-        }
+        promise.catch(function(event) {
+            console.log("created account");
+
+        })
+    }
 
     // Listen for close click
     closeBtn.addEventListener("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         modal.style.display = "none";
+    }
+
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === modal) {
+            modal.style.display = "none";
         }
 
-// Funtion to close modal if click outside of modal
-function outsideClick(e){
-    if(e.target === modal){
-    modal.style.display = "none";
     }
- 
-}
 
-    
+
     $("#signup-email").val("");
     $("#signup-password").val("");
 })
@@ -379,7 +408,7 @@ $(document).on("click", ".food", function() {
     let newDiv = $("<div>");
     newDiv.addClass("recipe-food-item");
     newDiv.prepend(foodName + " ");
-    
+
 
     $("#recipe-search-text").prepend(newDiv);
 
@@ -412,9 +441,9 @@ function callEdaRec(userFoodItem) {
 
 
         var hits = response.hits;
-
+        console.log(hits);
         for (var i = 0; i < hits.length; i++) {
-            
+
             let newRecipe = createRecipeObject(hits[i].recipe);
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
@@ -489,6 +518,7 @@ firebase.auth().onAuthStateChanged(user => {
         isLoggedIn = false;
     }
 })
+
 
 function updateFirebase(location, value) {
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
