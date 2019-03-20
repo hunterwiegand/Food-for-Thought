@@ -182,6 +182,8 @@ function addRecipeToCalender(recipeObject) {
 }
 
 function createRecipeHTML(recipeObject) {
+
+    console.log("here in create recipe");
     // let containerDiv = $("<div>");
     // containerDiv.attr("class", "recipe-container row")
     // let imageCol = $("<div>");
@@ -216,6 +218,8 @@ function createRecipeHTML(recipeObject) {
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
 
+    console.log("end of create recipe");
+
     return containerDiv;
 }
 
@@ -243,9 +247,9 @@ function createNutritionHTML(nutritionObject) {
 
 function createIngredientsHTML(ingredients) {
     let ingredientsDiv = $("<div class='row'>");
-    ingredientsDiv.append($("<div class='ingredients-title col").text("Ingredients:"));
+    ingredientsDiv.append($("<div class='ingredients-title col'>").text("Ingredients:"));
     $.each(ingredients, function(key, value) {
-        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(key)));
+        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
     })
 
     return ingredientsDiv;
@@ -441,9 +445,12 @@ function callEdaRec(userFoodItem) {
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
 
+            console.log(typeof newRecipe);
+
             let newHTML = createRecipeHTML(newRecipe);
 
-            console.log("newHTML", newHTML);
+            console.log("ello");
+            console.log(newHTML);
             console.log(typeof newHTML);
 
             $("#recipe-search-text").append(newHTML);
