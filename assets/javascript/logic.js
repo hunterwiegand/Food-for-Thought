@@ -216,17 +216,11 @@ $("#logout-button").on("click", function() {
     auth.signOut();
 })
 
-<<<<<<< HEAD
-//-------------------------------------------------
-//              Pantry OnClicks
-//-------------------------------------------------
-=======
 //---------------------------------------------
 //         Recipe Page UI Interactions
 //---------------------------------------------
 
 
->>>>>>> 43cb3e9f61ecf7d376b757ff24cef35804b20822
 //TODO: Tie this to the actual search button for recipes
 $("#recipe-search-button").click(function() {
     let searchTerm = $("#recipe-search-text").val();
@@ -345,11 +339,8 @@ firebase.auth().onAuthStateChanged(user => {
                 })
 
                 generatePantry();
-<<<<<<< HEAD
                 generateRecipePantry();
                 console.log("pantry", pantry);
-=======
->>>>>>> 43cb3e9f61ecf7d376b757ff24cef35804b20822
             }
         })
         isLoggedIn = true;
