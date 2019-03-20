@@ -18,7 +18,6 @@ class recipe {
 class foodItem {
     constructor(foodItemJSON, quantity = 1, measurement = "unit", category = "none") {
         this.name = foodItemJSON.label;
-        this.nutrition = new nutritionInfo(foodItemJSON.nutrients);
         this.quantity = quantity;
         this.measurement = measurement;
         this.category = category;

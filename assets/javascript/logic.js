@@ -85,7 +85,9 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
+    console.log(pantry);
     pantry.push(foodObject);
+    console.log(pantry);
     updateFirebase("pantry", foodObject);
     generatePantry();
 }
@@ -123,7 +125,6 @@ function createFoodItemHTML(foodItemObject) {
     containerDiv.attr("food-name", foodItemObject.name);
     containerDiv.append($("<span class='food-item-title'>").text(foodItemObject.name));
     containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
-    containerDiv.append($("<span>").html(createNutritionHTML(foodItemObject.nutrition)));
     containerDiv.append($("<span>").html(foodItemObject.category));
 
     return containerDiv;
@@ -149,13 +150,11 @@ function createIngredientsHTML(ingredients) {
 
     return ingredientsDiv;
 }
-//--------------------------------------------------
-//            UI interactions
-//--------------------------------------------------
 
 //--------------------------------------------------
-//               Login Page
+//               Login Page UI Interactions
 //--------------------------------------------------
+
 $("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
@@ -221,7 +220,6 @@ $("#searchButton").click(function() {
 $("#add-item-btn").click(function(event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
-    console.log(searchTerm);
     callEdaFoodByName(searchTerm);
 })
 
@@ -289,8 +287,9 @@ function callEdaFoodByName(foodName) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
+        console.log(response.hints[0]);
         let newFoodItem = createFoodItemObject(response.hints[0].food);
-
+        console.log(newFoodItem);
         addItemToPantry(newFoodItem);
 
         //$("#pantryList").append(createFoodItemHTML(newFoodItem));
