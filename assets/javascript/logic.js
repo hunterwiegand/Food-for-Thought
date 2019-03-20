@@ -224,10 +224,15 @@ function createNutritionHTML(nutritionObject) {
 }
 
 function createIngredientsHTML(ingredients) {
+<<<<<<< HEAD
     let containerDiv = $("<div>");
     let titleDiv = $("<div class='ingredients-title col'>");
     titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
     let ingredientsUL = $("<ul>");
+=======
+    let ingredientsDiv = $("<div class='row'>");
+    ingredientsDiv.append($("<div class='ingredients-title col'>").text("Ingredients:"));
+>>>>>>> 8f7fb51d682a52eb82406d9356040dae107587b3
     $.each(ingredients, function(key, value) {
         ingredientsUL.append($("<ul class='ingredient'>").text(value));
     })
@@ -376,6 +381,10 @@ $("#add-item-btn").click(function(event) {
 
 })
 
+//---------------------------------------------
+//        Recipe Page UI Interactions
+//---------------------------------------------
+
 $("#recipe-search-button").click(function() {
 
     let searchTerm = ($(".recipe-food-item").text());
@@ -390,10 +399,6 @@ $("#recipe-search-button").click(function() {
 
     callEdaRec(searchTerm);
 })
-
-//---------------------------------------------
-//        Recipe Page UI Interactions
-//---------------------------------------------
 
 $(document).on("click", ".food", function() {
     console.log("food item was clicked");
@@ -439,16 +444,11 @@ function callEdaRec(userFoodItem) {
         console.log(hits);
         for (var i = 0; i < hits.length; i++) {
 
-            console.log("test");
-
             let newRecipe = createRecipeObject(hits[i].recipe);
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
 
             let newHTML = createRecipeHTML(newRecipe);
-
-            console.log("newHTML", newHTML);
-            console.log(typeof newHTML);
 
             $("#recipe-search-text").append(newHTML);
             //TODO: Display this recipeHTML object in results
