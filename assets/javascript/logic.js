@@ -27,6 +27,65 @@ var config = {
 firebase.initializeApp(config);
 database = firebase.database();
 
+function unitConversion(originalAmount, originalType, changeType) {
+    let teaSpoonConversion = {
+        tablespoon: 1 / 3,
+        cup: teaSpoonConversion.tablespoon / 16,
+        pint: teaSpoonConversion.cup / 2,
+        quart: teaSpoonConversion.pint / 2,
+        gallon: teaSpoonConversion.quart / 4,
+    }
+
+    let tableSpoonConversion = {
+        teaspoon: 3,
+        cup: teaSpoonConversion.cup * 3,
+        pint: teaSpoonConversion.pint * 3,
+        quart: teaSpoonConversion.quart * 3,
+        gallon: teaSpoonConversion.gallon * 3
+    }
+
+    let pintConversion = {
+        teaspoon: tableSpoonConversion.teaspoon * 2,
+        tablespoon: 2,
+        cup: tableSpoonConversion.cup * 2,
+        quart: tableSpoonConversion.quart * 2,
+        gallon: tableSpoonConversion.gallon * 2
+    }
+
+    let quartConversion = {
+        teaspoon: pintConversion.teaspoon * 2,
+        tablespoon: pintConversion.tablespoon * 2,
+        cup: pintConversion.cup * 2,
+        pint: 2,
+        gallon: pintConversion.gallon * 2
+    }
+
+    let gallonConversion = {
+        teaspoon: quartConversion.teaspoon * 4,
+        tablespoon: quartConversion.tablespoon * 4,
+        cup: quartConversion.cup * 4,
+        pint: quartConversion.pint * 4,
+        quart: 4,
+    }
+
+    switch (originalType) {
+        case "teaspoon":
+            return teaSpoonConversion[changeType] * originalAmount;
+        case "tablespoon":
+            return tableSpoonConversion[changeType] * originalAmount;
+        case "pint":
+            return pintConversion[changeType] * originalAmount;
+        case "quart":
+            return quartConversion[changeType] * originalAmount;
+        case "gallon":
+            return gallonConversion[changeType] * originalAmount;
+        default:
+            console.log("conversion not supported");
+            return undefined;
+
+    }
+}
+
 //--------------------------------------------------
 //              Page Setup Functions
 //--------------------------------------------------
@@ -72,8 +131,8 @@ function createRecipeObject(recipeJSON) {
     return new recipe(recipeJSON);
 }
 
-function createFoodItemObject(foodItemJSON) {
-    return new foodItem(foodItemJSON);
+function createFoodItemObject(foodItemJSON, measurement, quantity, category) {
+    return new foodItem(foodItemJSON, measurement, quantity, category);
 }
 
 
@@ -85,7 +144,9 @@ function createFoodItemObject(foodItemJSON) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
+    console.log(pantry);
     pantry.push(foodObject);
+    console.log(pantry);
     updateFirebase("pantry", foodObject);
     generatePantry();
 }
@@ -119,14 +180,14 @@ function createRecipeHTML(recipeObject) {
 }
 
 function createFoodItemHTML(foodItemObject) {
-    let containerDiv = $("<div>");
-    containerDiv.attr("food-name", foodItemObject.name);
-    containerDiv.append($("<span class='food-item-title'>").text(foodItemObject.name));
-    containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
-    containerDiv.append($("<span>").html(createNutritionHTML(foodItemObject.nutrition)));
-    containerDiv.append($("<span>").html(foodItemObject.category));
+    let tableRow = $("<tr>");
+    tableRow.attr("food-name", foodItemObject.name);
+    tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
-    return containerDiv;
+    return tableRow;
 }
 
 function createNutritionHTML(nutritionObject) {
@@ -149,13 +210,11 @@ function createIngredientsHTML(ingredients) {
 
     return ingredientsDiv;
 }
-//--------------------------------------------------
-//            UI interactions
-//--------------------------------------------------
 
 //--------------------------------------------------
-//               Login Page
+//               Login Page UI Interactions
 //--------------------------------------------------
+
 $("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
@@ -213,16 +272,16 @@ $("#recipe-search-button").click(function() {
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
-$("#searchButton").click(function() {
-    let searchTerm = $("#input").val();
-    callEdaFood(searchTerm);
-})
-
 $("#add-item-btn").click(function(event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
-    console.log(searchTerm);
-    callEdaFoodByName(searchTerm);
+    //Checks to see if the entry is only numbers (making it a barcode).
+    if (/^\d+$/.test(searchTerm)) {
+        callEdaFood(searchTerm); // is a barcode
+    } else {
+        callEdaFoodByName(searchTerm); // Is not a barcode
+    }
+
 })
 
 
@@ -271,7 +330,7 @@ function callEdaFood(barcodeNum) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
 
 
         addItemToPantry(newFoodItem);
@@ -289,11 +348,8 @@ function callEdaFoodByName(foodName) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
-
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
-
-        //$("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 }
 
