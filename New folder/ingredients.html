@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Ingredients</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="" X-UA-Compatible content="ie=edge">
+  
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+
+</head>
+
+<body class="ingredients">
+
+  <h1>Food for Thought</h1>
+  <h2 class=ingrdPageHeader>Ingredients on Hand</h2>
+
+<!-- Navigation Bar -->
+
+<div class="container" id="menu">
+    <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+            <ul class="navbar-nav">
+              <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+              <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+              <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+              <a class="navbar-brand" style="color: white" href="shopping.html">Shopping List</a>
+              <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+</ul>
+    </nav>
+</div>
+
+<div class="searchBox">
+  <div class="input-group mb-3">
+  <input type="text" id="input" class="form-control" placeholder="Enter Product Barcode Here" aria-label="Barcodebox" aria-describedby="basic-addon2">
+  <div class="input-group-append"></div>
+    <button id="searchButton" type="button">Submit</button>
+  </div>
+</div>
+</div>
+
+
+<!-- User input for ingredients -->
+<div class="container" id="ingredientsList">
+  <div class="row">
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <div class="input-group-text">
+        <input type="checkbox" aria-label="Checkbox for following text input">
+      </div>
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with checkbox">
+  </div>
+  
+  <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="checkbox" aria-label="Checkbox for following text input">
+        </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with checkbox">
+    </div>
+    
+  <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="checkbox" aria-label="Checkbox for following text input">
+        </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with checkbox">
+    </div>
+
+  <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="checkbox" aria-label="Checkbox for following text input">
+        </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with checkbox">
+    </div>
+    
+  <div class="input-group mb-3">
+      <div class="input-group-prepend">
+        <div class="input-group-text">
+          <input type="checkbox" aria-label="Checkbox for following text input">
+        </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with checkbox">
+    </div>
+
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <div class="input-group-text">
+            <input type="checkbox" aria-label="Checkbox for following text input">
+          </div>
+        </div>
+        <input type="text" class="form-control" aria-label="Text input with checkbox">
+      </div>
+  
+
+  </div>
+</div>
+
+<!-- Firebase Script-->
+<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+
+<!-- Jquery Script-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- Bootstrap JavaScript -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+<!-- Custom JavaScript-->
+<script src="assets/javascript/classes.js"></script>
+
+<script src="assets/javascript/logic.js"></script>
+</body>
+
+</html>
