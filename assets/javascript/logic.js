@@ -72,8 +72,8 @@ function createRecipeObject(recipeJSON) {
     return new recipe(recipeJSON);
 }
 
-function createFoodItemObject(foodItemJSON) {
-    return new foodItem(foodItemJSON);
+function createFoodItemObject(foodItemJSON, measurement, quantity, category) {
+    return new foodItem(foodItemJSON, measurement, quantity, category);
 }
 
 
@@ -212,15 +212,16 @@ $("#recipe-search-button").click(function() {
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
-$("#searchButton").click(function() {
-    let searchTerm = $("#input").val();
-    callEdaFood(searchTerm);
-})
-
 $("#add-item-btn").click(function(event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
-    callEdaFoodByName(searchTerm);
+    //Checks to see if the entry is only numbers (making it a barcode).
+    if (/^\d+$/.test(searchTerm)) {
+        callEdaFood(searchTerm); // is a barcode
+    } else {
+        callEdaFoodByName(searchTerm); // Is not a barcode
+    }
+
 })
 
 
@@ -269,7 +270,7 @@ function callEdaFood(barcodeNum) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
 
 
         addItemToPantry(newFoodItem);
@@ -287,12 +288,8 @@ function callEdaFoodByName(foodName) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        console.log(response.hints[0]);
-        let newFoodItem = createFoodItemObject(response.hints[0].food);
-        console.log(newFoodItem);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
-
-        //$("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 }
 
