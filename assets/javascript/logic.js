@@ -1,5 +1,6 @@
 let pantry = [];
 let shoppingList = [];
+// let recipe = [];
 let isLoggedIn = false;
 let userData;
 
@@ -163,9 +164,7 @@ function createFoodItemObject(foodItemJSON, measurement, quantity, category) {
 
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
-    console.log(pantry);
     pantry.push(foodObject);
-    console.log(pantry);
     updateFirebase("pantry", foodObject);
     generatePantry();
 }
@@ -177,7 +176,29 @@ function addItemToShoppingList(foodObject) {
     generateShoppingList();
 }
 
+function addRecipeToCalender(recipeObject) {
+    console.log(recipeObject.name, "Added to Calender");
+    recipe.push(recipeObject);
+}
+
 function createRecipeHTML(recipeObject) {
+    // let containerDiv = $("<div>");
+    // containerDiv.attr("class", "recipe-container row")
+    // let imageCol = $("<div>");
+    // imageCol.attr("class", "col-3");
+    // imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
+    // containerDiv.append(imageCol);
+    // let nameCol = $("<div>");
+    // nameCol.attr("class", "col-4");
+    // nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
+    // nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    // nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    // containerDiv.append(nameCol);
+    // let ingredientCol = $("<div>");
+    // ingredientCol.attr("class", "col-5");
+    // ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
+    // containerDiv.append(ingredientCol);
+
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
     let imageCol = $("<div>");
@@ -192,7 +213,7 @@ function createRecipeHTML(recipeObject) {
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
-    incredientCol.append(createIngredientsHTML(recipeObject.ingredients));
+    ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
 
     return containerDiv;
@@ -346,7 +367,7 @@ var edaFoodKey = "13cb0a3f237838bbc1414d50596d2015";
 
 //Function to call EDAMAM RECIPE DATABASE
 function callEdaRec(userFoodItem) {
-    var queryURL = "https://api.edamam.com/search?q=" + userFoodItem + "&app_id=" + edaRecId + "&app_key=" + edaRecKey;
+    var queryURL = "https://api.edamam.com/search?q=" + userFoodItem + "&app_id=" + edaRecId + "&app_key=" + edaRecKey + "&from=0&to=3";
     console.log(queryURL);
 
     $.ajax({
@@ -358,9 +379,19 @@ function callEdaRec(userFoodItem) {
         var hits = response.hits;
 
         for (var i = 0; i < hits.length; i++) {
+            
+            console.log("test");
 
             let newRecipe = createRecipeObject(hits[i].recipe);
+
+            console.log("newHTML", createRecipeObject(hits[i].recipe));
+
             let newHTML = createRecipeHTML(newRecipe);
+
+            console.log("newHTML", newHTML);
+            console.log(typeof newHTML);
+
+            $("#recipe-search-text").append(newHTML);
             //TODO: Display this recipeHTML object in results
         }
     })
@@ -376,10 +407,9 @@ function callEdaFood(barcodeNum) {
     }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
 
-
         addItemToPantry(newFoodItem);
 
-        $("#pantryList").append(createFoodItemHTML(newFoodItem));
+        // $("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 
 }
@@ -394,6 +424,8 @@ function callEdaFoodByName(foodName) {
     }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
+
+        console.log(newFoodItem);
     })
 }
 
@@ -419,7 +451,6 @@ firebase.auth().onAuthStateChanged(user => {
 
                 generatePantry();
                 generateRecipePantry();
-                console.log("pantry", pantry);
             }
         })
         isLoggedIn = true;

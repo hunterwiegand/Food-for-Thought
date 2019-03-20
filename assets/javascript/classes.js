@@ -23,11 +23,6 @@ class foodItem {
         let nameStr = foodItemJSON.label;
         let name = "";
 
-
-        console.log(typeof nameStr);
-        console.log(nameStr);
-        console.log(nameStr.length);
-
         for (var i = 0; i < nameStr.length + 1; i++) {
             if (nameStr.charAt(i) != ",") {
                 nameArr.push(nameStr.charAt(i));
@@ -39,13 +34,8 @@ class foodItem {
             }
         }
 
-        console.log("nameArr: ", nameArr);
-
         name = nameArr.join("");
-
-        console.log(name);
         
-
         this.name = name;
         this.quantity = quantity;
         this.measurement = measurement;
