@@ -357,10 +357,6 @@ $("#logout-button").on("click", function() {
 })
 
 //---------------------------------------------
-//         Recipe Page UI Interactions
-//---------------------------------------------
-
-//---------------------------------------------
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
@@ -376,6 +372,10 @@ $("#add-item-btn").click(function(event) {
 
 })
 
+//---------------------------------------------
+//        Recipe Page UI Interactions
+//---------------------------------------------
+
 $("#recipe-search-button").click(function() {
 
     let searchTerm = ($(".recipe-food-item").text());
@@ -390,10 +390,6 @@ $("#recipe-search-button").click(function() {
 
     callEdaRec(searchTerm);
 })
-
-//---------------------------------------------
-//        Recipe Page UI Interactions
-//---------------------------------------------
 
 $(document).on("click", ".food", function() {
     console.log("food item was clicked");
@@ -439,19 +435,11 @@ function callEdaRec(userFoodItem) {
 
         for (var i = 0; i < hits.length; i++) {
             
-            console.log("test");
-
             let newRecipe = createRecipeObject(hits[i].recipe);
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
 
-            console.log(typeof newRecipe);
-
             let newHTML = createRecipeHTML(newRecipe);
-
-            console.log("ello");
-            console.log(newHTML);
-            console.log(typeof newHTML);
 
             $("#recipe-search-text").append(newHTML);
             //TODO: Display this recipeHTML object in results
