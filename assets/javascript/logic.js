@@ -188,9 +188,11 @@ function createRecipeHTML(recipeObject) {
     containerDiv.append(imageCol);
     let nameCol = $("<div>");
     nameCol.attr("class", "col-4");
-    nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
-    nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
+    nameCol.append($("<div class='recipe-title row'>").text(recipeObject.name))
+    nameCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    console.log(recipeObject.url);
+    nameCol.append($("<div class='row'>").append(createRecipeDirectionLink(recipeObject.url)));
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
@@ -222,15 +224,40 @@ function createNutritionHTML(nutritionObject) {
 }
 
 function createIngredientsHTML(ingredients) {
-    let ingredientsDiv = $("<div class='row'>");
+    let containerDiv = $("<div>");
     let titleDiv = $("<div class='ingredients-title col'>");
-    titleDiv.text("Ingredients:");
-    ingredientsDiv.append(titleDiv);
+    titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
+    let ingredientsUL = $("<ul>");
     $.each(ingredients, function(key, value) {
-        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
+        ingredientsUL.append($("<ul class='ingredient'>").text(value));
     })
+    containerDiv.append(titleDiv);
+    containerDiv.append(ingredientsUL)
+    return containerDiv;
+}
 
-    return ingredientsDiv;
+function createRecipeDirectionLink(directionLink) {
+    let containerDiv = $("<div>");
+    let directionButton = $("<button>");
+    directionButton.addClass("button");
+    directionButton.text("Cook Me!");
+    let directionModal = $("<div>");
+    directionModal.addClass("modal");
+    let directionModalContent = $("<div>");
+    directionModalContent.addClass("modal-content");
+    let ModalCloseButton = $("<span>");
+    ModalCloseButton.addClass("closeBtn");
+
+
+    directionModalContent.append(ModalCloseButton);
+    directionModalContent.append($("<span>").text("THIS IS THE LINK! " + directionLink));
+    directionModal.append(directionModalContent);
+    directionButton.append(directionModal);
+    containerDiv.append(directionButton);
+
+    return containerDiv;
+
+    console.log("got here!")
 }
 
 // Get modal element
