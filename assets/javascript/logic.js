@@ -180,26 +180,22 @@ function addRecipeToCalender(recipeObject) {
 
 function createRecipeHTML(recipeObject) {
 
-    console.log("beginning")
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
     let imageCol = $("<div>");
     imageCol.attr("class", "col-3");
     imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
     containerDiv.append(imageCol);
-    console.log("name Col")
     let nameCol = $("<div>");
     nameCol.attr("class", "col-4");
     nameCol.append($("<div class='recipe-title row>").text(recipeObject.name))
     nameCol.append($("<div class='recipe-item row>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
     containerDiv.append(nameCol);
-    console.log("ingredients")
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
-    console.log("finished")
     return containerDiv;
 }
 
@@ -226,14 +222,11 @@ function createNutritionHTML(nutritionObject) {
 }
 
 function createIngredientsHTML(ingredients) {
-    console.log("loop")
     let ingredientsDiv = $("<div class='row'>");
     let titleDiv = $("<div class='ingredients-title col'>");
     titleDiv.text("Ingredients:");
     ingredientsDiv.append(titleDiv);
-    console.log(ingredients);
     $.each(ingredients, function(key, value) {
-        console.log("iteration")
         ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
     })
 
