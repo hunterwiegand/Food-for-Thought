@@ -121,13 +121,14 @@ function createRecipeHTML(recipeObject) {
 }
 
 function createFoodItemHTML(foodItemObject) {
-    let containerDiv = $("<div>");
-    containerDiv.attr("food-name", foodItemObject.name);
-    containerDiv.append($("<span class='food-item-title'>").text(foodItemObject.name));
-    containerDiv.append($("<span class='food-item-item>").text("Quantity: " + foodItemObject.quantity + foodItemObject.measurement));
-    containerDiv.append($("<span>").html(foodItemObject.category));
+    let tableRow = $("<tr>");
+    tableRow.attr("food-name", foodItemObject.name);
+    tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
-    return containerDiv;
+    return tableRow;
 }
 
 function createNutritionHTML(nutritionObject) {
@@ -288,7 +289,7 @@ function callEdaFoodByName(foodName) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
     })
 }
