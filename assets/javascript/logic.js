@@ -229,7 +229,7 @@ function createIngredientsHTML(ingredients) {
     titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
     let ingredientsUL = $("<ul>");
     $.each(ingredients, function(key, value) {
-        ingredientsUL.append($("<ul class='ingredient'>").text(value));
+        ingredientsUL.append($("<li class='ingredient'>").text(value));
     })
     containerDiv.append(titleDiv);
     containerDiv.append(ingredientsUL)
@@ -256,8 +256,38 @@ function createRecipeDirectionLink(directionLink) {
     containerDiv.append(directionButton);
 
     return containerDiv;
+}
 
-    console.log("got here!")
+function createRecipeIngredientAllocationTable(ingredients) {
+    let containerDiv = $("<div>");
+    let ingredientsTable = $("<table>");
+    let headerRow = $("<tr>");
+    headerRow.append($("<th>").text("Ingredients"));
+    headerRow.append($("<th>").text("What to use"));
+    headerRow.append($("<th>").text("How much"));
+    headerRow.append($("<th>").text("Measurement"));
+    ingredientsTable.append(headerRow);
+    $.each(ingredients, function(key, value) {
+        let currentRow = $("<tr>");
+        currentRow.append($("<th>").text(value));
+        currentRow.append($("<th>").append(createReipeDropDown(key)));
+        currentRow.append($("<th>").append($("<input type='text' id='quantity-" + key + "'>")));
+        currentRow.append($("<th>").append($("<input type='text' id='measurement-" + key + "'>")));
+    })
+
+
+
+    return containerDiv;
+}
+
+function createRecipeDropDown(index) {
+    let ingredientSelect = $("<select id='ingredientSelect-" + index + "'>");
+    ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
+    $.each(pantry, function(key, value) {
+        ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
+    })
+
+    return ingredientSelect;
 }
 
 // Get modal element
@@ -517,4 +547,4 @@ firebase.auth().onAuthStateChanged(user => {
 
 function updateFirebase(location, value) {
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
-}
+}.
