@@ -363,17 +363,6 @@ $("#login-button").on("click", function() {
 
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
-<<<<<<< HEAD
-            console.log(event.message);
-
-            if (password !== promise) {
-                (modal.style.display = "block");
-            }
-
-        })
-        // Listen for close click
-    closeBtn.addEventListener("click", closeModal);
-=======
         console.log(event.message);
    
         if(password !== promise){
@@ -384,7 +373,6 @@ $("#login-button").on("click", function() {
     })
     // Listen for close click
     $('.loginCloseBtn').on("click", closeModal);
->>>>>>> 629ffad27ffdfcc054497e3399237fee89779e1a
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
@@ -412,20 +400,6 @@ $("#signup-button").on("click", function() {
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-<<<<<<< HEAD
-    // Confirm 1st entered password = 2nd entered password or open modal 
-    if (password !== passwordConfirm) {
-        (modal.style.display = "block");
-    } else {
-        const auth = firebase.auth();
-        const promise = auth.createUserWithEmailAndPassword(email, password);
-
-        promise.catch(function(event) {
-            console.log("created account");
-
-        })
-    }
-=======
      // Confirm 1st entered password = 2nd entered password or open modal 
             if (password !== passwordConfirm){
                 (loginModal.modal('show'));
@@ -440,7 +414,6 @@ $("#signup-button").on("click", function() {
                 
          })
         }
->>>>>>> 629ffad27ffdfcc054497e3399237fee89779e1a
 
     // Listen for close click
     closeBtn.on("click", closeModal);

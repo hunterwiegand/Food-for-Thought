@@ -29,6 +29,7 @@ h1 {
 
 #menu3 {
     margin-top: -2%;
+    padding: 3%;
 }
 
 #menu4 {
@@ -73,7 +74,8 @@ h4 {
     font-family: 'Roboto', sans-serif;
     text-align: center;
     padding-left: 20%;
-    margin-top: -15%;
+    margin-top: -20%;
+    padding-top: 0%;
 }
 
 .btn-primary {
@@ -105,7 +107,7 @@ h4 {
 
 .container {
     box-align: center;
-    background-color: white;
+    background-color:transparent;
     padding: 20px;
 }
 
