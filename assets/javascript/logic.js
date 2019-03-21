@@ -282,7 +282,17 @@ function createRecipeSelectionModal(recipe, index) {
     modalTen.text("Add to Calendar");
 
     modalTen.click(function() {
+
         //TODO: Need to update ingredients and shopping list and then update
+        for (let i = 0; i < recipe.ingredients.length; i++) {
+            let value = $("#ingredient-select-" + index).val();
+            if (value === -1) {
+                //TODO: push to shopping list (do we need to do an ingredient call?)
+            } else {
+                //TODO: update ingredients[value] and then update firebase
+            }
+        }
+
         //TODO: Need to check to make sure date and meal are selected and message player if they're not
         shownRecipes[index].mealPlanSlot = { date: $("#time-slot-date" + index).val(), meal: $('input[name=meal]:checked').attr("value") };
         recipes.push(shownRecipes[index]);
@@ -325,7 +335,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
 }
 
 function createRecipeDropDown(index) {
-    let ingredientSelect = $("<select class='custom-select' id='ingredientSelect-" + index + "'>");
+    let ingredientSelect = $("<select class='custom-select' id='ingredient-select-" + index + "'>");
     ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
     $.each(pantry, function(key, value) {
         ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
