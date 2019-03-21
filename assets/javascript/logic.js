@@ -4,8 +4,6 @@ let recipes = [];
 let shownRecipes = [];
 let isLoggedIn = false;
 let userData;
-let shownRecipe = [];
-let uuid;
 
 $(document).ready(function () {
     if (!isLoggedIn) { //not logged in yet
@@ -101,10 +99,28 @@ function generatePantry() {
     $("#pantry-list-div").empty();
 
     $.each(pantry, function (index, value) {
-        $("#pantry-list-div").append(createFoodItemHTML(value));
+        // console.log(value)
+        let foodItemHTML = createFoodItemHTML(value);
+        let container = $("<div>");
+        container.attr("id", value.identifier)
+        let xButton = $("<span>").text("x");
+        container.append(xButton, foodItemHTML);
 
+        xButton.click(function () {
+            removeFromFirebase("pantry", value.identifier);
+
+            $("#" + value.identifier).remove();
+
+            pantry.splice(index, 1);
+            console.log(pantry);
+        })
+
+        $("#pantry-list-div").append(container);
     })
+
+
 }
+
 
 function generateRecipePantry() {
 
@@ -185,11 +201,6 @@ function createRecipeHTML(recipeObject, index) {
 
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
-    var temp = JSON.stringify(test);
-    temp = JSON.parse(temp);
-    console.log("name: ", temp.name);
-    containerDiv.attr("data-recipe-obj", JSON.stringify(test));
-    // console.log(test);
     let imageCol = $("<div>");
     imageCol.attr("class", "col-3");
     imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
@@ -206,29 +217,31 @@ function createRecipeHTML(recipeObject, index) {
     ingredientCol.attr("class", "col-5");
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
-
-    let recipeButton = $("<button class='modal-recipe-button button'>Open Recipe</button>");
-    // <button type="button" id="MybtnModal" class="btn btn-primary">Open Modal Using jQuery</button>
-    containerDiv.append(recipeButton);
-
-
     return containerDiv;
 }
 
+//Create Food Item HTML for Pantry Page
 function createFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
+   
+    // let test = $("<td class='food-item-remove'>").text("x");
+
     tableRow.attr("food-name", foodItemObject.name);
-    tableRow.append($("<td class='food-item-remove'>").text("x"));
+
+    // tableRow.attr("data-id");
+
+    // tableRow.append(test);
+
+
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
-    // console.log(foodItemObject);
-
     return tableRow;
 }
 
+//Create Food Item HTML for Recipe Page
 function createRecipeFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
     tableRow.attr("food-name", foodItemObject.name);
@@ -256,7 +269,7 @@ function createIngredientsHTML(ingredients) {
     let titleDiv = $("<div class='ingredients-title col'>");
     titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
     let ingredientsUL = $("<ul>");
-    $.each(ingredients, function(key, value) {
+    $.each(ingredients, function (key, value) {
         ingredientsUL.append($("<li class='ingredient'>").text(value));
     })
     containerDiv.append(titleDiv);
@@ -268,7 +281,7 @@ function createRecipeDirectionLink(directionLink) {
     let containerDiv = $("<div>");
     let directionButton = $("<button class='btn btn-primary btn-lg' data-toggle='modal' data-target='#myModal'>");
     directionButton.text("Get Recipe");
-    directionButton.click(function() {
+    directionButton.click(function () {
         $("#direction-modal-info").attr("src", directionLink);
 
     })
@@ -308,7 +321,7 @@ function createRecipeSelectionModal(recipe, index) {
     let modalTen = $("<button type='button' class='btn btn-primary' id='add-to-calendar-button' data-dismiss='modal'>");
     modalTen.text("Add to Calendar");
 
-    modalTen.click(function() {
+    modalTen.click(function () {
 
         //TODO: Need to update ingredients and shopping list and then update
         for (let i = 0; i < recipe.ingredients.length; i++) {
@@ -349,7 +362,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
     headerRow.append($("<th>").text("Qty Left"));
     headerRow.append($("<th>").text("Measurement"));
     ingredientsTable.append(headerRow);
-    $.each(ingredients, function(key, value) {
+    $.each(ingredients, function (key, value) {
         let currentRow = $("<tr>");
         currentRow.append($("<td>").text(value));
         currentRow.append($("<td>").append(createRecipeDropDown(key)));
@@ -364,7 +377,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
 function createRecipeDropDown(index) {
     let ingredientSelect = $("<select class='custom-select' id='ingredient-select-" + index + "'>");
     ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
-    $.each(pantry, function(key, value) {
+    $.each(pantry, function (key, value) {
         ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
     })
 
@@ -398,7 +411,6 @@ var modal = document.getElementById("simpleModal");
 var modalBtn = document.getElementById("modalBtn");
 // Get close button
 var closeBtn = document.getElementsByClassName("closeBtn")[0];
-
 
 //--------------------------------------------------
 //               Login Page UI Interactions
@@ -508,18 +520,6 @@ $("#add-item-btn").click(function (event) {
 
 })
 
-//THIS IS THE ONCLICK FOR DELETE ITEM
-$(document).on("click", ".food-item-remove", function(event) {
-    console.log(userData.val());
-    console.log(uuid)
-    let ref = database.ref("users/" + uuid + "/recipeBook");
-    console.log(ref);
-    let foodName =("this.dataset", $(event).parent().attr("food-name"));
-    console.log(event);
-    
-})
-
-//Add on click for recipe to add to user recipeBook
 
 //---------------------------------------------
 //        Recipe Page UI Interactions
@@ -549,31 +549,11 @@ $(document).on("click", ".food", function () {
     newDiv.addClass("recipe-food-item");
     newDiv.prepend(foodName + " ");
 
+
     $("#recipe-search-text").prepend(newDiv);
+
 })
 
-
-// $(document).on("click", ".modal-recipe-button", function () {
-//     console.log("in modal button");
-//     $('#recipe-modal').modal('show')
-// });
-
- //THIS SENDS RECIPE TO USER DATABASE
-$(document).on("click", ".recipe-container", function () {
-    
-    // recipeModal.style.display = "block";  
-
-    // This code sets the recipe to the user firebase recipeBook
-
-    console.log("type: ", $(this).attr("recipe-index"));
-    let temp = shownRecipe[$(this).attr("recipe-index")];
-    console.log(temp.name);
- 
-    //SET THIS TO USER CHOOSEN DATE
-    temp.mealPlanSlot = "tuesday";
-
-    updateFirebase("recipeBook", temp);
-})
 //--------------------------------------------------
 //                    API Calls
 //--------------------------------------------------
@@ -665,6 +645,9 @@ firebase.auth().onAuthStateChanged(user => {
                 userData = snapshot;
                 pantry = [];
                 $.each(userData.val().pantry, function (index, key) {
+                    console.log("value", key);
+                    key.identifier = index;
+                    console.log(key.identifier)
                     pantry.push(key);
                 })
 
@@ -679,6 +662,12 @@ firebase.auth().onAuthStateChanged(user => {
     }
 })
 
+
 function updateFirebase(location, value) {
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
+}
+
+function removeFromFirebase(location, value) {
+    console.log("/users/" + uuid + "/" + location + "/" + value)
+    firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
