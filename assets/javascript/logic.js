@@ -433,12 +433,17 @@ $("#signup-button").on("click", function() {
 
     $("#signup-email").val("");
     $("#signup-password").val("");
+    $("#signup-confirm-password").val("");
 })
 
 $("#logout-button").on("click", function() {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
+    $("#logged-out-state").addClass("visible")
+    $("#logged-out-state").removeClass("invisible")
+    $("#logged-in-state").removeClass("visible")
+    $("#logged-in-state").addClass("invisible")
 })
 
 
@@ -587,6 +592,10 @@ firebase.auth().onAuthStateChanged(user => {
             }
         })
         isLoggedIn = true;
+        $("#logged-in-state").addClass("visible")
+        $("#logged-in-state").removeClass("invisible")
+        $("#logged-out-state").removeClass("visible")
+        $("#logged-out-state").addClass("invisible")
     } else {
         console.log("Not logged in");
         isLoggedIn = false;
