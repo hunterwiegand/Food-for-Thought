@@ -178,7 +178,7 @@ function addRecipeToCalender(recipeObject) {
     recipe.push(recipeObject);
 }
 
-function createRecipeHTML(recipeObject) {
+function createRecipeHTML(recipeObject, index) {
 
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
@@ -191,8 +191,8 @@ function createRecipeHTML(recipeObject) {
     nameCol.append($("<div class='recipe-title row'>").text(recipeObject.name))
     nameCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
-    console.log(recipeObject.url);
     nameCol.append($("<div class='row'>").append(createRecipeDirectionLink(recipeObject.url)));
+    nameCol.append($("<div class='row'>").append(createRecipeSelectionModal(recipeObject, index)));
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
@@ -258,6 +258,56 @@ function createRecipeDirectionLink(directionLink) {
     return containerDiv;
 }
 
+function createRecipeSelectionModal(recipe, index) {
+    let targetId = "modal-center-" + index;
+    let containerDiv = $("<div>");
+    let modalButton = $("<button>");
+    modalButton.addClass("btn btn-prmary");
+    modalButton.attr("type", "button");
+    modalButton.attr("data-toggle", "modal");
+    modalButton.attr("data-target", "#" + targetId)
+    modalButton.text("Add to Meal Plan");
+    let modalCenter = $("<div>");
+    modalCenter.addClass("modal fade");
+    modalCenter.attr("id", targetId);
+    modalCenter.attr("tabindex", "-1");
+    modalCenter.attr("role", "dialog");
+    modalCenter.attr("aria-labelledby", targetId + "-title");
+    modalCenter.attr("aria-hidden", "true");
+    let modalOne = $("<div class='modal-dialog modal-lg' role='document'>");
+    let modalTwo = $("<div class='modal-content'>");
+    let modalThree = $("<div class='modal-header'>");
+    let modalFour = $("<h5 class='modal-title' id='" + targetId + "-title'>");
+    modalFour.text("Plan Your Meal");
+    let modalFive = $("<button type='button' class='close' data-dismiss='modal' aria-label='Close'>");
+    let modalSix = $("<span aria-hidden='true'>");
+    modalSix.text("X")
+    let modalSeven = $("<div class='modal-body' id='recipe-modal-body'>");
+    let modalEight = $("<div class='modal-footer'>")
+    let modalNine = $("<button type='button' class='btn btn-secondary' data-dismiss='modal'>");
+    modalNine.text("Cancel");
+    let modalTen = $("<button type='button' class='btn btn-primary' id='add-to-calendar-button'>");
+    modalTen.text("Add to Calendar");
+
+    modalCenter.append(modalOne);
+    modalOne.append(modalTwo);
+    modalTwo.append(modalThree);
+    modalTwo.append(modalSeven);
+    console.log(recipe.ingredients);
+    modalSeven.append(createRecipeIngredientAllocationTable(recipe.ingredients));
+    modalSeven.append(createTimeSlotPicker(index));
+    modalTwo.append(modalEight);
+    modalThree.append(modalFour);
+    modalThree.append(modalFive);
+    modalFive.append(modalSix);
+    modalEight.append(modalNine);
+    modalEight.append(modalTen);
+    containerDiv.append(modalButton);
+    containerDiv.append(modalCenter);
+
+    return containerDiv;
+}
+
 function createRecipeIngredientAllocationTable(ingredients) {
     let containerDiv = $("<div>");
     let ingredientsTable = $("<table>");
@@ -269,10 +319,10 @@ function createRecipeIngredientAllocationTable(ingredients) {
     ingredientsTable.append(headerRow);
     $.each(ingredients, function(key, value) {
         let currentRow = $("<tr>");
-        currentRow.append($("<th>").text(value.text));
-        currentRow.append($("<th>").append(createRecipeDropDown(key)));
-        currentRow.append($("<th>").append($("<input type='text' id='quantity-" + key + "'>")));
-        currentRow.append($("<th>").append($("<input type='text' id='measurement-" + key + "'>")));
+        currentRow.append($("<td>").text(value));
+        currentRow.append($("<td>").append(createRecipeDropDown(key)));
+        currentRow.append($("<td>").append($("<input type='text' id='quantity-" + key + "'>")));
+        currentRow.append($("<td>").append($("<input type='text' id='measurement-" + key + "'>")));
         ingredientsTable.append(currentRow);
     })
 
@@ -282,7 +332,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
 }
 
 function createRecipeDropDown(index) {
-    let ingredientSelect = $("<select id='ingredientSelect-" + index + "'>");
+    let ingredientSelect = $("<select class='custom-select' id='ingredientSelect-" + index + "'>");
     ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
     $.each(pantry, function(key, value) {
         ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
@@ -290,6 +340,26 @@ function createRecipeDropDown(index) {
 
     return ingredientSelect;
 }
+
+function createTimeSlotPicker(index) {
+    let containerDiv = $("<div>");
+    let controlOne = $("<div class='custom-control custom-control-inline'>")
+    controlOne.append($("<input type='date' class='form-control ml-2' id='time-slot-date" + index + "' placeholder='Date'>"));
+    let controlTwo = $("<div class='custom-control custom-radio custom-control-inline'>");
+    controlTwo.append($("<input type='radio' id='breakfast-radio" + index + "' name='meal' class='custom-control-input'>"));
+    controlTwo.append($("<label class='custom-control-label' for='breakfast-radio" + index + "'>Breakfast</label>"))
+    let controlThree = $("<div class='custom-control custom-radio custom-control-inline'>");
+    controlThree.append($("<input type='radio' id='lunch-radio" + index + "' name='meal' class='custom-control-input'>"));
+    controlThree.append($("<label class='custom-control-label' for='lunch-radio" + index + "'>Lunch</label>"))
+    let controlFour = $("<div class='custom-control custom-radio custom-control-inline'>");
+    controlFour.append($("<input type='radio' id='dinner-radio" + index + "' name='meal' class='custom-control-input'>"));
+    controlFour.append($("<label class='custom-control-label' for='dinner-radio" + index + "'>Dinner</label>"))
+    containerDiv.append(controlOne, controlTwo, controlThree, controlFour);
+
+    return containerDiv;
+}
+
+
 
 // Get modal element
 var modal = document.getElementById("simpleModal");
@@ -474,7 +544,7 @@ function callEdaRec(userFoodItem) {
 
             console.log("newHTML", createRecipeObject(hits[i].recipe));
 
-            let newHTML = createRecipeHTML(newRecipe);
+            let newHTML = createRecipeHTML(newRecipe, i);
 
             $("#recipe-search-text").append(newHTML);
         }
