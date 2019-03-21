@@ -1,6 +1,7 @@
 let pantry = [];
 let shoppingList = [];
-// let recipe = [];
+let recipes = [];
+let shownRecipes = [];
 let isLoggedIn = false;
 let userData;
 let shownRecipe = [];
@@ -175,7 +176,12 @@ function addItemToShoppingList(foodObject) {
     generateShoppingList();
 }
 
-function createRecipeHTML(recipeObject, test) {
+function addRecipeToCalender(recipeObject) {
+    console.log(recipeObject.name, "Added to Calender");
+    recipe.push(recipeObject);
+}
+
+function createRecipeHTML(recipeObject, index) {
 
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
@@ -193,6 +199,8 @@ function createRecipeHTML(recipeObject, test) {
     nameCol.append($("<div class='recipe-title row'>").text(recipeObject.name))
     nameCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
     nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    nameCol.append($("<div class='row'>").append(createRecipeDirectionLink(recipeObject.url)));
+    nameCol.append($("<div class='row'>").append(createRecipeSelectionModal(recipeObject, index)));
     containerDiv.append(nameCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
@@ -244,14 +252,144 @@ function createNutritionHTML(nutritionObject) {
 }
 
 function createIngredientsHTML(ingredients) {
-    let ingredientsDiv = $("<div class='row'>");
-    ingredientsDiv.append($("<div class='ingredients-title col'>").text("Ingredients:"));
-    $.each(ingredients, function (key, value) {
-        ingredientsDiv.append($("<div class='row'>").append($("<span class='ingredient'>").text(value)));
+    let containerDiv = $("<div>");
+    let titleDiv = $("<div class='ingredients-title col'>");
+    titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
+    let ingredientsUL = $("<ul>");
+    $.each(ingredients, function(key, value) {
+        ingredientsUL.append($("<li class='ingredient'>").text(value));
+    })
+    containerDiv.append(titleDiv);
+    containerDiv.append(ingredientsUL)
+    return containerDiv;
+}
+
+function createRecipeDirectionLink(directionLink) {
+    let containerDiv = $("<div>");
+    let directionButton = $("<button class='btn btn-primary btn-lg' data-toggle='modal' data-target='#myModal'>");
+    directionButton.text("Get Recipe");
+    directionButton.click(function() {
+        $("#direction-modal-info").attr("src", directionLink);
+
+    })
+    containerDiv.append(directionButton);
+
+    return containerDiv;
+}
+
+function createRecipeSelectionModal(recipe, index) {
+    let targetId = "modal-center-" + index;
+    let containerDiv = $("<div>");
+    let modalButton = $("<button>");
+    modalButton.addClass("btn btn-prmary");
+    modalButton.attr("type", "button");
+    modalButton.attr("data-toggle", "modal");
+    modalButton.attr("data-target", "#" + targetId)
+    modalButton.text("Add to Meal Plan");
+    let modalCenter = $("<div>");
+    modalCenter.addClass("modal fade");
+    modalCenter.attr("id", targetId);
+    modalCenter.attr("tabindex", "-1");
+    modalCenter.attr("role", "dialog");
+    modalCenter.attr("aria-labelledby", targetId + "-title");
+    modalCenter.attr("aria-hidden", "true");
+    let modalOne = $("<div class='modal-dialog modal-lg' role='document'>");
+    let modalTwo = $("<div class='modal-content'>");
+    let modalThree = $("<div class='modal-header'>");
+    let modalFour = $("<h5 class='modal-title' id='" + targetId + "-title'>");
+    modalFour.text("Plan Your Meal");
+    let modalFive = $("<button type='button' class='close' data-dismiss='modal' aria-label='Close'>");
+    let modalSix = $("<span aria-hidden='true'>");
+    modalSix.text("X")
+    let modalSeven = $("<div class='modal-body' id='recipe-modal-body'>");
+    let modalEight = $("<div class='modal-footer'>")
+    let modalNine = $("<button type='button' class='btn btn-secondary' data-dismiss='modal'>");
+    modalNine.text("Cancel");
+    let modalTen = $("<button type='button' class='btn btn-primary' id='add-to-calendar-button' data-dismiss='modal'>");
+    modalTen.text("Add to Calendar");
+
+    modalTen.click(function() {
+
+        //TODO: Need to update ingredients and shopping list and then update
+        for (let i = 0; i < recipe.ingredients.length; i++) {
+            let value = $("#ingredient-select-" + index).val();
+            if (value === -1) {
+                //TODO: push to shopping list (do we need to do an ingredient call?)
+            } else {
+                //TODO: update ingredients[value] and then update firebase
+            }
+        }
+
+        //TODO: Need to check to make sure date and meal are selected and message player if they're not
+        shownRecipes[index].mealPlanSlot = { date: $("#time-slot-date" + index).val(), meal: $('input[name=meal]:checked').attr("value") };
+        recipes.push(shownRecipes[index]);
+        updateFirebase("recipes", shownRecipes[index]);
+
     })
 
-    return ingredientsDiv;
+    modalCenter.append(modalOne);
+    modalOne.append(modalTwo);
+    modalTwo.append(modalThree, modalSeven, modalEight);
+    modalSeven.append(createRecipeIngredientAllocationTable(recipe.ingredients));
+    modalSeven.append(createTimeSlotPicker(index));
+    modalThree.append(modalFour, modalFive);
+    modalFive.append(modalSix);
+    modalEight.append(modalNine, modalTen);
+    containerDiv.append(modalButton, modalCenter);
+
+    return containerDiv;
 }
+
+function createRecipeIngredientAllocationTable(ingredients) {
+    let containerDiv = $("<div>");
+    let ingredientsTable = $("<table>");
+    let headerRow = $("<tr>");
+    headerRow.append($("<th>").text("Ingredients"));
+    headerRow.append($("<th>").text("What to use"));
+    headerRow.append($("<th>").text("Qty Left"));
+    headerRow.append($("<th>").text("Measurement"));
+    ingredientsTable.append(headerRow);
+    $.each(ingredients, function(key, value) {
+        let currentRow = $("<tr>");
+        currentRow.append($("<td>").text(value));
+        currentRow.append($("<td>").append(createRecipeDropDown(key)));
+        currentRow.append($("<td>").append($("<input type='text' id='quantity-" + key + "'>")));
+        currentRow.append($("<td>").append($("<input type='text' id='measurement-" + key + "'>")));
+        ingredientsTable.append(currentRow);
+    })
+    containerDiv.append(ingredientsTable);
+    return containerDiv;
+}
+
+function createRecipeDropDown(index) {
+    let ingredientSelect = $("<select class='custom-select' id='ingredient-select-" + index + "'>");
+    ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
+    $.each(pantry, function(key, value) {
+        ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
+    })
+
+    return ingredientSelect;
+}
+
+function createTimeSlotPicker(index) {
+    let containerDiv = $("<div>");
+    let controlOne = $("<div class='custom-control custom-control-inline'>")
+    controlOne.append($("<input type='date' class='form-control ml-2' id='time-slot-date" + index + "' placeholder='Date'>"));
+    let controlTwo = $("<div class='custom-control custom-radio custom-control-inline'>");
+    controlTwo.append($("<input type='radio' id='breakfast-radio" + index + "' value='breakfast' name='meal' class='custom-control-input'>"));
+    controlTwo.append($("<label class='custom-control-label' for='breakfast-radio" + index + "'>Breakfast</label>"))
+    let controlThree = $("<div class='custom-control custom-radio custom-control-inline'>");
+    controlThree.append($("<input type='radio' id='lunch-radio" + index + "' value='lunch' name='meal' class='custom-control-input'>"));
+    controlThree.append($("<label class='custom-control-label' for='lunch-radio" + index + "'>Lunch</label>"))
+    let controlFour = $("<div class='custom-control custom-radio custom-control-inline'>");
+    controlFour.append($("<input type='radio' id='dinner-radio" + index + "' value='dinner' name='meal' class='custom-control-input'>"));
+    controlFour.append($("<label class='custom-control-label' for='dinner-radio" + index + "'>Dinner</label>"))
+    containerDiv.append(controlOne, controlTwo, controlThree, controlFour);
+
+    return containerDiv;
+}
+
+
 
 // Get modal element
 var modal = document.getElementById("simpleModal");
@@ -396,7 +534,7 @@ $("#recipe-search-button").click(function () {
     console.log(searchTerm);
 
 
-    //Need to formate searchTem by adding + and only taking in the first 2 itmes with commas
+    //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
 
     callEdaRec(searchTerm);
@@ -463,27 +601,17 @@ function callEdaRec(userFoodItem) {
 
 
         var hits = response.hits;
-        console.log(hits);
+
+        shownRecipes = [];
+        $("#recipe-search-text").empty();
         for (var i = 0; i < hits.length; i++) {
 
             let newRecipe = createRecipeObject(hits[i].recipe);
+            shownRecipes.push(newRecipe);
 
-            shownRecipe.push(newRecipe);
-
-            // console.log("newHTML", createRecipeObject(hits[i].recipe));
-
-            // let newDiv = $("<div class='recipe-option'>");
-
-            let newHTML = createRecipeHTML(newRecipe, hits[i].recipe);
-            newHTML.attr("recipe-index", i);
-
-            // newDiv.append(newHTML);
+            let newHTML = createRecipeHTML(newRecipe, i);
 
             $("#recipe-search-text").append(newHTML);
-
-
-
-            //TODO: Display this recipeHTML object in results
         }
     })
 
