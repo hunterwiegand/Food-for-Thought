@@ -298,19 +298,18 @@ function createRecipeDropDown(index) {
     return ingredientSelect;
 }
 
-// Get modal element
-var modal = document.getElementById("simpleModal");
-// var modal2 = document.getElementById("simpleModal2");
-// Get open modal button
-var modalBtn = document.getElementById("modalBtn");
-// Get close button
-var closeBtn = document.getElementsByClassName("closeBtn")[0];
-
 //--------------------------------------------------
 //               Login Page UI Interactions
-//--------------------------------------------------
+//---------------------------------------------------
+// Get modal element
+var loginModal = $("#signinModal");
+// Get close button
+var closeBtn = $(".loginCloseBtn");
+// Get open modal button
+// var modalBtn = document.getElementById("modalBtn");
 
-$("#login-button").on("click", function () {
+
+$("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
     const password = $("#user-password").val();
@@ -320,83 +319,87 @@ $("#login-button").on("click", function () {
     console.log("password: ", password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
-    promise.catch(function (event) {
+    promise.catch(function(event) {
         console.log(event.message);
-
-        if (password !== promise) {
-            (modal.style.display = "block");
+   
+        if(password !== promise){
+            (loginModal.modal('show'));
+            loginModal.css({display:'block'})
         }
-
+    
     })
     // Listen for close click
-    closeBtn.addEventListener("click", closeModal);
+    $('.loginCloseBtn').on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-    function closeModal() {
-        modal.style.display = "none";
-    }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e) {
-        if (e.target === modal) {
-            modal.style.display = "none";
+        function closeModal() {
+        loginModal.style.display = "none";
         }
 
-        $("#user-email").val("");
-        $("#user-password").val("");
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e){
+    if(e.target === loginModal){
+    loginModal.style.display = "none";
+    }
+
+    $("#user-email").val("");
+    $("#user-password").val("");
     }
 })
 
 
 //Listener for sign-up button
-$("#signup-button").on("click", function () {
+$("#signup-button").on("click", function() {
 
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-    // Confirm 1st entered password = 2nd entered password or open modal 
-    if (password !== passwordConfirm) {
-        (modal.style.display = "block");
-    } else {
-        const auth = firebase.auth();
-        const promise = auth.createUserWithEmailAndPassword(email, password);
+     // Confirm 1st entered password = 2nd entered password or open modal 
+            if (password !== passwordConfirm){
+                (loginModal.modal('show'));
+                loginModal.css({display:'block'})
+            }
+            else {
+                const auth = firebase.auth();
+                const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function (event) {
-            console.log("created account");
-
-        })
-    }
+                promise.catch(function(event) {
+                console.log("created account");
+                
+         })
+        }
 
     // Listen for close click
-    closeBtn.addEventListener("click", closeModal);
+    closeBtn.on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-    function closeModal() {
-        modal.style.display = "none";
-    }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e) {
-        if (e.target === modal) {
-            modal.style.display = "none";
+        function closeModal() {
+            loginModal.css({display:'hide'})
         }
 
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e){
+        if(e.target === loginModal){
+        loginModal.style.display = "none";
+        }
+    
     }
 
-
+    
     $("#signup-email").val("");
     $("#signup-password").val("");
 })
 
-$("#logout-button").on("click", function () {
+$("#logout-button").on("click", function() {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
 })
+
 
 //---------------------------------------------
 //        Pantry Page UI Interactions
