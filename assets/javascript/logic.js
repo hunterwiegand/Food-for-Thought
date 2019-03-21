@@ -43,18 +43,17 @@ function generatePantry() {
     $.each(pantry, function(index, value) {
         let foodItemHTML = createFoodItemHTML(value);
         let container = $("<div>");
-        container.attr("id", value.identifier)
-        let xButton = $("<span>").text("x");
-        container.append(xButton, foodItemHTML);
+        let xButton = $("<span class='px-1'>").text("X");
+        foodItemHTML.prepend(xButton);
 
         xButton.click(function() {
             removeFromFirebase("pantry", value.identifier);
-            $("#" + value.identifier).remove();
+            foodItemHTML.remove();
             pantry.splice(index, 1);
             console.log(pantry);
         })
 
-        $("#pantry-list-div").append(container);
+        $("#pantry-list-div").append(foodItemHTML);
     })
 
 
@@ -363,43 +362,31 @@ $("#login-button").on("click", function() {
 
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
-<<<<<<< HEAD
             console.log(event.message);
 
             if (password !== promise) {
-                (modal.style.display = "block");
+                (loginModal.modal('show'));
+                loginModal.css({ display: 'block' })
             }
 
         })
         // Listen for close click
-    closeBtn.addEventListener("click", closeModal);
-=======
-        console.log(event.message);
-   
-        if(password !== promise){
-            (loginModal.modal('show'));
-            loginModal.css({display:'block'})
-        }
-    
-    })
-    // Listen for close click
     $('.loginCloseBtn').on("click", closeModal);
->>>>>>> 629ffad27ffdfcc054497e3399237fee89779e1a
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         loginModal.style.display = "none";
-        }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e){
-    if(e.target === loginModal){
-    loginModal.style.display = "none";
     }
 
-    $("#user-email").val("");
-    $("#user-password").val("");
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = "none";
+        }
+
+        $("#user-email").val("");
+        $("#user-password").val("");
     }
 })
 
@@ -412,10 +399,10 @@ $("#signup-button").on("click", function() {
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-<<<<<<< HEAD
     // Confirm 1st entered password = 2nd entered password or open modal 
     if (password !== passwordConfirm) {
-        (modal.style.display = "block");
+        (loginModal.modal('show'));
+        loginModal.css({ display: 'block' })
     } else {
         const auth = firebase.auth();
         const promise = auth.createUserWithEmailAndPassword(email, password);
@@ -425,41 +412,25 @@ $("#signup-button").on("click", function() {
 
         })
     }
-=======
-     // Confirm 1st entered password = 2nd entered password or open modal 
-            if (password !== passwordConfirm){
-                (loginModal.modal('show'));
-                loginModal.css({display:'block'})
-            }
-            else {
-                const auth = firebase.auth();
-                const promise = auth.createUserWithEmailAndPassword(email, password);
-
-                promise.catch(function(event) {
-                console.log("created account");
-                
-         })
-        }
->>>>>>> 629ffad27ffdfcc054497e3399237fee89779e1a
 
     // Listen for close click
     closeBtn.on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
-            loginModal.css({display:'hide'})
-        }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e){
-        if(e.target === loginModal){
-        loginModal.style.display = "none";
-        }
-    
+    function closeModal() {
+        loginModal.css({ display: 'hide' })
     }
 
-    
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = "none";
+        }
+
+    }
+
+
     $("#signup-email").val("");
     $("#signup-password").val("");
 })
