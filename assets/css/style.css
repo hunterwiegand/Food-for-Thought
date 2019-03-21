@@ -1,5 +1,5 @@
-
-h1 {font-family: 'Roboto', sans-serif;
+h1 {
+    font-family: 'Roboto', sans-serif;
     color: #ffffff;
     text-align: center;
     font-weight: bold;
@@ -35,26 +35,32 @@ h1 {font-family: 'Roboto', sans-serif;
     margin-bottom: 0%;
 }
 
-iframe {
-    margin-top:-12%;
-    border-color: transparent;
+#direction-modal-body {
+    height: 90vh;
 }
 
 
-h2 {font-family: 'Roboto', sans-serif;
-    color:#ffffff;
+/* iframe {
+    margin-top: -12%;
+    border-color: transparent;
+} */
+
+h2 {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
     text-align: center;
     width: 100%;
     background-color: rgb(153, 44, 82);
     margin-top: -3%;
-    padding-bottom:5%;
+    padding-bottom: 5%;
 }
 
-h4 {font-family: 'Roboto', sans-serif;
+h4 {
+    font-family: 'Roboto', sans-serif;
     color: #ffffff;
     text-align: center;
-    width:100%;
-    background-color: rgb(153, 44, 82);  
+    width: 100%;
+    background-color: rgb(153, 44, 82);
 }
 
 #menu {
@@ -62,9 +68,8 @@ h4 {font-family: 'Roboto', sans-serif;
     width: 100%;
 }
 
-
 .navbar {
-    color:#ffffff;
+    color: #ffffff;
     font-family: 'Roboto', sans-serif;
     text-align: center;
     padding-left: 20%;
@@ -81,6 +86,7 @@ h4 {font-family: 'Roboto', sans-serif;
     border-color: brown;
 }
 
+
 /*  home page style */
 
 .home {
@@ -89,12 +95,12 @@ h4 {font-family: 'Roboto', sans-serif;
     background-size: 100%;
     background-color: rgb(153, 44, 82);
 }
-  
+
+
 /* style for signin and create account form */
 
-
-.container-fluid  {
-    padding:50px;
+.container-fluid {
+    padding: 50px;
 }
 
 .container {
@@ -103,7 +109,9 @@ h4 {font-family: 'Roboto', sans-serif;
     padding: 20px;
 }
 
+
 /* Modal style */
+
 
 /* .loginModal {
     display: none;
@@ -138,27 +146,31 @@ h4 {font-family: 'Roboto', sans-serif;
 }
  */ */
 /*  ingredients page style */
+
 .ingredients {
         background-image: url("../Images/30.jpg");
         background-repeat: no-repeat;
         background-size: 100%;
     }
 
-    #ingredientsList {
-        background-color: transparent;
-    }
+#ingredientsList {
+    background-color: transparent;
+}
 
-.input-group{   
+.input-group {
     width: 75%;
     margin-left: 8%;
 }
 
+
 /*  shopping page style */
+
 .shopping {
     background-image: url("../Images/33.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
 #shoppingContainer {
     background-color: transparent;
 }
@@ -167,7 +179,9 @@ h4 {font-family: 'Roboto', sans-serif;
     margin-top: 0%;
 }
 
+
 /*  recipes page style */
+
 .recipes {
     background-image: url("../Images/home5.jpg");
     background-repeat: no-repeat;
@@ -178,13 +192,17 @@ h4 {font-family: 'Roboto', sans-serif;
     border: none;
 }
 
-.form-control-borderless:hover, .form-control-borderless:active, .form-control-borderless:focus {
+.form-control-borderless:hover,
+.form-control-borderless:active,
+.form-control-borderless:focus {
     border: none;
     outline: none;
     box-shadow: none;
 }
 
+
 /*  pantry style */
+
 .pantry {
     background-image: url("../Images/pantry.jpg");
     background-repeat: no-repeat;
@@ -192,15 +210,18 @@ h4 {font-family: 'Roboto', sans-serif;
 }
 
 #pantryContainer {
-    background-color:transparent;
+    background-color: transparent;
 }
 
- /* meal planner style */
+
+/* meal planner style */
+
 .mealPlanner {
     background-image: url("../Images/home4.jpg");
     background-repeat: no-repeat;
     background-size: 100%;
 }
+
 
 /* Dropdown page style */
 
@@ -209,4 +230,3 @@ h4 {font-family: 'Roboto', sans-serif;
     background-repeat: no-repeat;
     background-size: 100%;
 }
-
