@@ -4,6 +4,7 @@ let shoppingList = [];
 let isLoggedIn = false;
 let userData;
 let shownRecipe = [];
+let uuid;
 
 $(document).ready(function () {
     if (!isLoggedIn) { //not logged in yet
@@ -215,6 +216,8 @@ function createFoodItemHTML(foodItemObject) {
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
+    // console.log(foodItemObject);
+
     return tableRow;
 }
 
@@ -367,7 +370,16 @@ $("#add-item-btn").click(function (event) {
 
 })
 
-
+//THIS IS THE ONCLICK FOR DELETE ITEM
+$(document).on("click", ".food-item-remove", function(event) {
+    console.log(userData.val());
+    console.log(uuid)
+    let ref = database.ref("users/" + uuid + "/recipeBook");
+    console.log(ref);
+    let foodName =("this.dataset", $(event).parent().attr("food-name"));
+    console.log(event);
+    
+})
 
 //Add on click for recipe to add to user recipeBook
 
@@ -407,7 +419,10 @@ $(document).on("click", ".food", function () {
 //     console.log("in modal button");
 //     $('#recipe-modal').modal('show')
 // });
+
+ //THIS SENDS RECIPE TO USER DATABASE
 $(document).on("click", ".recipe-container", function () {
+    
     // recipeModal.style.display = "block";  
 
     // This code sets the recipe to the user firebase recipeBook
@@ -415,7 +430,8 @@ $(document).on("click", ".recipe-container", function () {
     console.log("type: ", $(this).attr("recipe-index"));
     let temp = shownRecipe[$(this).attr("recipe-index")];
     console.log(temp.name);
-
+ 
+    //SET THIS TO USER CHOOSEN DATE
     temp.mealPlanSlot = "tuesday";
 
     updateFirebase("recipeBook", temp);
