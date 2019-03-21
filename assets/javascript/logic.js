@@ -269,14 +269,15 @@ function createRecipeIngredientAllocationTable(ingredients) {
     ingredientsTable.append(headerRow);
     $.each(ingredients, function(key, value) {
         let currentRow = $("<tr>");
-        currentRow.append($("<th>").text(value));
-        currentRow.append($("<th>").append(createReipeDropDown(key)));
+        currentRow.append($("<th>").text(value.text));
+        currentRow.append($("<th>").append(createRecipeDropDown(key)));
         currentRow.append($("<th>").append($("<input type='text' id='quantity-" + key + "'>")));
         currentRow.append($("<th>").append($("<input type='text' id='measurement-" + key + "'>")));
+        ingredientsTable.append(currentRow);
     })
 
 
-
+    containerDiv.append(ingredientsTable);
     return containerDiv;
 }
 
@@ -419,7 +420,7 @@ $("#recipe-search-button").click(function() {
     console.log(searchTerm);
 
 
-    //Need to formate searchTem by adding + and only taking in the first 2 itmes with commas
+    //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
 
     callEdaRec(searchTerm);
@@ -476,7 +477,6 @@ function callEdaRec(userFoodItem) {
             let newHTML = createRecipeHTML(newRecipe);
 
             $("#recipe-search-text").append(newHTML);
-            //TODO: Display this recipeHTML object in results
         }
     })
 
@@ -547,4 +547,4 @@ firebase.auth().onAuthStateChanged(user => {
 
 function updateFirebase(location, value) {
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
-}.
+}
