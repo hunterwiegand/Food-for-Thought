@@ -109,7 +109,7 @@ function generateRecipePantry() {
     $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function (index, value) {
-        let foodHTML = createFoodItemHTML(value);
+        let foodHTML = createRecipeFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
         foodHTML.addClass("food");
         $("#recipe-pantry-list-div").append(foodHTML);
@@ -178,7 +178,7 @@ function createRecipeHTML(recipeObject, test) {
 
     let containerDiv = $("<div>");
     containerDiv.attr("class", "recipe-container row")
-    var temp  = JSON.stringify(test);
+    var temp = JSON.stringify(test);
     temp = JSON.parse(temp);
     console.log("name: ", temp.name);
     containerDiv.attr("data-recipe-obj", JSON.stringify(test));
@@ -198,10 +198,27 @@ function createRecipeHTML(recipeObject, test) {
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
     containerDiv.append(ingredientCol);
 
+    let recipeButton = $("<button class='modal-recipe-button button'>Open Recipe</button>");
+    // <button type="button" id="MybtnModal" class="btn btn-primary">Open Modal Using jQuery</button>
+    containerDiv.append(recipeButton);
+
+
     return containerDiv;
 }
 
 function createFoodItemHTML(foodItemObject) {
+    let tableRow = $("<tr>");
+    tableRow.attr("food-name", foodItemObject.name);
+    tableRow.append($("<td class='food-item-remove'>").text("x"));
+    tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
+    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
+
+    return tableRow;
+}
+
+function createRecipeFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
     tableRow.attr("food-name", foodItemObject.name);
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
@@ -240,6 +257,7 @@ var modal = document.getElementById("simpleModal");
 var modalBtn = document.getElementById("modalBtn");
 // Get close button
 var closeBtn = document.getElementsByClassName("closeBtn")[0];
+
 
 //--------------------------------------------------
 //               Login Page UI Interactions
@@ -349,8 +367,9 @@ $("#add-item-btn").click(function (event) {
 
 })
 
+
+
 //Add on click for recipe to add to user recipeBook
-// $(document).on("click", ".")
 
 //---------------------------------------------
 //        Recipe Page UI Interactions
@@ -383,17 +402,24 @@ $(document).on("click", ".food", function () {
     $("#recipe-search-text").prepend(newDiv);
 })
 
+
+// $(document).on("click", ".modal-recipe-button", function () {
+//     console.log("in modal button");
+//     $('#recipe-modal').modal('show')
+// });
 $(document).on("click", ".recipe-container", function () {
-    
+    // recipeModal.style.display = "block";  
+
+    // This code sets the recipe to the user firebase recipeBook
+
     console.log("type: ", $(this).attr("recipe-index"));
     let temp = shownRecipe[$(this).attr("recipe-index")];
     console.log(temp.name);
 
     temp.mealPlanSlot = "tuesday";
-    
+
     updateFirebase("recipeBook", temp);
 })
-
 //--------------------------------------------------
 //                    API Calls
 //--------------------------------------------------
@@ -508,7 +534,6 @@ firebase.auth().onAuthStateChanged(user => {
         isLoggedIn = false;
     }
 })
-
 
 function updateFirebase(location, value) {
     firebase.database().ref("/users/" + uuid + "/" + location).push(value)
