@@ -5,7 +5,7 @@ let shownRecipes = [];
 let isLoggedIn = false;
 let userData;
 
-$(document).ready(function () {
+$(document).ready(function() {
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
         console.log("usernot found");
@@ -29,64 +29,6 @@ var config = {
 firebase.initializeApp(config);
 database = firebase.database();
 
-function unitConversion(originalAmount, originalType, changeType) {
-    let teaSpoonConversion = {
-        tablespoon: 1 / 3,
-        cup: teaSpoonConversion.tablespoon / 16,
-        pint: teaSpoonConversion.cup / 2,
-        quart: teaSpoonConversion.pint / 2,
-        gallon: teaSpoonConversion.quart / 4,
-    }
-
-    let tableSpoonConversion = {
-        teaspoon: 3,
-        cup: teaSpoonConversion.cup * 3,
-        pint: teaSpoonConversion.pint * 3,
-        quart: teaSpoonConversion.quart * 3,
-        gallon: teaSpoonConversion.gallon * 3
-    }
-
-    let pintConversion = {
-        teaspoon: tableSpoonConversion.teaspoon * 2,
-        tablespoon: 2,
-        cup: tableSpoonConversion.cup * 2,
-        quart: tableSpoonConversion.quart * 2,
-        gallon: tableSpoonConversion.gallon * 2
-    }
-
-    let quartConversion = {
-        teaspoon: pintConversion.teaspoon * 2,
-        tablespoon: pintConversion.tablespoon * 2,
-        cup: pintConversion.cup * 2,
-        pint: 2,
-        gallon: pintConversion.gallon * 2
-    }
-
-    let gallonConversion = {
-        teaspoon: quartConversion.teaspoon * 4,
-        tablespoon: quartConversion.tablespoon * 4,
-        cup: quartConversion.cup * 4,
-        pint: quartConversion.pint * 4,
-        quart: 4,
-    }
-
-    switch (originalType) {
-        case "teaspoon":
-            return teaSpoonConversion[changeType] * originalAmount;
-        case "tablespoon":
-            return tableSpoonConversion[changeType] * originalAmount;
-        case "pint":
-            return pintConversion[changeType] * originalAmount;
-        case "quart":
-            return quartConversion[changeType] * originalAmount;
-        case "gallon":
-            return gallonConversion[changeType] * originalAmount;
-        default:
-            console.log("conversion not supported");
-            return undefined;
-
-    }
-}
 
 //--------------------------------------------------
 //              Page Setup Functions
@@ -98,7 +40,7 @@ function generatePantry() {
 
     $("#pantry-list-div").empty();
 
-    $.each(pantry, function (index, value) {
+    $.each(pantry, function(index, value) {
         // console.log(value)
         let foodItemHTML = createFoodItemHTML(value);
         let container = $("<div>");
@@ -106,7 +48,7 @@ function generatePantry() {
         let xButton = $("<span>").text("x");
         container.append(xButton, foodItemHTML);
 
-        xButton.click(function () {
+        xButton.click(function() {
             removeFromFirebase("pantry", value.identifier);
 
             $("#" + value.identifier).remove();
@@ -126,7 +68,7 @@ function generateRecipePantry() {
 
     $("#recipe-pantry-list-div").empty();
 
-    $.each(pantry, function (index, value) {
+    $.each(pantry, function(index, value) {
         let foodHTML = createRecipeFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
         foodHTML.addClass("food");
@@ -140,7 +82,7 @@ function generateRecipePantry() {
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
-    $.each(shoppingList, function (index, value) {
+    $.each(shoppingList, function(index, value) {
         console.log("WARNING: need real location of shopping list html element.")
 
         $("#shopping-list-div").append(createPantryItemHTML(value));
@@ -223,7 +165,7 @@ function createRecipeHTML(recipeObject, index) {
 //Create Food Item HTML for Pantry Page
 function createFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
-   
+
     // let test = $("<td class='food-item-remove'>").text("x");
 
     tableRow.attr("food-name", foodItemObject.name);
@@ -269,7 +211,7 @@ function createIngredientsHTML(ingredients) {
     let titleDiv = $("<div class='ingredients-title col'>");
     titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
     let ingredientsUL = $("<ul>");
-    $.each(ingredients, function (key, value) {
+    $.each(ingredients, function(key, value) {
         ingredientsUL.append($("<li class='ingredient'>").text(value));
     })
     containerDiv.append(titleDiv);
@@ -281,7 +223,7 @@ function createRecipeDirectionLink(directionLink) {
     let containerDiv = $("<div>");
     let directionButton = $("<button class='btn btn-primary btn-lg' data-toggle='modal' data-target='#myModal'>");
     directionButton.text("Get Recipe");
-    directionButton.click(function () {
+    directionButton.click(function() {
         $("#direction-modal-info").attr("src", directionLink);
 
     })
@@ -321,7 +263,7 @@ function createRecipeSelectionModal(recipe, index) {
     let modalTen = $("<button type='button' class='btn btn-primary' id='add-to-calendar-button' data-dismiss='modal'>");
     modalTen.text("Add to Calendar");
 
-    modalTen.click(function () {
+    modalTen.click(function() {
 
         //TODO: Need to update ingredients and shopping list and then update
         for (let i = 0; i < recipe.ingredients.length; i++) {
@@ -362,7 +304,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
     headerRow.append($("<th>").text("Qty Left"));
     headerRow.append($("<th>").text("Measurement"));
     ingredientsTable.append(headerRow);
-    $.each(ingredients, function (key, value) {
+    $.each(ingredients, function(key, value) {
         let currentRow = $("<tr>");
         currentRow.append($("<td>").text(value));
         currentRow.append($("<td>").append(createRecipeDropDown(key)));
@@ -377,7 +319,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
 function createRecipeDropDown(index) {
     let ingredientSelect = $("<select class='custom-select' id='ingredient-select-" + index + "'>");
     ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
-    $.each(pantry, function (key, value) {
+    $.each(pantry, function(key, value) {
         ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
     })
 
@@ -416,7 +358,7 @@ var closeBtn = document.getElementsByClassName("closeBtn")[0];
 //               Login Page UI Interactions
 //--------------------------------------------------
 
-$("#login-button").on("click", function () {
+$("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
     const password = $("#user-password").val();
@@ -426,15 +368,15 @@ $("#login-button").on("click", function () {
     console.log("password: ", password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
-    promise.catch(function (event) {
-        console.log(event.message);
+    promise.catch(function(event) {
+            console.log(event.message);
 
-        if (password !== promise) {
-            (modal.style.display = "block");
-        }
+            if (password !== promise) {
+                (modal.style.display = "block");
+            }
 
-    })
-    // Listen for close click
+        })
+        // Listen for close click
     closeBtn.addEventListener("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
@@ -456,7 +398,7 @@ $("#login-button").on("click", function () {
 
 
 //Listener for sign-up button
-$("#signup-button").on("click", function () {
+$("#signup-button").on("click", function() {
 
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
@@ -470,7 +412,7 @@ $("#signup-button").on("click", function () {
         const auth = firebase.auth();
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function (event) {
+        promise.catch(function(event) {
             console.log("created account");
 
         })
@@ -498,7 +440,7 @@ $("#signup-button").on("click", function () {
     $("#signup-password").val("");
 })
 
-$("#logout-button").on("click", function () {
+$("#logout-button").on("click", function() {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
@@ -508,7 +450,7 @@ $("#logout-button").on("click", function () {
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
-$("#add-item-btn").click(function (event) {
+$("#add-item-btn").click(function(event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
     //Checks to see if the entry is only numbers (making it a barcode).
@@ -525,7 +467,7 @@ $("#add-item-btn").click(function (event) {
 //        Recipe Page UI Interactions
 //---------------------------------------------
 
-$("#recipe-search-button").click(function () {
+$("#recipe-search-button").click(function() {
 
     let searchTerm = ($(".recipe-food-item").text());
 
@@ -540,7 +482,7 @@ $("#recipe-search-button").click(function () {
     callEdaRec(searchTerm);
 })
 
-$(document).on("click", ".food", function () {
+$(document).on("click", ".food", function() {
     console.log("food item was clicked");
     console.log(this.dataset.foodName);
     var foodName = this.dataset.foodName;
@@ -577,7 +519,7 @@ function callEdaRec(userFoodItem) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
 
 
         var hits = response.hits;
@@ -603,7 +545,7 @@ function callEdaFood(barcodeNum) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
 
         addItemToPantry(newFoodItem);
@@ -620,7 +562,7 @@ function callEdaFoodByName(foodName) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
 
@@ -640,11 +582,11 @@ firebase.auth().onAuthStateChanged(user => {
         uuid = user.uid;
         console.log("Logged in");
         //Grab user data
-        database.ref("/users/" + uuid).once("value", function (snapshot) {
+        database.ref("/users/" + uuid).once("value", function(snapshot) {
             if (snapshot.val()) {
                 userData = snapshot;
                 pantry = [];
-                $.each(userData.val().pantry, function (index, key) {
+                $.each(userData.val().pantry, function(index, key) {
                     console.log("value", key);
                     key.identifier = index;
                     console.log(key.identifier)
