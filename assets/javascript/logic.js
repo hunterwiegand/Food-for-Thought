@@ -41,7 +41,6 @@ function generatePantry() {
     $("#pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
-        // console.log(value)
         let foodItemHTML = createFoodItemHTML(value);
         let container = $("<div>");
         container.attr("id", value.identifier)
@@ -50,9 +49,7 @@ function generatePantry() {
 
         xButton.click(function() {
             removeFromFirebase("pantry", value.identifier);
-
             $("#" + value.identifier).remove();
-
             pantry.splice(index, 1);
             console.log(pantry);
         })
@@ -123,7 +120,8 @@ function createFoodItemObject(foodItemJSON, measurement, quantity, category) {
 function addItemToPantry(foodObject) {
     console.log(foodObject.name, "Added to pantry.");
     pantry.push(foodObject);
-    updateFirebase("pantry", foodObject);
+    let foodIdentifier = updateFirebase("pantry", foodObject);
+    foodObject.identifier = foodIdentifier;
     generatePantry();
 }
 
@@ -547,10 +545,7 @@ function callEdaFood(barcodeNum) {
         method: "GET"
     }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
-
         addItemToPantry(newFoodItem);
-
-        // $("#pantryList").append(createFoodItemHTML(newFoodItem));
     })
 
 }
@@ -565,8 +560,6 @@ function callEdaFoodByName(foodName) {
     }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
-
-        console.log(newFoodItem);
     })
 }
 
@@ -587,9 +580,7 @@ firebase.auth().onAuthStateChanged(user => {
                 userData = snapshot;
                 pantry = [];
                 $.each(userData.val().pantry, function(index, key) {
-                    console.log("value", key);
                     key.identifier = index;
-                    console.log(key.identifier)
                     pantry.push(key);
                 })
 
@@ -606,7 +597,8 @@ firebase.auth().onAuthStateChanged(user => {
 
 
 function updateFirebase(location, value) {
-    firebase.database().ref("/users/" + uuid + "/" + location).push(value)
+    result = firebase.database().ref("/users/" + uuid + "/" + location).push(value);
+    return result.path.pieces_[result.path.pieces_.length - 1];
 }
 
 function removeFromFirebase(location, value) {
