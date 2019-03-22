@@ -65,7 +65,7 @@ function generateRecipePantry() {
     $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
-        let foodHTML = createRecipeFoodItemHTML(value);
+        let foodHTML = createFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
         foodHTML.addClass("food");
         $("#recipe-pantry-list-div").append(foodHTML);
@@ -79,9 +79,11 @@ function generateRecipePantry() {
 //Generate the shopping list html object and display it
 function generateShoppingList() {
     $.each(shoppingList, function(index, value) {
-        console.log("WARNING: need real location of shopping list html element.")
-
-        $("#shopping-list-div").append(createPantryItemHTML(value));
+        console.log(value);
+        let foodHTML = createFoodItemHTML(value);
+        foodHTML.attr("data-food-name", value.name);
+        foodHTML.addClass("food");
+        $("#shopping-list-div").append(foodHTML);
     })
 
     console.log("WARNING: shopping list page not implemented")
@@ -156,8 +158,9 @@ function addItemToPantry(foodObject) {
 
 function addItemToShoppingList(foodObject) {
     console.log(foodObject.name, "Added to shopping list.");
-
     shoppingList.push(foodObject);
+    let foodIdentifier = updateFirebase("shoppingList", foodObject);
+    foodObject.identifier = foodIdentifier;
     generateShoppingList();
 }
 
@@ -191,27 +194,6 @@ function createRecipeHTML(recipeObject, index) {
 
 //Create Food Item HTML for Pantry Page
 function createFoodItemHTML(foodItemObject) {
-    let tableRow = $("<tr>");
-
-    // let test = $("<td class='food-item-remove'>").text("x");
-
-    tableRow.attr("food-name", foodItemObject.name);
-
-    // tableRow.attr("data-id");
-
-    // tableRow.append(test);
-
-
-    tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
-    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
-    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
-    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
-
-    return tableRow;
-}
-
-//Create Food Item HTML for Recipe Page
-function createRecipeFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
     tableRow.attr("food-name", foodItemObject.name);
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
@@ -289,14 +271,13 @@ function createRecipeSelectionModal(recipe, index) {
     modalNine.text("Cancel");
     let modalTen = $("<button type='button' class='btn btn-primary' id='add-to-calendar-button' data-dismiss='modal'>");
     modalTen.text("Add to Calendar");
-
     modalTen.click(function() {
-
         //TODO: Need to update ingredients and shopping list and then update
         for (let i = 0; i < recipe.ingredients.length; i++) {
             let value = $("#ingredient-select-" + index).val();
-            if (value === -1) {
-                //TODO: push to shopping list (do we need to do an ingredient call?)
+            if (value === "-1") {
+                console.log($("#measurement-" + i).val());
+                callEdaFoodByName(recipe.ingredients[i], "shoppingList", $("#measurement-" + i).val(), $("#quantity-" + i).val(), "none");
             } else {
                 //TODO: update ingredients[value] and then update firebase
             }
@@ -488,9 +469,8 @@ $("#add-item-btn").click(function(event) {
     if (/^\d+$/.test(searchTerm)) {
         callEdaFood(searchTerm); // is a barcode
     } else {
-        callEdaFoodByName(searchTerm); // Is not a barcode
+        callEdaFoodByName(searchTerm, "pantry", $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value); // Is not a barcode
     }
-
 })
 
 
@@ -584,15 +564,25 @@ function callEdaFood(barcodeNum) {
 }
 
 //Function to search EDAMAM FOOD DATABASE using a passed string
-function callEdaFoodByName(foodName) {
+function callEdaFoodByName(foodName, location, measurment, quantity, category) {
     var queryURL = "https://api.edamam.com/api/food-database/parser?ingr=" + foodName + "&app_id=" + edaFoodId + "&app_key=" + edaFoodKey;
 
     $.ajax({
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
-        addItemToPantry(newFoodItem);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, measurment, quantity, category);
+        switch (location) {
+            case "pantry":
+                addItemToPantry(newFoodItem);
+                break
+            case "shoppingList":
+                addItemToShoppingList(newFoodItem);
+                console.log("Shopping List", shoppingList);
+                break
+            default:
+                console.log("Error, didn't put", newFoodItem, "Anywhere");
+        }
     })
 }
 
@@ -620,9 +610,19 @@ firebase.auth().onAuthStateChanged(user => {
                     pantry.push(key);
                 })
 
+                shoppingList = [];
+                $.each(userData.val().shoppingList, function(index, key) {
+                    key.identifier = index;
+                    shoppingList.push(key);
+                })
+
                 generatePantry();
                 generateRecipePantry();
+<<<<<<< HEAD
+                generateShoppingList();
+=======
                 generateCalendar();
+>>>>>>> e02fa2ccada89c12614557aa3385b5b32ffc72c6
             }
         })
         isLoggedIn = true;
