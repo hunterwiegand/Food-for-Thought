@@ -17,69 +17,62 @@
 
 
 <body class="recipes">
-
-    <h1>Food for Thought</h1>
-    <h2>Recipes</h2>
-    <br>
+    <div class="header">
+        <h1>Food for Thought</h1>
+        <h2>Recipes</h2>
+        <nav class="navbar navbar-expand-lg navbar-transparent center" style="font-weight: bold">
+            <ul class="navbar-nav">
+                <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
+                <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+            </ul>
+        </nav>
+    </div>
     <!-- Navigation Bar -->
     <div class="container" id="menu">
         <div class="container-fluid" id="menu3">
-            <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
-                <ul class="navbar-nav">
-                    <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-                    <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
-                    <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
-                    <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
-                    <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
-                </ul>
-            </nav>
+
         </div>
-<!-- =================================================== -->
+        <!-- =================================================== -->
 
-<div class="container"> 
+        <div class="container">
             <div class="row">
-                    <div class="col-m-6">
-
+                <div class="col-m-6">
                     <!-- Pantry Inventory-->
                     <div class="container" id="pantryContainer">
                         <div id="pantry">
-                
-                                <div class="card mb-6">
-                                    <div class="card-header">Items in Pantry</div>
-                                    <div class="card-body">
-                                        <table class="table table-sm table-hover" id="pantryList">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Item Name</th>
-                                                    <th scope="col">Quantity</th>
-                                                    <th scope="col">Measurment</th>
-                                                    <th scope="col">Catergory</th>
 
-                                                </tr>
-                                            </thead>
-                                            <tbody id="recipe-pantry-list-div">
-                                            </tbody>
-                                        </table>
-                                    </div>
+                            <div class="card mb-6">
+                                <div class="card-header">Items in Pantry</div>
+                                <div class="card-body">
+                                    <table class="table table-sm table-hover" id="pantryList">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Item Name</th>
+                                                <th scope="col">Quantity</th>
+                                                <th scope="col">Measurment</th>
+                                                <th scope="col">Catergory</th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody id="recipe-pantry-list-div">
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Recipe  -->
-                    <div class="col-m-6">
+                </div>
+                <!-- Recipe  -->
+                <div class="col-m-6">
+                    <div class="container">
                         <div id="recipe-search-text">
-                                <button id="recipe-search-button">Create Recipe!!</button>
-                            </div>
+                            <button id="recipe-search-button">Create Recipe!!</button>
                         </div>
-                        </div>
-                            <br>
-                    <!-- search bar -->
-                    <div class="row">
-                    <div class="col-m-6"></div>
-                    <div class="col-m-6">
-                    <div style="background-color:transparent">
-                        <div class="row justify-content-center">
-                            <div class="col-m-6">
+                        <div style="background-color:transparent">
+                            <div class="row justify-content-center">
                                 <form class="card card-sm">
                                     <div class="card-body row no-gutters align-items-center">
                                         <div class="col-auto">
@@ -91,10 +84,10 @@
                                                 type="search" placeholder="Search for recipe by name or keyword">
                                         </div>
                                         <!--end of col-->
-                                        <div class="col-auto">
+                                        <div class="col-m-6">
                                             <button class="btn btn-lg btn-success" type="submit">Search</button>
-                                        </div> <br />
-                                    
+                                        </div>
+
                                         <!--end of col-->
                                     </div>
                                 </form>
@@ -105,43 +98,44 @@
                 </div>
             </div>
         </div>
-            <!-- ====================================================== -->
-            <!-- Button trigger modal -->
-            <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+    </div>
+    </div>
+    <!-- ====================================================== -->
+    <!-- Button trigger modal -->
+    <!-- <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
                 Click for Recipe
             </button> -->
 
 
-            <!-- Modal -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-lg ">
-                    <div class="modal-content">
-                        <!-- <div class="modal-header">
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg ">
+            <div class="modal-content">
+                <!-- <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">X</button>
                         </div> -->
-                        <div class="modal-body" id="direction-modal-body">
-                            <iframe src="#" id="direction-modal-info" class="iframe" name="info" seamless=""
-                                height="100%" width="100%"></iframe>
-                        </div>
-                    </div>
+                <div class="modal-body" id="direction-modal-body">
+                    <iframe src="#" id="direction-modal-info" class="iframe" name="info" seamless="" height="100%"
+                        width="100%"></iframe>
                 </div>
             </div>
+        </div>
+    </div>
 
-            <!-- Firebase Script-->
-            <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+    <!-- Firebase Script-->
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-            <!-- Jquery Script-->
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Jquery Script-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-            <!-- Bootstrap JavaScript -->
-            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-                integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-                crossorigin="anonymous"></script>
-            <!-- Custom JavaScript-->
-            <script src="assets/javascript/classes.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+    <!-- Custom JavaScript-->
+    <script src="assets/javascript/classes.js"></script>
 
-            <script src="assets/javascript/logic.js"></script>
+    <script src="assets/javascript/logic.js"></script>
 </body>
 
 </html>

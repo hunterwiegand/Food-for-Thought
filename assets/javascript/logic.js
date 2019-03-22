@@ -43,18 +43,17 @@ function generatePantry() {
     $.each(pantry, function(index, value) {
         let foodItemHTML = createFoodItemHTML(value);
         let container = $("<div>");
-        container.attr("id", value.identifier)
-        let xButton = $("<span>").text("x");
-        container.append(xButton, foodItemHTML);
+        let xButton = $("<span class='px-1'>").text("X");
+        foodItemHTML.prepend(xButton);
 
         xButton.click(function() {
             removeFromFirebase("pantry", value.identifier);
-            $("#" + value.identifier).remove();
+            foodItemHTML.remove();
             pantry.splice(index, 1);
             console.log(pantry);
         })
 
-        $("#pantry-list-div").append(container);
+        $("#pantry-list-div").append(foodItemHTML);
     })
 
 
@@ -363,31 +362,31 @@ $("#login-button").on("click", function() {
 
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
-        console.log(event.message);
-   
-        if(password !== promise){
-            (loginModal.modal('show'));
-            loginModal.css({display:'block'})
-        }
-    
-    })
-    // Listen for close click
+            console.log(event.message);
+
+            if (password !== promise) {
+                (loginModal.modal('show'));
+                loginModal.css({ display: 'block' })
+            }
+
+        })
+        // Listen for close click
     $('.loginCloseBtn').on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         loginModal.style.display = "none";
-        }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e){
-    if(e.target === loginModal){
-    loginModal.style.display = "none";
     }
 
-    $("#user-email").val("");
-    $("#user-password").val("");
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = "none";
+        }
+
+        $("#user-email").val("");
+        $("#user-password").val("");
     }
 })
 
@@ -400,47 +399,51 @@ $("#signup-button").on("click", function() {
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-     // Confirm 1st entered password = 2nd entered password or open modal 
-            if (password !== passwordConfirm){
-                (loginModal.modal('show'));
-                loginModal.css({display:'block'})
-            }
-            else {
-                const auth = firebase.auth();
-                const promise = auth.createUserWithEmailAndPassword(email, password);
+    // Confirm 1st entered password = 2nd entered password or open modal 
+    if (password !== passwordConfirm) {
+        (loginModal.modal('show'));
+        loginModal.css({ display: 'block' })
+    } else {
+        const auth = firebase.auth();
+        const promise = auth.createUserWithEmailAndPassword(email, password);
 
-                promise.catch(function(event) {
-                console.log("created account");
-                
-         })
-        }
+        promise.catch(function(event) {
+            console.log("created account");
+
+        })
+    }
 
     // Listen for close click
     closeBtn.on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
-            loginModal.css({display:'hide'})
-        }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e){
-        if(e.target === loginModal){
-        loginModal.style.display = "none";
-        }
-    
+    function closeModal() {
+        loginModal.css({ display: 'hide' })
     }
 
-    
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = "none";
+        }
+
+    }
+
+
     $("#signup-email").val("");
     $("#signup-password").val("");
+    $("#signup-confirm-password").val("");
 })
 
 $("#logout-button").on("click", function() {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
+    $("#logged-out-state").addClass("visible")
+    $("#logged-out-state").removeClass("invisible")
+    $("#logged-in-state").removeClass("visible")
+    $("#logged-in-state").addClass("invisible")
 })
 
 
@@ -589,6 +592,10 @@ firebase.auth().onAuthStateChanged(user => {
             }
         })
         isLoggedIn = true;
+        $("#logged-in-state").addClass("visible")
+        $("#logged-in-state").removeClass("invisible")
+        $("#logged-out-state").removeClass("visible")
+        $("#logged-out-state").addClass("invisible")
     } else {
         console.log("Not logged in");
         isLoggedIn = false;

@@ -6,7 +6,6 @@ h1 {
     width: 100%;
     padding-top: 2%;
     padding-bottom: 4%;
-    background-color: rgb(153, 44, 82);
     margin-bottom: 0%;
 }
 
@@ -40,6 +39,10 @@ h1 {
     height: 90vh;
 }
 
+#recipe-search-button{
+    margin-bottom: 10px;
+}
+
 
 /* iframe {
     margin-top: -12%;
@@ -51,9 +54,8 @@ h2 {
     color: #ffffff;
     text-align: center;
     width: 100%;
-    background-color: rgb(153, 44, 82);
     margin-top: -3%;
-    padding-bottom: 5%;
+    padding-bottom: 0%;
 }
 
 h4 {
@@ -69,6 +71,17 @@ h4 {
     width: 100%;
 }
 
+.center {
+    margin: auto;
+    width: 32% !important;
+    padding: 10px;
+  }
+
+.header{
+    background-color: rgb(153, 44, 82);
+    width: 100%;
+}
+
 .navbar {
     color: #ffffff;
     font-family: 'Roboto', sans-serif;
@@ -76,6 +89,8 @@ h4 {
     padding-left: 20%;
     margin-top: -20%;
     padding-top: 0%;
+    text-align: center;
+    width: 100%;
 }
 
 .btn-primary {
