@@ -12,7 +12,7 @@ $(document).ready(function() {
     } else { //already logged in
         // generatePantry();
         generateShoppingList();
-        // generateCalendar();
+        generateCalendar();
     }
 });
 
@@ -91,40 +91,10 @@ function generateShoppingList() {
 
 //Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
 function generateCalendar() {
-    $("#calendar").fullCalendar({
-        // put your options and callbacks here
-    })
-
-    let recipeArr = userData.val().recipes;
-
-    for (var recipe in recipeArr) {
-
-        //convert recieps to calendar event objects
-        let currentObj = new Object();
-
-        currentObj.title = recipeArr[recipe].name;
-
-        currentObj.start = recipeArr[recipe].mealPlanSlot.date + "T";
-
-        switch(recipeArr[recipe].mealPlanSlot.meal) {
-            case "breakfast": 
-                currentObj.start += "08:00:00Z";
-                break;
-            case "lunch":
-                currentObj.start += "13:00:00Z";
-                break;
-            case "dinner":
-                currentObj.start += "19:00:00Z";
-                break;
-            default:
-            currentObj.start += "00:00:00Z";
-        }
-        currentObj.allDay = false;
-        
-        //Populate calendar
-        $('#calendar').fullCalendar('renderEvent', currentObj);
-    }
+    console.log("WARNING: generateCalendar Not currently implemented");
 }
+
+
 
 //--------------------------------------------------
 //             JSON to object
@@ -381,7 +351,7 @@ var closeBtn = $(".loginCloseBtn");
 // var modalBtn = document.getElementById("modalBtn");
 
 
-$("#login-button").on("click", function () {
+$("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
     const password = $("#user-password").val();
@@ -422,7 +392,7 @@ $("#login-button").on("click", function () {
 
 
 //Listener for sign-up button
-$("#signup-button").on("click", function () {
+$("#signup-button").on("click", function() {
 
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
@@ -466,7 +436,7 @@ $("#signup-button").on("click", function () {
     $("#signup-confirm-password").val("");
 })
 
-$("#logout-button").on("click", function () {
+$("#logout-button").on("click", function() {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
@@ -612,17 +582,13 @@ firebase.auth().onAuthStateChanged(user => {
             if (snapshot.val()) {
                 userData = snapshot;
                 pantry = [];
-
-                $.each(userData.val().pantry, function (index, key) {
-                    // console.log("value", key);
+                $.each(userData.val().pantry, function(index, key) {
                     key.identifier = index;
-                    // console.log(key.identifier)
                     pantry.push(key);
                 })
 
                 generatePantry();
                 generateRecipePantry();
-                generateCalendar();
             }
         })
         isLoggedIn = true;
@@ -646,4 +612,3 @@ function removeFromFirebase(location, value) {
     console.log("/users/" + uuid + "/" + location + "/" + value)
     firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
-
