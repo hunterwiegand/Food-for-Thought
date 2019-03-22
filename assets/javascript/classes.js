@@ -1,7 +1,8 @@
 class recipe {
+
     constructor(recipeJSON) {
         this.name = recipeJSON.label;
-        this.url = recipeJSON.url;
+        this.url = this.convertUrl(recipeJSON.url)
         this.source = recipeJSON.source;
         this.imageURL = recipeJSON.image;
         this.servings = recipeJSON.yield;
@@ -13,6 +14,13 @@ class recipe {
         })
         this.mealPlanSlot;
     }
+
+    convertUrl(url) {
+        if (url.slice(0, 5) === "http:") {
+            return "https" + url.slice(4)
+        }
+    }
+
 }
 
 class foodItem {
