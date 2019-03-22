@@ -66,6 +66,14 @@ function generateShoppingList() {
         let foodHTML = createFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
         foodHTML.addClass("food");
+        let xButton = $("<span class='px-1'>").text("X");
+        foodHTML.prepend(xButton);
+
+        xButton.click(function() {
+            removeFromFirebase("shoppingList", value.identifier);
+            foodHTML.remove();
+            shoppingList.splice(index, 1);
+        })
         $("#shopping-list-div").append(foodHTML);
     })
 }
@@ -182,7 +190,7 @@ function createFoodItemHTML(foodItemObject) {
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
-    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
+    // tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
     return tableRow;
 }
