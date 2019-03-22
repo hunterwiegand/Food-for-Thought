@@ -12,7 +12,7 @@ $(document).ready(function () {
     } else { //already logged in
         // generatePantry();
         generateShoppingList();
-        generateCalendar();
+        // generateCalendar();
     }
 });
 
@@ -153,10 +153,40 @@ function generateShoppingList() {
 
 //Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
 function generateCalendar() {
-    console.log("WARNING: generateCalendar Not currently implemented");
+    $("#calendar").fullCalendar({
+        // put your options and callbacks here
+    })
+
+    let recipeArr = userData.val().recipes;
+
+    for (var recipe in recipeArr) {
+
+        //convert recieps to calendar event objects
+        let currentObj = new Object();
+
+        currentObj.title = recipeArr[recipe].name;
+
+        currentObj.start = recipeArr[recipe].mealPlanSlot.date + "T";
+
+        switch(recipeArr[recipe].mealPlanSlot.meal) {
+            case "breakfast": 
+                currentObj.start += "08:00:00Z";
+                break;
+            case "lunch":
+                currentObj.start += "13:00:00Z";
+                break;
+            case "dinner":
+                currentObj.start += "19:00:00Z";
+                break;
+            default:
+            currentObj.start += "00:00:00Z";
+        }
+        currentObj.allDay = false;
+        
+        //Populate calendar
+        $('#calendar').fullCalendar('renderEvent', currentObj);
+    }
 }
-
-
 
 //--------------------------------------------------
 //             JSON to object
@@ -223,7 +253,7 @@ function createRecipeHTML(recipeObject, index) {
 //Create Food Item HTML for Pantry Page
 function createFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
-   
+
     // let test = $("<td class='food-item-remove'>").text("x");
 
     tableRow.attr("food-name", foodItemObject.name);
@@ -412,7 +442,7 @@ var closeBtn = $(".loginCloseBtn");
 // var modalBtn = document.getElementById("modalBtn");
 
 
-$("#login-button").on("click", function() {
+$("#login-button").on("click", function () {
     //Get user login info
     const email = $("#user-email").val();
     const password = $("#user-password").val();
@@ -422,82 +452,82 @@ $("#login-button").on("click", function() {
     console.log("password: ", password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
-    promise.catch(function(event) {
+    promise.catch(function (event) {
         console.log(event.message);
-   
-        if(password !== promise){
+
+        if (password !== promise) {
             (loginModal.modal('show'));
-            loginModal.css({display:'block'})
+            loginModal.css({ display: 'block' })
         }
-    
+
     })
     // Listen for close click
     $('.loginCloseBtn').on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
+    function closeModal() {
         loginModal.style.display = "none";
-        }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e){
-    if(e.target === loginModal){
-    loginModal.style.display = "none";
     }
 
-    $("#user-email").val("");
-    $("#user-password").val("");
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = "none";
+        }
+
+        $("#user-email").val("");
+        $("#user-password").val("");
     }
 })
 
 
 //Listener for sign-up button
-$("#signup-button").on("click", function() {
+$("#signup-button").on("click", function () {
 
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
     const password = $("#signup-password").val().trim();
     const passwordConfirm = $("#signup-confirm-password").val().trim();
 
-     // Confirm 1st entered password = 2nd entered password or open modal 
-            if (password !== passwordConfirm){
-                (loginModal.modal('show'));
-                loginModal.css({display:'block'})
-            }
-            else {
-                const auth = firebase.auth();
-                const promise = auth.createUserWithEmailAndPassword(email, password);
+    // Confirm 1st entered password = 2nd entered password or open modal 
+    if (password !== passwordConfirm) {
+        (loginModal.modal('show'));
+        loginModal.css({ display: 'block' })
+    }
+    else {
+        const auth = firebase.auth();
+        const promise = auth.createUserWithEmailAndPassword(email, password);
 
-                promise.catch(function(event) {
-                console.log("created account");
-                
-         })
-        }
+        promise.catch(function (event) {
+            console.log("created account");
+
+        })
+    }
 
     // Listen for close click
     closeBtn.on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
     // Function to close modal
-        function closeModal() {
-            loginModal.css({display:'hide'})
-        }
-
-    // Funtion to close modal if click outside of modal
-    function outsideClick(e){
-        if(e.target === loginModal){
-        loginModal.style.display = "none";
-        }
-    
+    function closeModal() {
+        loginModal.css({ display: 'hide' })
     }
 
-    
+    // Funtion to close modal if click outside of modal
+    function outsideClick(e) {
+        if (e.target === loginModal) {
+            loginModal.style.display = "none";
+        }
+
+    }
+
+
     $("#signup-email").val("");
     $("#signup-password").val("");
 })
 
-$("#logout-button").on("click", function() {
+$("#logout-button").on("click", function () {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
@@ -645,14 +675,15 @@ firebase.auth().onAuthStateChanged(user => {
                 userData = snapshot;
                 pantry = [];
                 $.each(userData.val().pantry, function (index, key) {
-                    console.log("value", key);
+                    // console.log("value", key);
                     key.identifier = index;
-                    console.log(key.identifier)
+                    // console.log(key.identifier)
                     pantry.push(key);
                 })
 
                 generatePantry();
                 generateRecipePantry();
+                generateCalendar();
             }
         })
         isLoggedIn = true;
@@ -671,3 +702,4 @@ function removeFromFirebase(location, value) {
     console.log("/users/" + uuid + "/" + location + "/" + value)
     firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
+
