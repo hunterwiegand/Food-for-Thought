@@ -478,7 +478,12 @@ $("#add-item-btn").click(function(event) {
 //        Recipe Page UI Interactions
 //---------------------------------------------
 
+$("#recipe-search-button").click(function() {
+    let searchTerm = ($(".recipe-food-item").text());
+    searchTerm = searchTerm.split(" ").join("+");
+    //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
+})
 $(document).on("click", ".food", function() {
     let foodName = this.dataset.foodName;
     console.log(foodName);
