@@ -482,14 +482,13 @@ $("#recipe-search-button").click(function() {
     searchTerm = searchTerm.split(" ").join("+");
     //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
+    callEdaRec(searchTerm);
+
 })
 $(document).on("click", ".food", function() {
     let foodName = this.dataset.foodName;
-    console.log(foodName);
     let temp = foodName.replace(/\s/g, '');
-    console.log(temp);
     temp = temp.replace(/\s*,\s*|\s+,/g, '-');
-    console.log("temp", temp);
     console.log($(this).attr("data-state"))
     if ($(this).attr("data-state") === "remove") {
         $("#" + temp).remove();
@@ -506,6 +505,7 @@ $(document).on("click", ".food", function() {
         $(this).attr("data-state", "remove");
     }
 })
+
 
 //--------------------------------------------------
 //                    API Calls
