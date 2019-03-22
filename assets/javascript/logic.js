@@ -283,10 +283,6 @@ function createRecipeSelectionModal(recipe, index) {
         }
         generateRecipePantry();
 
-        $(document).on("click", "#add-to-calendar-button", function() {
-            $("#recipe-search-text").empty();
-        })
-
         //TODO: Need to check to make sure date and meal are selected and message player if they're not
         shownRecipes[index].mealPlanSlot = { date: $("#time-slot-date" + index).val(), meal: $('input[name=meal]:checked').attr("value") };
         recipes.push(shownRecipes[index]);
