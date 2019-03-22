@@ -5,7 +5,7 @@ let shownRecipes = [];
 let isLoggedIn = false;
 let userData;
 
-$(document).ready(function () {
+$(document).ready(function() {
     if (!isLoggedIn) { //not logged in yet
         //Redirect to login screen
         console.log("usernot found");
@@ -40,13 +40,13 @@ function generatePantry() {
 
     $("#pantry-list-div").empty();
 
-    $.each(pantry, function (index, value) {
+    $.each(pantry, function(index, value) {
         let foodItemHTML = createFoodItemHTML(value);
         let container = $("<div>");
         let xButton = $("<span class='px-1'>").text("X");
         foodItemHTML.prepend(xButton);
 
-        xButton.click(function () {
+        xButton.click(function() {
             removeFromFirebase("pantry", value.identifier);
             foodItemHTML.remove();
             pantry.splice(index, 1);
@@ -196,7 +196,6 @@ function createRecipeHTML(recipeObject, index) {
 function createFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
     tableRow.attr("food-name", foodItemObject.name);
-    tableRow.attr("data-state", "add");
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
@@ -221,7 +220,7 @@ function createIngredientsHTML(ingredients) {
     let titleDiv = $("<div class='ingredients-title col'>");
     titleDiv.html($("<span class='ingredients-title'> Ingredients: </span>"));
     let ingredientsUL = $("<ul>");
-    $.each(ingredients, function (key, value) {
+    $.each(ingredients, function(key, value) {
         ingredientsUL.append($("<li class='ingredient'>").text(value));
     })
     containerDiv.append(titleDiv);
@@ -233,7 +232,7 @@ function createRecipeDirectionLink(directionLink) {
     let containerDiv = $("<div>");
     let directionButton = $("<button class='btn btn-primary btn-lg' data-toggle='modal' data-target='#myModal'>");
     directionButton.text("Get Recipe");
-    directionButton.click(function () {
+    directionButton.click(function() {
         $("#direction-modal-info").attr("src", directionLink);
 
     })
@@ -313,7 +312,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
     headerRow.append($("<th>").text("Qty Left"));
     headerRow.append($("<th>").text("Measurement"));
     ingredientsTable.append(headerRow);
-    $.each(ingredients, function (key, value) {
+    $.each(ingredients, function(key, value) {
         let currentRow = $("<tr>");
         currentRow.append($("<td>").text(value));
         currentRow.append($("<td>").append(createRecipeDropDown(key)));
@@ -328,7 +327,7 @@ function createRecipeIngredientAllocationTable(ingredients) {
 function createRecipeDropDown(index) {
     let ingredientSelect = $("<select class='custom-select' id='ingredient-select-" + index + "'>");
     ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
-    $.each(pantry, function (key, value) {
+    $.each(pantry, function(key, value) {
         ingredientSelect.append($("<option value='" + key + "'>").text(value.name));
     })
 
@@ -373,16 +372,16 @@ $("#login-button").on("click", function() {
     console.log("password: ", password);
 
     const promise = auth.signInWithEmailAndPassword(email, password);
-    promise.catch(function (event) {
-        console.log(event.message);
+    promise.catch(function(event) {
+            console.log(event.message);
 
-        if (password !== promise) {
-            (loginModal.modal('show'));
-            loginModal.css({ display: 'block' })
-        }
+            if (password !== promise) {
+                (loginModal.modal('show'));
+                loginModal.css({ display: 'block' })
+            }
 
-    })
-    // Listen for close click
+        })
+        // Listen for close click
     $('.loginCloseBtn').on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
@@ -419,7 +418,7 @@ $("#signup-button").on("click", function() {
         const auth = firebase.auth();
         const promise = auth.createUserWithEmailAndPassword(email, password);
 
-        promise.catch(function (event) {
+        promise.catch(function(event) {
             console.log("created account");
 
         })
@@ -483,14 +482,13 @@ $("#recipe-search-button").click(function() {
     searchTerm = searchTerm.split(" ").join("+");
     //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
+    callEdaRec(searchTerm);
+
 })
 $(document).on("click", ".food", function() {
     let foodName = this.dataset.foodName;
-    console.log(foodName);
     let temp = foodName.replace(/\s/g, '');
-    console.log(temp);
     temp = temp.replace(/\s*,\s*|\s+,/g, '-');
-    console.log("temp", temp);
     console.log($(this).attr("data-state"))
     if ($(this).attr("data-state") === "remove") {
         $("#" + temp).remove();
@@ -507,6 +505,7 @@ $(document).on("click", ".food", function() {
         $(this).attr("data-state", "remove");
     }
 })
+
 
 //--------------------------------------------------
 //                    API Calls
@@ -531,7 +530,7 @@ function callEdaRec(userFoodItem) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
 
 
         var hits = response.hits;
@@ -557,7 +556,7 @@ function callEdaFood(barcodeNum) {
     $.ajax({
         url: queryURL,
         method: "GET"
-    }).then(function (response) {
+    }).then(function(response) {
         let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
         addItemToPantry(newFoodItem);
     })
@@ -599,7 +598,7 @@ firebase.auth().onAuthStateChanged(user => {
         uuid = user.uid;
         console.log("Logged in");
         //Grab user data
-        database.ref("/users/" + uuid).once("value", function (snapshot) {
+        database.ref("/users/" + uuid).once("value", function(snapshot) {
             if (snapshot.val()) {
                 userData = snapshot;
                 pantry = [];
