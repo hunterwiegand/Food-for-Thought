@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -6,14 +7,14 @@
     <title>Food for Thought</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="" X-UA-Compatible content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Calendar CSS-->
     <link rel='stylesheet' type='text/css' href="assets/css/fullcalendar.css" />
+
 
 
 
@@ -23,14 +24,23 @@
     <div id="test-div"></div>
 
     <body class="mealPlanner">
-
-        <h1> Food for Thought</h1>
-        <h2>Meal Planner</h2>
-
         <!-- Navigation Bar -->
+        <div class="header">
+            <h1> Food for Thought</h1>
+		<h2>Meal Planner</h2>
+            <nav class="navbar navbar-expand-lg navbar-transparent center" style="font-weight: bold">
+                <ul class="navbar-nav">
+                    <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                    <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                    <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                    <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
+                    <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+                </ul>
+            </nav>
+        </div>
         <div class="container" id="menu">
-            <div class="container-fluid" id="menu4">
-                <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+            <div class="container" id="menu4">
+                <!-- <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                     <ul class="navbar-nav">
                         <a class="navbar-brand" style="color: white" href="index.html">Home</a>
                         <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
@@ -38,38 +48,29 @@
                         <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
                         <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
                     </ul>
-                </nav>
+                </nav> -->
             </div>
         </div>
+<div class="container">
+    <div id="calendar"></div>
+</div>
 
+   <!-- Firebase Script-->
+   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-        <!-- <iframe src="myCalendar.html" style="height:800px;width:100%"></iframe> -->
+   <!-- Jquery Script-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-        <div class="container">
-            <div id="calendar"></div>'
-        </div>
+   <!-- Calendar Script-->
+   <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
 
+   <!-- Bootstrap JavaScript -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   <!-- Custom JavaScript-->
+   <script src="assets/javascript/classes.js"></script>
 
-
-
-        <!--FireBase-->
-        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
-
-        <!-- Custom Jquery-->
-        <script type='text/javascript' src="assets/javascript/jquery-1.10.2.js"></script>
-
-        <!-- Calendar Script-->
-        <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
-
-        <!-- Custom js Script-->
-        <script src="assets/javascript/logic.js"></script>
-
-        <!-- Bootstrap Script-->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-            crossorigin="anonymous"></script>
-
-    </body>
+   <script src="assets/javascript/logic.js"></script>
+</body>
 
 
 </html>

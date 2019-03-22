@@ -6,7 +6,7 @@
     <title>Food for Thought</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="" X-UA-Compatible content="ie=edge">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
@@ -16,21 +16,28 @@
 
 
 
-
 </head>
 
 <body>
     <div id="test-div"></div>
 
     <body class="home">
-
-        <h1 class="homePageHeader"> Food for Thought</h1>
-        <!-- <h2>From Pantry to Plate</h2> -->
-
         <!-- Navigation Bar -->
+        <div class="header">
+            <h1>Food for Thought</h1>
+            <nav class="navbar navbar-expand-lg navbar-transparent center" style="font-weight: bold">
+                <ul class="navbar-nav">
+                    <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                    <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                    <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                    <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
+                    <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+                </ul>
+            </nav>
+        </div>
         <div class="container" id="menu">
             <div class="container-fluid" id="menu3">
-                <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+                <!-- <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
                     <ul class="navbar-nav">
                         <a class="navbar-brand" style="color: white" href="index.html">Home</a>
                         <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
@@ -38,7 +45,7 @@
                         <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
                         <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
                     </ul>
-                </nav>
+                </nav> -->
             </div>
         </div>
 
@@ -50,7 +57,7 @@
                     <div class="col-md-5">
                         <form role="form" method="post" action="register.php">
                             <fieldset>
-                                <p class="text-uppercase pull-center" style="color: black; font-weight: bold"> SIGN UP:
+                                <p class="text-uppercase pull-center" style="color: white; text-indent: 10px;font-weight: bold; background-color: rgb(153, 44, 82) "> SIGN UP:
                                 </p>
                                 <div class="form-group">
                                     <input type="email" id="signup-email" class="form-control input-lg" placeholder="Email Address">
@@ -62,7 +69,7 @@
                                     <input type="password" id="signup-confirm-password" class="form-control input-lg" placeholder="Confirm Password">
                                 </div>
                                 <div>
-                                    <button type="button" id="signup-button" class="btn btn-lg btn-primary">Register</button>
+                                    <button type="button" id="signup-button" class="btn btn-lg btn-primary" style="background-color: rgb(153, 44, 82)">Register</button>
                                 </div>
                                 <!-- Add modal with passwords do not match warning -->
                                 <div id="signinModal" class="loginModal modal">
@@ -78,14 +85,14 @@
                     <!-- sign-into exisiting account -->
                     <div class="col-md-2 pt-5 invisible" id="logged-in-state">
                         <div>
-                            <h5>WELCOME!</h5>
-                            <button type="button" id="logout-button" class="btn btn-lg btn-primary">Log Out</button>
+                            <h4>WELCOME!</h4>
+                            <button type="button" id="logout-button" style="background-color: rgb(153, 44, 82); margin:15%" class="btn btn-lg btn-primary">Log Out</button>
                         </div>
                     </div>
                     <div class="col-md-5">
                         <form role="form">
                             <fieldset>
-                                <p class="text-uppercase" style="color: black; font-weight: bold"> Login using your account: </p>
+                                <p class="text-uppercase" style="color: white; text-indent: 10px; background-color: rgb(153, 44, 82);font-weight: bold"> Login using your account: </p>
 
                                 <div class="form-group">
                                     <input type="email" id="user-email" class="form-control input-lg" placeholder="Email">
@@ -94,7 +101,7 @@
                                     <input type="password" id="user-password" class="form-control input-lg" placeholder="Password">
                                 </div>
                                 <div>
-                                    <button type="button" id="login-button" class="btn btn-lg btn-primary">Sign
+                                    <button type="button" id="login-button" class="btn btn-lg btn-primary"style="background-color: rgb(153, 44, 82)">Sign
                                         In</button>
                                 </div>
 
@@ -109,22 +116,22 @@
 
         </div>
 
-        <!-- Firebase Script-->
-        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+   <!-- Firebase Script-->
+   <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-        <!-- Jquery Script-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+   <!-- Jquery Script-->
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-        <!-- Calendar Script-->
-        <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
+   <!-- Calendar Script-->
+   <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
 
-        <!-- Bootstrap JavaScript -->
-        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-        <!-- Custom JavaScript-->
-        <script src="assets/javascript/classes.js"></script>
+   <!-- Bootstrap JavaScript -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+   <!-- Custom JavaScript-->
+   <script src="assets/javascript/classes.js"></script>
 
-        <script src="assets/javascript/logic.js"></script>
-    </body>
+   <script src="assets/javascript/logic.js"></script>
+</body>
 
 
 </html>

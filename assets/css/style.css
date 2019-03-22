@@ -6,7 +6,6 @@ h1 {
     width: 100%;
     padding-top: 2%;
     padding-bottom: 4%;
-    background-color: rgb(153, 44, 82);
     margin-bottom: 0%;
 }
 
@@ -29,30 +28,35 @@ h1 {
 
 #menu3 {
     margin-top: -2%;
+    padding: 3%;
 }
 
 #menu4 {
     margin-bottom: 0%;
+    padding-top:0%;
 }
 
 #direction-modal-body {
     height: 90vh;
 }
 
+#recipe-search-button{
+    margin-bottom: 10px;
+}
 
-/* iframe {
-    margin-top: -12%;
+
+iframe {
+    margin-top: -5%;
     border-color: transparent;
-} */
+}
 
 h2 {
     font-family: 'Roboto', sans-serif;
     color: #ffffff;
     text-align: center;
     width: 100%;
-    background-color: rgb(153, 44, 82);
     margin-top: -3%;
-    padding-bottom: 5%;
+    padding-bottom: 0%;
 }
 
 h4 {
@@ -68,12 +72,25 @@ h4 {
     width: 100%;
 }
 
+.center {
+    margin: auto;
+    width: 32% !important;
+    padding: 10px;
+  }
+
+.header{
+    background-color: rgb(153, 44, 82);
+    width: 100%;
+}
+
 .navbar {
     color: #ffffff;
     font-family: 'Roboto', sans-serif;
     text-align: center;
-    padding-left: 20%;
-    margin-top: -15%;
+    margin-top: 0%;
+    padding-top: 0%;
+    text-align: center;
+    width: 100%;
 }
 
 .btn-primary {
@@ -105,7 +122,7 @@ h4 {
 
 .container {
     box-align: center;
-    background-color: white;
+    background-color:transparent;
     padding: 20px;
 }
 
