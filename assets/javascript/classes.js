@@ -1,7 +1,8 @@
 class recipe {
+
     constructor(recipeJSON) {
         this.name = recipeJSON.label;
-        this.url = recipeJSON.url;
+        this.url = this.convertUrl(recipeJSON.url)
         this.source = recipeJSON.source;
         this.imageURL = recipeJSON.image;
         this.servings = recipeJSON.yield;
@@ -13,33 +14,21 @@ class recipe {
         })
         this.mealPlanSlot;
     }
+
+    convertUrl(url) {
+        if (url.slice(0, 5) === "http:") {
+            return "https" + url.slice(4)
+        }
+    }
+
 }
 
 class foodItem {
-    constructor(foodItemJSON, measurement, quantity, category) {
-
-        let counter = "0";
-        let nameArr = [];
-        let nameStr = foodItemJSON.label;
-        let name = "";
-
-        for (var i = 0; i < nameStr.length + 1; i++) {
-            if (nameStr.charAt(i) != ",") {
-                nameArr.push(nameStr.charAt(i));
-            } else if (nameStr.charAt(i) === "," && counter === "0") {
-                nameArr.push(nameStr.charAt(i));
-                counter++;
-            } else {
-                break;
-            }
-        }
-
-        name = nameArr.join("");
-        
-        this.name = name;
+    constructor(foodItemJSON, measurement, quantity) {
+        this.name = foodItemJSON.label.split(",").splice(0, 2).join(",");
         this.quantity = quantity;
         this.measurement = measurement;
-        this.category = category;
+        // this.category = category;
     }
 }
 
