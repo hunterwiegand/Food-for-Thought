@@ -500,6 +500,7 @@ $(document).on("click", ".food", function () {
 
         let temp  = foodName.replace(/\s/g, '');
         temp = temp.replace(/\s*,\s*|\s+,/g, '-');
+        // aString = aString.replace(/\s*,\s*|\s+,/g, '*');
 
     if ($(this).attr("data-state") === "add") {
         console.log("food item was clicked");
@@ -521,6 +522,7 @@ $(document).on("click", ".food", function () {
 
 
         $(this).attr("data-state", "add");
+        // $( "input[name*='man']" ).val( "has man in it!" );
     }
 
 })
