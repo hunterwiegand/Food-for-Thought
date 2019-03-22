@@ -463,7 +463,7 @@ $("#logout-button").on("click", function () {
 //        Pantry Page UI Interactions
 //---------------------------------------------
 
-$("#add-item-btn").click(function (event) {
+$("#add-item-btn").click(function(event) {
     event.preventDefault();
     let searchTerm = $("#item-input").val();
     //Checks to see if the entry is only numbers (making it a barcode).
@@ -497,9 +497,9 @@ $("#recipe-search-button").click(function () {
 $(document).on("click", ".food", function () {
 
     let foodName = this.dataset.foodName;
+
         let temp  = foodName.replace(/\s/g, '');
         temp = temp.replace(/\s*,\s*|\s+,/g, '-');
-        // aString = aString.replace(/\s*,\s*|\s+,/g, '*');
 
     if ($(this).attr("data-state") === "add") {
         console.log("food item was clicked");
@@ -510,7 +510,7 @@ $(document).on("click", ".food", function () {
         newDiv.addClass("recipe-food-item");
         newDiv.attr("id", temp)
         console.log(this); 
-        newDiv.prepend(foodName);
+        newDiv.prepend(foodName + " ");
 
 
         $("#recipe-search-text").prepend(newDiv);
@@ -521,7 +521,6 @@ $(document).on("click", ".food", function () {
 
 
         $(this).attr("data-state", "add");
-        // $( "input[name*='man']" ).val( "has man in it!" );
     }
 
 })
