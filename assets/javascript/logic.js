@@ -363,7 +363,7 @@ var closeBtn = $(".loginCloseBtn");
 // var modalBtn = document.getElementById("modalBtn");
 
 
-$("#login-button").on("click", function () {
+$("#login-button").on("click", function() {
     //Get user login info
     const email = $("#user-email").val();
     const password = $("#user-password").val();
@@ -404,7 +404,7 @@ $("#login-button").on("click", function () {
 
 
 //Listener for sign-up button
-$("#signup-button").on("click", function () {
+$("#signup-button").on("click", function() {
 
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
@@ -448,7 +448,7 @@ $("#signup-button").on("click", function () {
     $("#signup-confirm-password").val("");
 })
 
-$("#logout-button").on("click", function () {
+$("#logout-button").on("click", function() {
     const auth = firebase.auth();
     console.log("Logged out");
     auth.signOut();
@@ -474,57 +474,33 @@ $("#add-item-btn").click(function(event) {
     }
 })
 
-
 //---------------------------------------------
 //        Recipe Page UI Interactions
 //---------------------------------------------
 
-$("#recipe-search-button").click(function () {
-
-    let searchTerm = ($(".recipe-food-item").text());
-
-    console.log(searchTerm);
-    searchTerm = searchTerm.split(" ").join("+");
-    console.log(searchTerm);
-
-
-    //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
-
-    callEdaRec(searchTerm);
-})
-
-$(document).on("click", ".food", function () {
-
+$(document).on("click", ".food", function() {
     let foodName = this.dataset.foodName;
-
-        let temp  = foodName.replace(/\s/g, '');
-        temp = temp.replace(/\s*,\s*|\s+,/g, '-');
-        // aString = aString.replace(/\s*,\s*|\s+,/g, '*');
-
-    if ($(this).attr("data-state") === "add") {
+    console.log(foodName);
+    let temp = foodName.replace(/\s/g, '');
+    console.log(temp);
+    temp = temp.replace(/\s*,\s*|\s+,/g, '-');
+    console.log("temp", temp);
+    console.log($(this).attr("data-state"))
+    if ($(this).attr("data-state") === "remove") {
+        $("#" + temp).remove();
+        $(this).attr("data-state", "add");
+    } else {
         console.log("food item was clicked");
         console.log(this.dataset.foodName);
-
-
         let newDiv = $("<div>");
         newDiv.addClass("recipe-food-item");
         newDiv.attr("id", temp)
-        console.log(this); 
+        console.log(this);
         newDiv.prepend(foodName + " ");
-
-
         $("#recipe-search-text").prepend(newDiv);
         $(this).attr("data-state", "remove");
-    } else {
-
-        $("#" + temp).remove();
-
-
-        $(this).attr("data-state", "add");
-        // $( "input[name*='man']" ).val( "has man in it!" );
     }
-
 })
 
 //--------------------------------------------------
@@ -623,7 +599,7 @@ firebase.auth().onAuthStateChanged(user => {
                 userData = snapshot;
                 pantry = [];
 
-                $.each(userData.val().pantry, function (index, key) {
+                $.each(userData.val().pantry, function(index, key) {
                     // console.log("value", key);
                     key.identifier = index;
                     // console.log(key.identifier)
@@ -638,6 +614,7 @@ firebase.auth().onAuthStateChanged(user => {
 
                 generatePantry();
                 generateRecipePantry();
+                generateShoppingList();
                 generateCalendar();
             }
         })
@@ -662,4 +639,3 @@ function removeFromFirebase(location, value) {
     console.log("/users/" + uuid + "/" + location + "/" + value)
     firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
-
