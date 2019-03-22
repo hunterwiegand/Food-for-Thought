@@ -80,9 +80,20 @@ function generateShoppingList() {
 
 //Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
 function generateCalendar() {
-    console.log("WARNING: generateCalendar Not currently implemented");
-}
+    $("#calendar").fullCalendar({
+        // put your options and callbacks here
+    })
 
+    let recipeArr = userData.val().recipes;
+
+    for (var recipe in recipeArr) {
+
+        //convert recieps to calendar event objects
+        let currentObj = new Object();
+
+        currentObj.title = recipeArr[recipe].name;
+
+        currentObj.start = recipeArr[recipe].mealPlanSlot.date + "T";
 
         switch (recipeArr[recipe].mealPlanSlot.meal) {
             case "breakfast":
@@ -100,51 +111,12 @@ function generateCalendar() {
         currentObj.allDay = false;
 
         //Populate calendar
-
-        $("#calendar").fullCalendar({
-            // put your options and callbacks here
-       })
-   
-       let recipeArr = userData.val().recipes;
-   
-       for (var recipe in recipeArr) {
-   
-           //convert recieps to calendar event objects
-           let currentObj = new Object();
-   
-           currentObj.title = recipeArr[recipe].name;
-             let recipeArr = userData.val().recipes;
-   
-       for (var recipe in recipeArr) {
-   
-           //convert recieps to calendar event objects
-           let currentObj = new Object();
-   
-           currentObj.title = recipeArr[recipe].name;
-            currentObj.start = recipeArr[recipe].mealPlanSlot.date + "T";
-   
-           switch(recipeArr[recipe].mealPlanSlot.meal) {
-               case "breakfast": 
-                   currentObj.start += "08:00:00Z";
-                   break;
-               case "lunch":
-                   currentObj.start += "13:00:00Z";
-                   break;
-               case "dinner":
-                   currentObj.start += "19:00:00Z";
-                   break;
-               default:
-               currentObj.start += "00:00:00Z";
-           }
-           currentObj.allDay = false;
-   
-           //Populate calendar
-           $('#calendar').fullCalendar('renderEvent', currentObj);
-       }
-   }
-
+        $('#calendar').fullCalendar('renderEvent', currentObj);
+    }
+}
 
 //--------------------------------------------------
+//             JSON to object
 //--------------------------------------------------
 
 
@@ -152,8 +124,8 @@ function createRecipeObject(recipeJSON) {
     return new recipe(recipeJSON);
 }
 
-function createFoodItemObject(foodItemJSON, measurement, quantity, category) {
-    return new foodItem(foodItemJSON, measurement, quantity, category);
+function createFoodItemObject(foodItemJSON, measurement, quantity) {
+    return new foodItem(foodItemJSON, measurement, quantity);
 }
 
 
@@ -497,7 +469,8 @@ $("#add-item-btn").click(function(event) {
     if (/^\d+$/.test(searchTerm)) {
         callEdaFood(searchTerm); // is a barcode
     } else {
-        callEdaFoodByName(searchTerm, "pantry", $("#measurement-input").val(), $("#quantity-input").val(), $("#category-select")[0].value); // Is not a barcode
+        console.log("search term", searchTerm, "location", $(this).attr("data-target"), "measurement", $("#measurement-input").val(), "quantity", $("#quantity-input").val());
+        callEdaFoodByName(searchTerm, $(this).attr("data-target"), $("#measurement-input").val(), $("#quantity-input").val(), "none"); // Is not a barcode
     }
 })
 
@@ -594,7 +567,7 @@ function callEdaFoodByName(foodName, location, measurment, quantity, category) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food, measurment, quantity, category);
+        let newFoodItem = createFoodItemObject(response.hints[0].food, measurment, quantity);
         switch (location) {
             case "pantry":
                 addItemToPantry(newFoodItem);
