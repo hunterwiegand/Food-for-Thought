@@ -12,6 +12,9 @@
         integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Calendar CSS-->
+    <link rel='stylesheet' type='text/css' href="assets/css/fullcalendar.css" />
+
 
 </head>
 
@@ -44,8 +47,8 @@
                     <div class="container" id="pantryContainer">
                         <div id="pantry">
 
-                            <div class="card mb-6">
-                                <div class="card-header">Items in Pantry</div>
+                            <div style="background-color: white" class="card mb-6">
+                                <div class="card-header"style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)">Items in Pantry</div>
                                 <div class="card-body">
                                     <table class="table table-sm table-hover" id="pantryList">
                                         <thead>
@@ -68,8 +71,9 @@
                 <!-- Recipe  -->
                 <div class="col-m-6">
                     <div class="container">
-                        <div id="recipe-search-text">
-                            <button id="recipe-search-button">Create Recipe!!</button>
+                        
+                            <button id="recipe-search-button" style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)">Create Recipe!!</button>
+                            <div id="recipe-search-text">
                         </div>
                         <div style="background-color:transparent">
                             <div class="row justify-content-center">
@@ -81,11 +85,10 @@
                                         <!--end of col-->
                                         <div class="col">
                                             <input class="form-control form-control-lg form-control-borderless"
-                                                type="search" placeholder="Search for recipe by name or keyword">
-                                        </div>
+                                                type="search" style="font-size: 14px">Search for recipe by name or keyword</div>
                                         <!--end of col-->
                                         <div class="col-m-6">
-                                            <button class="btn btn-lg btn-success" type="submit">Search</button>
+                                            <button class="btn btn-lg btn-success" style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)"type="submit">Search</button>
                                         </div>
 
                                         <!--end of col-->
@@ -128,12 +131,13 @@
     <!-- Jquery Script-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-    <!-- Bootstrap JavaScript -->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-        crossorigin="anonymous"></script>
-    <!-- Custom JavaScript-->
-    <script src="assets/javascript/classes.js"></script>
+            <!-- Calendar Script-->
+        <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
+
+            <!-- Bootstrap JavaScript -->
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+            <!-- Custom JavaScript-->
+            <script src="assets/javascript/classes.js"></script>
 
     <script src="assets/javascript/logic.js"></script>
 </body>
