@@ -92,7 +92,48 @@ function generateCalendar() {
         currentObj.allDay = false;
 
         //Populate calendar
-        $('#calendar').fullCalendar('renderEvent', currentObj);
+
+        $("#calendar").fullCalendar({
+            // put your options and callbacks here
+       })
+   
+       let recipeArr = userData.val().recipes;
+   
+       for (var recipe in recipeArr) {
+   
+           //convert recieps to calendar event objects
+           let currentObj = new Object();
+   
+           currentObj.title = recipeArr[recipe].name;
+             let recipeArr = userData.val().recipes;
+   
+       for (var recipe in recipeArr) {
+   
+           //convert recieps to calendar event objects
+           let currentObj = new Object();
+   
+           currentObj.title = recipeArr[recipe].name;
+            currentObj.start = recipeArr[recipe].mealPlanSlot.date + "T";
+   
+           switch(recipeArr[recipe].mealPlanSlot.meal) {
+               case "breakfast": 
+                   currentObj.start += "08:00:00Z";
+                   break;
+               case "lunch":
+                   currentObj.start += "13:00:00Z";
+                   break;
+               case "dinner":
+                   currentObj.start += "19:00:00Z";
+                   break;
+               default:
+               currentObj.start += "00:00:00Z";
+           }
+           currentObj.allDay = false;
+   
+           //Populate calendar
+           $('#calendar').fullCalendar('renderEvent', currentObj);
+       }
+   }
 
 
 //--------------------------------------------------
