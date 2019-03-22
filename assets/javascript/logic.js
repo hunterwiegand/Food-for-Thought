@@ -603,12 +603,14 @@ firebase.auth().onAuthStateChanged(user => {
                 userData = snapshot;
                 pantry = [];
 
-                $.each(userData.val().pantry, function(index, key) {
-                    // console.log("value", key);
-                    key.identifier = index;
-                    // console.log(key.identifier)
-                    pantry.push(key);
-                })
+                if (userData.val().pantry) {
+                    $.each(userData.val().pantry, function(index, key) {
+                        // console.log("value", key);
+                        key.identifier = index;
+                        // console.log(key.identifier)
+                        pantry.push(key);
+                    })
+                }
 
                 shoppingList = [];
                 $.each(userData.val().shoppingList, function(index, key) {
