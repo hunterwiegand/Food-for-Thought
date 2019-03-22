@@ -16,11 +16,11 @@ class recipe {
 }
 
 class foodItem {
-    constructor(foodItemJSON, measurement, quantity, category) {
+    constructor(foodItemJSON, measurement, quantity) {
         this.name = foodItemJSON.label.split(",").splice(0, 2).join(",");
         this.quantity = quantity;
         this.measurement = measurement;
-        this.category = category;
+        // this.category = category;
     }
 }
 
