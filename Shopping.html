@@ -4,118 +4,116 @@
 <head>
     <meta charset="utf-8">
     <title>Shopping List</title>
- 
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="" X-UA-Compatible content="ie=edge">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="assets/css/style.css">
-  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-  <!-- Calendar CSS-->
-  <link rel='stylesheet' type='text/css' href="assets/css/fullcalendar.css" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <!-- Calendar CSS-->
+    <link rel='stylesheet' type='text/css' href="assets/css/fullcalendar.css" />
 
-  
+
 
 </head>
 
- <body class="shopping">
+<body class="shopping">
 
-<h1>Food for Thought</h1>
-<h2>Shopping List</h2>
-<br>
-<!-- Navigation Bar -->
-<div class="container" id="menu">
-<div class="container-fluid" id="menu2">
-    <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
-            <ul class="navbar-nav">
-              <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-              <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
-              <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
-              <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
-              <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
-</ul>
-    </nav>
-  </div>
-</div>
-  <div class="container" id="shoppingContainer">
+    <h1>Food for Thought</h1>
+    <h2>Shopping List</h2>
+    <br>
+    <!-- Navigation Bar -->
+    <div class="container" id="menu">
+        <div class="container-fluid" id="menu2">
+            <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+                <ul class="navbar-nav">
+                    <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                    <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                    <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                    <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
+                    <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    <div class="container" id="shoppingContainer">
 
         <!--Shopping List-->
         <div class="row" index="shoppingList">
-          <div class="col-md-3"></div>
-          <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header">Needed Items</div>
-            <div class="card-body">
-              <table class="table table-sm table-hover" id="shoppingList">
-                <thead>
-                  <tr>
-                    <th scope="col">Item Name</th>
-                    <th scope="col">Size</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Category</th>
+            <div class="col-md-3"></div>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header">Needed Items</div>
+                    <div class="card-body">
+                        <table class="table table-sm table-hover" id="shoppingList">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Size</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Category</th>
 
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+                                </tr>
+                            </thead>
+                            <tbody id="shopping-list-div">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-      
-      <div class="row">
-        <div class="col-md-4"></div>
-        <div class="col-md-4">
-          <!-- User added Item  -->
-          <div class="card mb-4">
-            <div class="card-header">Add Item</div>
-            <div class="card-body">
-  
-              <!-- Entry Form -->
-              <form>
-                <div class="form-group">
-                  <label for="item-input">Item Name</label>
-                  <input class="form-control" id="item-input" placeholder="example: milk" type="text">
+
+        <div class="row">
+            <div class="col-md-4"></div>
+            <div class="col-md-4">
+                <!-- User added Item  -->
+                <div class="card mb-4">
+                    <div class="card-header">Add Item</div>
+                    <div class="card-body">
+
+                        <!-- Entry Form -->
+                        <form>
+                            <div class="form-group">
+                                <label for="item-input">Item Name</label>
+                                <input class="form-control" id="item-input" placeholder="example: milk" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="size-input">Size</label>
+                                <input class="form-control" id="size-input" placeholder="example: quart" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity-input">Quantity</label>
+                                <input class="form-control" id="quantity-input" placeholder="example: 2" type="text">
+                            </div>
+                            <button class="btn btn-primary float-right" id="add-item-btn">Add Item</button>
+                        </form>
+
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label for="size-input">Size</label>
-                  <input class="form-control" id="size-input" placeholder="example: quart" type="text">
-                </div>
-                <div class="form-group">
-                  <label for="quantity-input">Quantity</label>
-                  <input class="form-control" id="quantity-input" placeholder="example: 2" type="text">
-                </div>
-                <button class="btn btn-primary float-right" id="add-item-btn">Add Item</button>
-              </form>
-  
             </div>
-          </div>
         </div>
-      </div>
-  
+
     </div>
-  </div>
+    </div>
 
 
-        
-<!-- Firebase Script-->
-<script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-<!-- Jquery Script-->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <!-- Firebase Script-->
+    <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-<!-- Calendar Script-->
-<script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
+    <!-- Jquery Script-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-<!-- Bootstrap JavaScript -->
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
-    crossorigin="anonymous"></script>
-<!-- Custom JavaScript-->
-<script src="assets/javascript/classes.js"></script>
+    <!-- Calendar Script-->
+    <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
 
-<script src="assets/javascript/logic.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <!-- Custom JavaScript-->
+    <script src="assets/javascript/classes.js"></script>
+
+    <script src="assets/javascript/logic.js"></script>
 </body>
 
 </html>
