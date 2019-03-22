@@ -66,6 +66,14 @@ function generateShoppingList() {
         let foodHTML = createFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
         foodHTML.addClass("food");
+        let xButton = $("<span class='px-1'>").text("X");
+        foodHTML.prepend(xButton);
+
+        xButton.click(function() {
+            removeFromFirebase("shoppingList", value.identifier);
+            foodHTML.remove();
+            shoppingList.splice(index, 1);
+        })
         $("#shopping-list-div").append(foodHTML);
     })
 }
@@ -148,19 +156,26 @@ function addRecipeToCalender(recipeObject) {
 function createRecipeHTML(recipeObject, index) {
 
     let containerDiv = $("<div>");
-    containerDiv.attr("class", "recipe-container row")
+    containerDiv.attr("class", "recipe-container row m-1 border")
+    let leftCol = $("<div>");
+    let titleRow = $("<div>");
+    titleRow.attr("class", "row");
+    let contentLeftRow = $("<div>");
+    contentLeftRow.attr("class", "row");
+    leftCol.append(titleRow, contentLeftRow);
+    leftCol.attr("class", "col-7");
+    containerDiv.append(leftCol);
     let imageCol = $("<div>");
-    imageCol.attr("class", "col-3");
+    imageCol.attr("class", "col-8");
     imageCol.append($("<img class='recipe-image'>").attr("src", recipeObject.imageURL));
-    containerDiv.append(imageCol);
-    let nameCol = $("<div>");
-    nameCol.attr("class", "col-4");
-    nameCol.append($("<div class='recipe-title row'>").text(recipeObject.name))
-    nameCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
-    nameCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
-    nameCol.append($("<div class='row'>").append(createRecipeDirectionLink(recipeObject.url)));
-    nameCol.append($("<div class='row'>").append(createRecipeSelectionModal(recipeObject, index)));
-    containerDiv.append(nameCol);
+    let infoCol = $("<div>");
+    infoCol.attr("class", "col-4");
+    titleRow.append($("<div class='recipe-title col'>").html($("<h3>" + recipeObject.name + "</h3>")));
+    infoCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
+    // infoCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
+    infoCol.append($("<div class='row p-1'>").append(createRecipeDirectionLink(recipeObject.url)));
+    infoCol.append($("<div class='row p-1'>").append(createRecipeSelectionModal(recipeObject, index)));
+    contentLeftRow.append(imageCol, infoCol);
     let ingredientCol = $("<div>");
     ingredientCol.attr("class", "col-5");
     ingredientCol.append(createIngredientsHTML(recipeObject.ingredients));
@@ -175,7 +190,7 @@ function createFoodItemHTML(foodItemObject) {
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
-    tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
+    // tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
     return tableRow;
 }
