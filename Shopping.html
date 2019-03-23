@@ -19,108 +19,97 @@
 
 </head>
 
- <body class="shopping">
-<!-- Navigation Bar -->
-<div class="header">
-  <h1>Food for Thought</h1>
-<h2>Shopping List</h2>
-  <nav class="navbar navbar-expand-lg navbar-transparent center" style="font-weight: bold">
-      <ul class="navbar-nav">
-          <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-          <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
-          <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
-          <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
-          <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
-      </ul>
-  </nav>
-</div>
-<div class="container" id="menu">
-<div class="container-fluid" id="menu2">
-    <!-- <nav class="navbar navbar-expand-lg navbar-transparent bg-transparent" style="font-weight: bold">
+<body class="shopping">
+    <!-- Navigation Bar -->
+    <div class="header">
+        <h1>Food for Thought</h1>
+        <h2>Shopping List</h2>
+        <nav class="navbar navbar-expand-lg navbar-transparent center" style="font-weight: bold">
             <ul class="navbar-nav">
-              <a class="navbar-brand" style="color: white" href="index.html">Home</a>
-              <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
-              <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
-              <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
-              <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
-</ul>
-    </nav> -->
-  </div>
-</div>
-  <div class="container" id="shoppingContainer">
+                <a class="navbar-brand" style="color: white" href="index.html">Home</a>
+                <a class="navbar-brand" style="color: white" href="pantry.html">Pantry</a>
+                <a class="navbar-brand" style="color: white" href="recipes.html">Recipes</a>
+                <a class="navbar-brand" style="color: white" href="Shopping.html">Shopping List</a>
+                <a class="navbar-brand" style="color: white" href="mealPlanner.html">Meal Plans</a>
+            </ul>
+        </nav>
+    </div>
+    <div class="container" id="menu">
+        <div class="container-fluid" id="menu2">
+        </div>
+    </div>
+    <div class="container" id="shoppingContainer">
 
         <!--Shopping List-->
         <div class="row" index="shoppingList">
-          <div class="col-md-6">
-        <div class="card mb-4">
-            <div class="card-header" style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)">Needed Items</div>
-            <div class="card-body">
-              <table class="table table-sm table-hover" id="shoppingList">
-                <thead>
-                  <tr>
-                    <th scope="col"></th>
-                    <th scope="col">Item Name</th>
-                    <th scope="col">Quantity</th>
-                    <th scope="col">Measurement</th>
-                    <th scope="col">Category</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                </tbody>
-              </table>
+            <div class="col-md-6">
+                <div class="card mb-4">
+                    <div class="card-header" style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)">Needed Items</div>
+                    <div class="card-body">
+                        <table class="table table-sm table-hover" id="shoppingList">
+                            <thead>
+                                <tr>
+                                    <th scope="col"></th>
+                                    <th scope="col">Item Name</th>
+                                    <th scope="col">Quantity</th>
+                                    <th scope="col">Measurement</th>
+                                </tr>
+                            </thead>
+                            <tbody id="shopping-list-div">
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- </div> -->
+                </div>
             </div>
-          <!-- </div> -->
-        </div>
-      </div>
-      
-      <!-- <div class="row"> -->
-        <div class="col-md-6">
-          <!-- User added Item  -->
-          <div class="card mb-4">
-            <div class="card-header" style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)">Add Item</div>
-            <div class="card-body">
-  
-              <!-- Entry Form -->
-              <form>
-                <div class="form-group">
-                  <label for="item-input" style="font-weight: bold">Item Name</label>
-                  <input class="form-control" id="item-input" placeholder="example: milk" type="text">
+
+            <!-- <div class="row"> -->
+            <div class="col-md-6">
+                <!-- User added Item  -->
+                <div class="card mb-4">
+                    <div class="card-header" style="font-weight: bold; color: white; font-size: 18px; background-color: rgb(153, 44, 82)">Add Item</div>
+                    <div class="card-body">
+
+                        <!-- Entry Form -->
+                        <form>
+                            <div class="form-group">
+                                <label for="item-input" style="font-weight: bold">Item Name</label>
+                                <input class="form-control" id="item-input" placeholder="example: milk" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="quantity-input" style="font-weight: bold">Quantity</label>
+                                <input class="form-control" id="quantity-input" placeholder="example: 2" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="measurement-input" style="font-weight: bold">Measurements</label>
+                                <input class="form-control" id="measurement-input" placeholder="example: quart" type="text">
+                            </div>
+                            <button class="btn btn-primary float-right" id="add-item-btn" style="font-weight: bold" data-target="shoppingList">Add Item</button>
+                        </form>
+
+                    </div>
                 </div>
-                <div class="form-group">
-                  <label for="size-input" style="font-weight: bold">Measurements</label>
-                  <input class="form-control" id="measurements-input" placeholder="example: quart" type="text">
-                </div>
-                <div class="form-group">
-                  <label for="quantity-input" style="font-weight: bold">Quantity</label>
-                  <input class="form-control" id="quantity-input" placeholder="example: 2" type="text">
-                </div>
-                <button class="btn btn-primary float-right" id="add-item-btn" style="font-weight: bold" data-target="shoppingList">Add Item</button>
-              </form>
-  
+
             </div>
         </div>
 
-    </div>
-    </div>
 
 
+        <!-- Firebase Script-->
+        <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
 
-  <!-- Firebase Script-->
-  <script src="https://www.gstatic.com/firebasejs/5.9.0/firebase.js"></script>
+        <!-- Jquery Script-->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
-  <!-- Jquery Script-->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- Calendar Script-->
+        <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
 
-  <!-- Calendar Script-->
-  <script type='text/javascript' src="assets/javascript/fullcalendar.js"></script>
+        <!-- Bootstrap JavaScript -->
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+        <!-- Custom JavaScript-->
+        <script src="assets/javascript/classes.js"></script>
 
-  <!-- Bootstrap JavaScript -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-  <!-- Custom JavaScript-->
-  <script src="assets/javascript/classes.js"></script>
-
-  <script src="assets/javascript/logic.js"></script>
+        <script src="assets/javascript/logic.js"></script>
 </body>
 
 
