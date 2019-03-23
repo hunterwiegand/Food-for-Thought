@@ -130,7 +130,7 @@ html .fc,
     border-bottom: 1px solid #EEE; 
 }	
 .fc-state-highlight { /* <td> today cell */ /* TODO: add .fc-today to <th> */
-	/* background: #fcf8e3; */
+	background: #fcf8e3;
 }
 
 .fc-state-highlight > div > div.fc-day-number{
