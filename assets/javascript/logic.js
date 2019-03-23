@@ -49,7 +49,7 @@ function generatePantry() {
 
 
 function generateRecipePantry() {
-
+    console.log("here");
     $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
@@ -62,6 +62,7 @@ function generateRecipePantry() {
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
+    $("#shopping-list-div").empty();
     $.each(shoppingList, function(index, value) {
         let foodHTML = createFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
@@ -74,7 +75,9 @@ function generateShoppingList() {
             foodHTML.remove();
             shoppingList.splice(index, 1);
         })
+        console.log(foodHTML)
         $("#shopping-list-div").append(foodHTML);
+        console.log($("#shopping-list-div"))
     })
 }
 
@@ -190,7 +193,6 @@ function createFoodItemHTML(foodItemObject) {
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
-    // tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
     return tableRow;
 }
@@ -282,8 +284,6 @@ function createRecipeSelectionModal(recipe, index) {
             }
         }
         generateRecipePantry();
-
-        //TODO: Need to check to make sure date and meal are selected and message player if they're not
         shownRecipes[index].mealPlanSlot = { date: $("#time-slot-date" + index).val(), meal: $('input[name=meal]:checked').attr("value") };
         recipes.push(shownRecipes[index]);
         updateFirebase("recipes", shownRecipes[index]);
@@ -605,9 +605,12 @@ firebase.auth().onAuthStateChanged(user => {
                     })
                 }
 
+                console.log(userData.val())
                 if (userData.val().shoppingList) {
                     shoppingList = [];
+                    console.log(userData.val().shoppingList)
                     $.each(userData.val().shoppingList, function(index, key) {
+                        console.log("right here");
                         key.identifier = index;
                         shoppingList.push(key);
                     })
