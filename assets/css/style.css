@@ -122,8 +122,9 @@ h4 {
 
 .container {
     box-align: center;
-    background-color:transparent;
+    background-color:white;
     padding: 20px;
+    color: black;
 }
 
 
