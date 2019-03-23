@@ -49,7 +49,6 @@ function generatePantry() {
 
 
 function generateRecipePantry() {
-    console.log("here");
     $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
@@ -75,9 +74,7 @@ function generateShoppingList() {
             foodHTML.remove();
             shoppingList.splice(index, 1);
         })
-        console.log(foodHTML)
         $("#shopping-list-div").append(foodHTML);
-        console.log($("#shopping-list-div"))
     })
 }
 
@@ -469,7 +466,6 @@ $("#add-item-btn").click(function(event) {
     if (/^\d+$/.test(searchTerm)) {
         callEdaFood(searchTerm); // is a barcode
     } else {
-        console.log("search term", searchTerm, "location", $(this).attr("data-target"), "measurement", $("#measurement-input").val(), "quantity", $("#quantity-input").val());
         callEdaFoodByName(searchTerm, $(this).attr("data-target"), $("#measurement-input").val(), $("#quantity-input").val(), "none"); // Is not a barcode
     }
 })
@@ -605,12 +601,9 @@ firebase.auth().onAuthStateChanged(user => {
                     })
                 }
 
-                console.log(userData.val())
                 if (userData.val().shoppingList) {
                     shoppingList = [];
-                    console.log(userData.val().shoppingList)
                     $.each(userData.val().shoppingList, function(index, key) {
-                        console.log("right here");
                         key.identifier = index;
                         shoppingList.push(key);
                     })
@@ -640,12 +633,9 @@ function updateFirebase(location, value) {
 }
 
 function removeFromFirebase(location, value) {
-    console.log(("/users/" + uuid + "/" + location + "/" + value));
     firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
 
 function setFirebase(location, value) {
-    console.log("/users/" + uuid + "/" + location);
     result = firebase.database().ref("/users/" + uuid + "/" + location).set(value);
-    console.log(result);
 }
