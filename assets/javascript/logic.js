@@ -24,43 +24,49 @@ database = firebase.database();
 //--------------------------------------------------
 
 
-//Generate the pantry html object and display it
+//Generate the pantry table body html object and display it
 function generatePantry() {
 
     $("#pantry-list-div").empty();
-
+    //Each foodItem object becomes a line in the table
     $.each(pantry, function(index, value) {
         let foodItemHTML = createFoodItemHTML(value);
-        let container = $("<div>");
-        let xButton = $("<span class='px-1'>").text("X");
-        foodItemHTML.prepend(xButton);
 
+        //Each line in the table gets a button which removes it from the pantry when clicked.
+        let xButton = $("<span class='px-1'>").text("X");
         xButton.click(function() {
-            removeFromFirebase("pantry", value.identifier);
-            foodItemHTML.remove();
-            pantry.splice(index, 1);
+            removeFromFirebase("pantry", value.identifier); //remove from firebase
+            foodItemHTML.remove(); //remove from html dom
+            pantry.splice(index, 1); //remove from the object array
         })
+        foodItemHTML.prepend(xButton);
 
         $("#pantry-list-div").append(foodItemHTML);
     })
-
-
 }
 
+function generateChangeableFoodObjectTable(targetTable) {
+    //Empty table so that we start with a known state
+    $(targetTable).empty();
 
-function generateRecipePantry() {
-
-    $("#recipe-pantry-list-div").empty();
-
+    //Each foodItem object becomes a line in the table
     $.each(pantry, function(index, value) {
-        let foodHTML = createFoodItemHTML(value);
-        foodHTML.attr("data-food-name", value.name);
-        foodHTML.addClass("food");
-        $("#recipe-pantry-list-div").append(foodHTML);
+        let foodItemHTML = createFoodItemHTML(value);
+
+        //Each line in the table gets a button which removes it from the pantry when clicked.
+        let xButton = $("<span class='px-1'>").text("X");
+        xButton.click(function() {
+            removeFromFirebase("pantry", value.identifier); //remove from firebase
+            foodItemHTML.remove(); //remove from html dom
+            pantry.splice(index, 1); //remove from the object array
+        })
+        foodItemHTML.prepend(xButton);
+
+        $(targetTable).append(foodItemHTML);
     })
 }
 
-//Generate the shopping list html object and display it
+//Generate the shopping list table html object and display it
 function generateShoppingList() {
     $.each(shoppingList, function(index, value) {
         let foodHTML = createFoodItemHTML(value);
@@ -77,6 +83,21 @@ function generateShoppingList() {
         $("#shopping-list-div").append(foodHTML);
     })
 }
+
+//Generate the pantry table html object on the recipe page and display it
+function generateRecipePantry() {
+
+    $("#recipe-pantry-list-div").empty();
+
+    $.each(pantry, function(index, value) {
+        let foodHTML = createFoodItemHTML(value);
+        foodHTML.attr("data-food-name", value.name);
+        foodHTML.addClass("food");
+        $("#recipe-pantry-list-div").append(foodHTML);
+    })
+}
+
+
 
 //Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
 function generateCalendar() {
@@ -139,7 +160,8 @@ function addItemToPantry(foodObject) {
     pantry.push(foodObject);
     let foodIdentifier = updateFirebase("pantry", foodObject);
     foodObject.identifier = foodIdentifier;
-    generatePantry();
+    generateChangeableFoodObjectTable("#pantry-list-div");
+    //generatePantry();
 }
 
 function addItemToShoppingList(foodObject) {
@@ -613,7 +635,9 @@ firebase.auth().onAuthStateChanged(user => {
                     })
                 }
 
-                generatePantry();
+                // generatePantry();
+                generateChangeableFoodObjectTable("#pantry-list-div");
+                generateChangeableFoodObjectTable("#shopping-list-div");
                 generateRecipePantry();
                 generateShoppingList();
                 generateCalendar();
