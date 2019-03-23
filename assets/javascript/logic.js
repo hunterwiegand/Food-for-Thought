@@ -49,7 +49,6 @@ function generatePantry() {
 
 
 function generateRecipePantry() {
-
     $("#recipe-pantry-list-div").empty();
 
     $.each(pantry, function(index, value) {
@@ -62,6 +61,7 @@ function generateRecipePantry() {
 
 //Generate the shopping list html object and display it
 function generateShoppingList() {
+    $("#shopping-list-div").empty();
     $.each(shoppingList, function(index, value) {
         let foodHTML = createFoodItemHTML(value);
         foodHTML.attr("data-food-name", value.name);
@@ -190,7 +190,6 @@ function createFoodItemHTML(foodItemObject) {
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
-    // tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
     return tableRow;
 }
@@ -282,8 +281,6 @@ function createRecipeSelectionModal(recipe, index) {
             }
         }
         generateRecipePantry();
-
-        //TODO: Need to check to make sure date and meal are selected and message player if they're not
         shownRecipes[index].mealPlanSlot = { date: $("#time-slot-date" + index).val(), meal: $('input[name=meal]:checked').attr("value") };
         recipes.push(shownRecipes[index]);
         updateFirebase("recipes", shownRecipes[index]);
@@ -469,7 +466,6 @@ $("#add-item-btn").click(function(event) {
     if (/^\d+$/.test(searchTerm)) {
         callEdaFood(searchTerm); // is a barcode
     } else {
-        console.log("search term", searchTerm, "location", $(this).attr("data-target"), "measurement", $("#measurement-input").val(), "quantity", $("#quantity-input").val());
         callEdaFoodByName(searchTerm, $(this).attr("data-target"), $("#measurement-input").val(), $("#quantity-input").val(), "none"); // Is not a barcode
     }
 })
@@ -637,12 +633,9 @@ function updateFirebase(location, value) {
 }
 
 function removeFromFirebase(location, value) {
-    console.log(("/users/" + uuid + "/" + location + "/" + value));
     firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
 
 function setFirebase(location, value) {
-    console.log("/users/" + uuid + "/" + location);
     result = firebase.database().ref("/users/" + uuid + "/" + location).set(value);
-    console.log(result);
 }
