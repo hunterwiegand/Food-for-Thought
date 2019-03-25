@@ -1,9 +1,11 @@
 class recipe {
+
     constructor(recipeJSON) {
         this.name = recipeJSON.label;
         // this.url = recipeJSON.url;
         //FOR PRESENTATION
         this.url = "https://www.seriouseats.com/recipes/2014/11/cheddar-cheese-ice-cream-apple-pie.html"
+        // this.url = this.convertUrl(recipeJSON.url)
         this.source = recipeJSON.source;
         this.imageURL = recipeJSON.image;
         this.servings = recipeJSON.yield;
@@ -15,14 +17,21 @@ class recipe {
         })
         this.mealPlanSlot;
     }
+
+    convertUrl(url) {
+        if (url.slice(0, 5) === "http:") {
+            return "https" + url.slice(4)
+        }
+    }
+
 }
 
 class foodItem {
-    constructor(foodItemJSON, measurement, quantity, category) {
+    constructor(foodItemJSON, measurement, quantity) {
         this.name = foodItemJSON.label.split(",").splice(0, 2).join(",");
         this.quantity = quantity;
         this.measurement = measurement;
-        this.category = category;
+        // this.category = category;
     }
 }
 
