@@ -2,7 +2,7 @@ class recipe {
 
     constructor(recipeJSON) {
         this.name = recipeJSON.label;
-        this.url = this.convertUrl(recipeJSON.url)
+        this.url = this.convertUrl(recipeJSON.url);
         this.source = recipeJSON.source;
         this.imageURL = recipeJSON.image;
         this.servings = recipeJSON.yield;
