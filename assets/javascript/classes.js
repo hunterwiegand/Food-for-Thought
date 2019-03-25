@@ -2,10 +2,7 @@ class recipe {
 
     constructor(recipeJSON) {
         this.name = recipeJSON.label;
-        // this.url = recipeJSON.url;
-        //FOR PRESENTATION
-        this.url = "https://www.seriouseats.com/recipes/2014/11/cheddar-cheese-ice-cream-apple-pie.html"
-        // this.url = this.convertUrl(recipeJSON.url)
+        this.url = this.convertUrl(recipeJSON.url);
         this.source = recipeJSON.source;
         this.imageURL = recipeJSON.image;
         this.servings = recipeJSON.yield;
