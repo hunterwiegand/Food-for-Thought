@@ -23,31 +23,41 @@ database = firebase.database();
 //              Page Setup Functions
 //--------------------------------------------------
 
+// Generates a table of foodItems with a button to remove them from the database, local data, and html
+function generateChangeableFoodObjectTable(target) {
+    //Set the function up to target the correct table and data array.
+    let targetArray = [];
+    let targetTable;
+    if (target === "pantry") {
+        targetArray = pantry;
+        targetTable = "#pantry-list-div"
+    } else if (target === "shoppingList") {
+        targetArray = shoppingList;
+        targetTable = "#shopping-list-div"
+    } else {
+        console.log("Incorrectly called function. No table created")
+    }
 
-//Generate the pantry html object and display it
-function generatePantry() {
+    $(targetTable).empty(); //Empty table so that we start with a known state
 
-    $("#pantry-list-div").empty();
-
-    $.each(pantry, function(index, value) {
+    //Each foodItem object becomes a line in the table
+    $.each(targetArray, function(index, value) {
         let foodItemHTML = createFoodItemHTML(value);
-        let container = $("<div>");
+
+        //Each line in the table gets a button which removes it from the pantry when clicked.
         let xButton = $("<span class='px-1'>").text("X");
+        xButton.click(function() {
+            removeFromFirebase(target, value.identifier); //remove from firebase
+            foodItemHTML.remove(); //remove from html dom
+            targetArray.splice(index, 1); //remove from the object array
+        })
         foodItemHTML.prepend(xButton);
 
-        xButton.click(function() {
-            removeFromFirebase("pantry", value.identifier);
-            foodItemHTML.remove();
-            pantry.splice(index, 1);
-        })
-
-        $("#pantry-list-div").append(foodItemHTML);
+        $(targetTable).append(foodItemHTML);
     })
-
-
 }
 
-
+//Generate the pantry table html object on the recipe page and display it
 function generateRecipePantry() {
 
     $("#recipe-pantry-list-div").empty();
@@ -60,39 +70,19 @@ function generateRecipePantry() {
     })
 }
 
-//Generate the shopping list html object and display it
-function generateShoppingList() {
-    $.each(shoppingList, function(index, value) {
-        let foodHTML = createFoodItemHTML(value);
-        foodHTML.attr("data-food-name", value.name);
-        foodHTML.addClass("food");
-        let xButton = $("<span class='px-1'>").text("X");
-        foodHTML.prepend(xButton);
 
-        xButton.click(function() {
-            removeFromFirebase("shoppingList", value.identifier);
-            foodHTML.remove();
-            shoppingList.splice(index, 1);
-        })
-        $("#shopping-list-div").append(foodHTML);
-    })
-}
 
-//Generate the calendar with all meals planned or load the google calendar if that's what we're doing.
+//Generate the calendar with all meals planned
 function generateCalendar() {
-    $("#calendar").fullCalendar({
-        // put your options and callbacks here
-    })
+    $("#calendar").fullCalendar({}); //Puts the calendar into the div for hoding the calendar.
 
     let recipeArr = userData.val().recipes;
 
     for (var recipe in recipeArr) {
 
-        //convert recieps to calendar event objects
+        //convert recipes to calendar event objects
         let currentObj = new Object();
-
         currentObj.title = recipeArr[recipe].name;
-
         currentObj.start = recipeArr[recipe].mealPlanSlot.date + "T";
 
         switch (recipeArr[recipe].mealPlanSlot.meal) {
@@ -115,44 +105,29 @@ function generateCalendar() {
     }
 }
 
-//--------------------------------------------------
-//             JSON to object
-//--------------------------------------------------
-
-
-function createRecipeObject(recipeJSON) {
-    return new recipe(recipeJSON);
-}
-
-function createFoodItemObject(foodItemJSON, measurement, quantity) {
-    return new foodItem(foodItemJSON, measurement, quantity);
-}
-
-
-
 
 //--------------------------------------------------
-//             Object to HTML
+//                 Object to HTML
 //--------------------------------------------------
+//These functions take custom class objects and turns them into HTML objects which are used to display to the page.
 
-function addItemToPantry(foodObject) {
-    pantry.push(foodObject);
-    let foodIdentifier = updateFirebase("pantry", foodObject);
+//Takes in a foodItem object, adds it the pantry array and firebase.
+function addNewPantryItem(foodObject) {
+    let foodIdentifier = updateFirebase("pantry", foodObject); //Adds new item to firebase. FoodIdentifier is the firebase id given to this foodItem.
     foodObject.identifier = foodIdentifier;
-    generatePantry();
+    pantry.push(foodObject); //Adds new item to local pantry array
+    generateChangeableFoodObjectTable("pantry"); //Now that the foodItem has been added, we regenerate the pantry list. We need to do this rather than just pushing to ensure the xButton is properly generated and attached.
 }
 
-function addItemToShoppingList(foodObject) {
-    shoppingList.push(foodObject);
+//Takes in a foodItem object, adds it to the shoppingList array and firebase.
+function addNewShoppingListItem(foodObject) {
     let foodIdentifier = updateFirebase("shoppingList", foodObject);
     foodObject.identifier = foodIdentifier;
-    generateShoppingList();
+    shoppingList.push(foodObject);
+    generateChangeableFoodObjectTable("shoppingList");
 }
 
-function addRecipeToCalender(recipeObject) {
-    recipe.push(recipeObject);
-}
-
+//Creates a recipe card for use in recipe search.
 function createRecipeHTML(recipeObject, index) {
 
     let containerDiv = $("<div>");
@@ -172,7 +147,6 @@ function createRecipeHTML(recipeObject, index) {
     infoCol.attr("class", "col-4");
     titleRow.append($("<div class='recipe-title col'>").html($("<h3>" + recipeObject.name + "</h3>")));
     infoCol.append($("<div class='recipe-item row'>").text("Servings: " + recipeObject.servings));
-    // infoCol.append($("<div class='row'>").append(createNutritionHTML(recipeObject.nutrition)));
     infoCol.append($("<div class='row p-1'>").append(createRecipeDirectionLink(recipeObject.url)));
     infoCol.append($("<div class='row p-1'>").append(createRecipeSelectionModal(recipeObject, index)));
     contentLeftRow.append(imageCol, infoCol);
@@ -183,29 +157,18 @@ function createRecipeHTML(recipeObject, index) {
     return containerDiv;
 }
 
-//Create Food Item HTML for Pantry Page
+//Takes in a foodItem and returns a Food Item HTML table row for Pantry Page
 function createFoodItemHTML(foodItemObject) {
     let tableRow = $("<tr>");
     tableRow.attr("food-name", foodItemObject.name);
     tableRow.append($("<td class='food-item-title'>").text(foodItemObject.name));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.quantity));
     tableRow.append($("<td class='food-item-item'>").text(foodItemObject.measurement));
-    // tableRow.append($("<td class='food-item-item'>").text(foodItemObject.category));
 
     return tableRow;
 }
 
-function createNutritionHTML(nutritionObject) {
-    let containerDiv = $("<div>");
-    containerDiv.attr("class", "nutrition-container")
-    containerDiv.append($("<span class='nutrition-header'>").text("Nutritional Info:"));
-    containerDiv.append($("<span class='nutrition-statistic'>").text("Calories: " + nutritionObject.calories + "g"));
-    containerDiv.append($("<span class='nutrition-statistic'>").text("Protien: " + nutritionObject.protien + "g"));
-    containerDiv.append($("<span class='nutrition-statistic'>").text("Cholestorol: " + nutritionObject.cholestorol + "g"));
-
-    return containerDiv
-}
-
+//Takes in an array of ingredients and retuns an unordered list of all of the ingredients
 function createIngredientsHTML(ingredients) {
     let containerDiv = $("<div>");
     let titleDiv = $("<div class='ingredients-title col'>");
@@ -219,6 +182,7 @@ function createIngredientsHTML(ingredients) {
     return containerDiv;
 }
 
+//Takes in a url for an external website that has the directions for the recipe returns a button that has an onclick event which opens up a modal with the url loaded in a modal.
 function createRecipeDirectionLink(directionLink) {
     let containerDiv = $("<div>");
     let directionButton = $("<button class='btn btn-primary btn-lg' data-toggle='modal' data-target='#myModal'>");
@@ -232,11 +196,12 @@ function createRecipeDirectionLink(directionLink) {
     return containerDiv;
 }
 
+//Takes in a recipe object and outputs a recipe card HTML object. The index parameter is used for making the cards unique.
 function createRecipeSelectionModal(recipe, index) {
     let targetId = "modal-center-" + index;
     let containerDiv = $("<div>");
     let modalButton = $("<button>");
-    modalButton.addClass("btn btn-prmary");
+    modalButton.addClass("btn btn-primary");
     modalButton.attr("type", "button");
     modalButton.attr("data-toggle", "modal");
     modalButton.attr("data-target", "#" + targetId);
@@ -263,6 +228,7 @@ function createRecipeSelectionModal(recipe, index) {
     modalNine.text("Cancel");
     let modalTen = $("<button type='button' class='btn btn-primary' id='add-to-calendar-button' data-dismiss='modal'>");
     modalTen.text("Add to Calendar");
+    //Binds a click event to the button created above. The event will modify all pantry items that were selected to be used and add any not selected to the shopping list. Then it will take the recipe, add it to the recipes array and firebase so that it is ready for the calendar.
     modalTen.click(function() {
 
         for (let i = 0; i < recipe.ingredients.length; i++) {
@@ -282,13 +248,13 @@ function createRecipeSelectionModal(recipe, index) {
             }
         }
         generateRecipePantry();
-
-        //TODO: Need to check to make sure date and meal are selected and message player if they're not
         shownRecipes[index].mealPlanSlot = { date: $("#time-slot-date" + index).val(), meal: $('input[name=meal]:checked').attr("value") };
         recipes.push(shownRecipes[index]);
         updateFirebase("recipes", shownRecipes[index]);
 
     })
+
+    //Adds a click event to the "Add to Meal" button. This clears and then populates the modal with the correct recipe information. 
     modalButton.click(function() {
         modalSeven.empty();
         modalSeven.append(createRecipeIngredientAllocationTable(recipe.ingredients, index));
@@ -306,6 +272,7 @@ function createRecipeSelectionModal(recipe, index) {
     return containerDiv;
 }
 
+//Takes in a list of ingredients and outputs a table of ingredients with form controls to edit the ingredients. Returns the HTML object.
 function createRecipeIngredientAllocationTable(ingredients, index) {
     let containerDiv = $("<div>");
     let ingredientsTable = $("<table>");
@@ -318,7 +285,7 @@ function createRecipeIngredientAllocationTable(ingredients, index) {
     $.each(ingredients, function(key, value) {
         let currentRow = $("<tr>");
         currentRow.append($("<td>").text(value));
-        currentRow.append($("<td>").append(createRecipeDropDown(key, index)));
+        currentRow.append($("<td>").append(createRecipeDropDown(key, index))); //This is a dropdown containing all pantry items.
         currentRow.append($("<td>").append($("<input type='text' id='quantity-" + key + "-" + index + "'>")));
         currentRow.append($("<td>").append($("<input type='text' id='measurement-" + key + "-" + index + "'>")));
         ingredientsTable.append(currentRow);
@@ -327,6 +294,7 @@ function createRecipeIngredientAllocationTable(ingredients, index) {
     return containerDiv;
 }
 
+//Takes in the table line and recipe index used in creating a unique id. Returns a dropdown HTML item of all items in the pantry and an option to "Add to the Shopping List".
 function createRecipeDropDown(line, index) {
     let ingredientSelect = $("<select class='custom-select' id='ingredient-select-" + line + "-" + index + "'>");
     ingredientSelect.append(($("<option value='-1'>").text("Add to the Shopping List")));
@@ -337,6 +305,7 @@ function createRecipeDropDown(line, index) {
     return ingredientSelect;
 }
 
+//Takes in the recipe index for creating a unique id. Returns controls for setting the day and meal for the recipe (one date input and 3 radios for meals).
 function createTimeSlotPicker(index) {
     let containerDiv = $("<div>");
     let controlOne = $("<div class='custom-control custom-control-inline'>")
@@ -356,14 +325,9 @@ function createTimeSlotPicker(index) {
 }
 
 
-
-// Get modal element
-var loginModal = $("#signinModal");
-// Get close button
-var closeBtn = $(".loginCloseBtn");
-// Get open modal button
-// var modalBtn = document.getElementById("modalBtn");
-
+//---------------------------------------------
+//        Login (index) Page UI Interactions
+//---------------------------------------------
 
 $("#login-button").on("click", function() {
     //Get user login info
@@ -371,17 +335,20 @@ $("#login-button").on("click", function() {
     const password = $("#user-password").val();
     const auth = firebase.auth();
 
+    var loginModal = $("#signinModal");
+
     const promise = auth.signInWithEmailAndPassword(email, password);
     promise.catch(function(event) {
-            console.log(event.message);
+        console.log(event.message);
 
-            if (password !== promise) {
-                (loginModal.modal('show'));
-                loginModal.css({ display: 'block' })
-            }
+        if (password !== promise) {
+            (loginModal.modal('show'));
+            loginModal.css({ display: 'block' })
+        }
 
-        })
-        // Listen for close click
+    })
+
+    // Listen for close click
     $('.loginCloseBtn').on("click", closeModal);
     //Listen for outside click
     window.addEventListener("click", outsideClick);
@@ -404,7 +371,8 @@ $("#login-button").on("click", function() {
 
 //Listener for sign-up button
 $("#signup-button").on("click", function() {
-
+    var loginModal = $("#signinModal");
+    var closeBtn = $(".loginCloseBtn");
     //Get user sign-up info
     const email = $("#signup-email").val().trim();
     const password = $("#signup-password").val().trim();
@@ -459,7 +427,7 @@ $("#logout-button").on("click", function() {
 
 
 //---------------------------------------------
-//        Pantry Page UI Interactions
+//        Pantry and Shopping List Page UI Interactions
 //---------------------------------------------
 
 $("#add-item-btn").click(function(event) {
@@ -469,8 +437,7 @@ $("#add-item-btn").click(function(event) {
     if (/^\d+$/.test(searchTerm)) {
         callEdaFood(searchTerm); // is a barcode
     } else {
-        console.log("search term", searchTerm, "location", $(this).attr("data-target"), "measurement", $("#measurement-input").val(), "quantity", $("#quantity-input").val());
-        callEdaFoodByName(searchTerm, $(this).attr("data-target"), $("#measurement-input").val(), $("#quantity-input").val(), "none"); // Is not a barcode
+        callEdaFoodByName(searchTerm, $(this).attr("data-target"), $("#measurement-input").val(), $("#quantity-input").val()); // Is not a barcode
     }
 })
 
@@ -480,12 +447,14 @@ $("#add-item-btn").click(function(event) {
 
 $("#recipe-search-button").click(function() {
     let searchTerm = ($(".recipe-food-item").text());
-    searchTerm = searchTerm.split(" ").join("+");
     //Need to format searchTem by adding + and only taking in the first 2 itmes with commas
     //example, Rice, white, medium-grain, raw, unenriched => Rice,+white
+    searchTerm = searchTerm.split(" ").join("+");
     callEdaRec(searchTerm);
 
 })
+
+//Adds an event listener to pantry items appearing on the recipe page. If the item is not in the list of recipe ingredients, add it otherwise remove it.
 $(document).on("click", ".food", function() {
     let foodName = this.dataset.foodName;
     let temp = foodName.replace(/\s/g, '');
@@ -542,7 +511,7 @@ function callEdaRec(userFoodItem) {
         $("#recipe-search-text").empty();
         for (var i = 0; i < hits.length; i++) {
 
-            let newRecipe = createRecipeObject(hits[i].recipe);
+            let newRecipe = new recipe(hits[i].recipe);
             shownRecipes.push(newRecipe);
 
             let newHTML = createRecipeHTML(newRecipe, i);
@@ -560,8 +529,9 @@ function callEdaFood(barcodeNum) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
-        addItemToPantry(newFoodItem);
+        let newFoodItem = new foodItem(response.hints[0].food, $("#measurment-input").val(), $("#quantity-input").val(), $("#category-select")[0].value);
+        addNewPantryItem(newFoodItem);
+
     })
 
 }
@@ -574,13 +544,13 @@ function callEdaFoodByName(foodName, location, measurment, quantity, category) {
         url: queryURL,
         method: "GET"
     }).then(function(response) {
-        let newFoodItem = createFoodItemObject(response.hints[0].food, measurment, quantity);
+        let newFoodItem = new foodItem(response.hints[0].food, measurment, quantity);
         switch (location) {
             case "pantry":
-                addItemToPantry(newFoodItem);
+                addNewPantryItem(newFoodItem);
                 break
             case "shoppingList":
-                addItemToShoppingList(newFoodItem);
+                addNewShoppingListItem(newFoodItem);
                 break
             default:
                 console.log("Error, didn't put", newFoodItem, "Anywhere");
@@ -620,9 +590,9 @@ firebase.auth().onAuthStateChanged(user => {
                     })
                 }
 
-                generatePantry();
+                generateChangeableFoodObjectTable("pantry"); //Generate pantry table
+                generateChangeableFoodObjectTable("shoppingList"); //Generate shopping list table
                 generateRecipePantry();
-                generateShoppingList();
                 generateCalendar();
             }
         })
@@ -644,12 +614,9 @@ function updateFirebase(location, value) {
 }
 
 function removeFromFirebase(location, value) {
-    console.log(("/users/" + uuid + "/" + location + "/" + value));
     firebase.database().ref("/users/" + uuid + "/" + location + "/" + value).remove();
 }
 
 function setFirebase(location, value) {
-    console.log("/users/" + uuid + "/" + location);
     result = firebase.database().ref("/users/" + uuid + "/" + location).set(value);
-    console.log(result);
 }

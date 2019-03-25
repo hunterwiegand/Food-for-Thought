@@ -31,7 +31,6 @@ class foodItem {
         this.name = foodItemJSON.label.split(",").splice(0, 2).join(",");
         this.quantity = quantity;
         this.measurement = measurement;
-        // this.category = category;
     }
 }
 
